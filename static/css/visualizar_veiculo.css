@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+div[name="local_pernoite"]{
+    position: relative;
+    left: -70px;
+}
+
+label[name="local_pernoite"]{
+    position: relative;
+    left: -70px;
+}
+
+div[name="per_gar"]{
+    position: relative;
+    left: -10px;
+}
+
+label[name="per_gar"]{
+    position: relative;
+    left: -10px;
+}
+
+div[name="ir_trab"]{
+    position: relative;
+    left: -16px;
+}
+
+label[name="ir_trab"]{
+    position: relative;
+    left: -16px;
+}
