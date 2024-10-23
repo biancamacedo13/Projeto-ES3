@@ -14,24 +14,130 @@
         <h1 id="tipo2">Cadastrar Veículo</h1>
         
         <hgroup>
-            <label  id="tipo_formulario">CPF:</label>
+            <label  id="tipo_formulario">Modelo:</label>
             <input type="text"  id="caixa" />
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Placa:</label>
-            <input type="text" id="caixa" />
+            <label  id="tipo_formulario">Ano:</label>
+            <input type="date" id="caixa" />
         </hgroup>
 
         <hgroup>
-            <label id="tipo_formulario">Data de vencimento:</label>
-            <input type="date" id="caixa"/>
+            <label id="tipo_formulario">Cor:</label>
+            <input type="text" id="caixa"/>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Conbustível:</label>
+            <input type="text" id="caixa"/>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Placa:</label>
+            <input type="text" id="caixa"/>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Chassí:</label>
+            <input type="text" id="caixa"/>
+        </hgroup>
+
+        <hgroup>
+            <label  id="tipo_formulario">Possui rastreador ou semelhante?:</label>
+            <div id="select">
+                <p>
+                    <input type="radio" name="rastreador" for="seletor"/> <label  id="opções">Sim</label>
+                </p>
+                <p>
+                    <input type="radio" name="rastreador" for="seletor"/> <label  id="opções"> Não</label>
+                </p>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <p id="teste">
+                <label  id="tipo_formulario" name="local_pernoite">Local de pernoite?:</label>
+            </p>
+            <div id="select" name="local_pernoite">
+                <p>
+                    <input type="radio" name="pernoite" for="seletor"/> <label  id="opções">Casa</label>
+                </p>
+                <p>
+                    <input type="radio" name="pernoite" for="seletor"/> <label  id="opções"> Rua</label>
+                </p>
+                <p>
+                    <input type="radio" name="pernoite" for="seletor"/> <label  id="opções"> Apartamento</label>
+                </p>
+                
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label  id="tipo_formulario" name="per_gar">Veículo pernoita em garagem:</label>
+            <div id="select" name="per_gar">
+                <p>
+                    <input type="radio" name="garagem" for="seletor"/> <label  id="opções">Sim</label>
+                </p>
+                <p>
+                    <input type="radio" name="garagem" for="seletor"/> <label  id="opções"> Não</label>
+                </p>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">CPF local de pernoite:</label>
+            <input type="text" id="caixa"/>
+        </hgroup>
+
+        <hgroup>
+            <p>
+                <label  id="tipo_formulario">Veículo é utilizado para atividade </br> remunerada:</label>
+            </p>
+            <div id="select">
+                <p>
+                    <input type="radio" name="remunerada" for="seletor"/> <label  id="opções">Sim</label>
+                </p>
+                <p>
+                    <input type="radio" name="remunerada" for="seletor"/> <label  id="opções"> Não</label>
+                </p>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <p>
+                <label  id="tipo_formulario" name="ir_trab">Veículo é utilizado para ir ao </br>trabalho ou estudo:</label>
+            </p>
+            
+            <div id="select" name="ir_trab">
+                <p>
+                    <input type="radio" name="ir" for="seletor"/> <label  id="opções">Sim</label>
+                </p>
+                <p>
+                    <input type="radio" name="ir" for="seletor"/> <label  id="opções"> Não</label>
+                </p>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <p>
+                <label  id="tipo_formulario">Local de trabalho/estudo possui </br>estacionamento:</label>
+            </p>
+            
+            <div id="select">
+                <p>
+                    <input type="radio" name="estacionamento" for="seletor"/> <label  id="opções">Sim</label>
+                </p>
+                <p>
+                    <input type="radio" name="estacionamento" for="seletor"/> <label  id="opções"> Não</label>
+                </p>
+            </div>
         </hgroup>
 
         <div id="bt_vt">
-            <label id="botao1">Consultar</label>
+            <label id="botao1">Cadastrar</label>
             
-            <a href="seguros.html">
+            <a href="consultar_cliente2.html">
                 <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
             
