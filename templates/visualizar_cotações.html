@@ -11,45 +11,47 @@
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
  
     <div id="metade">
-        <h1 id="tipo2">Visualizar cotações</h1>
+        <h1 id="tipo2">Visualizar Cotação</h1>
                
         <hgroup>
-            <label  id="tipo_formulario">Nome:</label>
-            <textarea readonly></textarea>
+            <label  id="tipo_formulario">Nome do cliente:</label>
+            <textarea name="nome_visualizar_cotacao" readonly></textarea>
               
         </hgroup>
 
         <hgroup>
             <label  id="tipo_formulario">Seguradora:</label>
-            <textarea readonly></textarea> 
+            <textarea name="seguradora_visualizar_cotacao" readonly></textarea> 
         </hgroup>
 
         <hgroup>
             <label  id="tipo_formulario">Placa veículo:</label>
-            <textarea readonly></textarea>    
+            <textarea name="placa_visualizar_cotacao" readonly></textarea>    
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Data contratação:</label>
-            <textarea readonly></textarea>
+            <label  id="tipo_formulario">Data da cotação:</label>
+            <textarea name="dt_cotacao_visualizar_cotacao" readonly></textarea>
               
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Data vencimento:</label>
-            <textarea readonly></textarea> 
+            <label  id="tipo_formulario">Data limite:</label>
+            <textarea name="dt_limite_visualizar_cotacao" readonly></textarea> 
         </hgroup>
 
         <hgroup>
             <label  id="tipo_formulario">Valor:</label>
-            <textarea readonly></textarea> 
+            <textarea name="valor_visualizar_cotacao" readonly></textarea> 
         </hgroup>
 
         <div id="bt_vt">
-            <a>
+            <label id="botao1">Segurar</label><!--Confirmar cotação ir para seguros contratados. Exigir confirmação-->
+            <a href="consultar_cotações2.html">
                 <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
         </div>
+        
     </div>
 </body>
 </html>
