@@ -229,3 +229,10 @@ textarea{
     margin-left: 10px; 
     font-size: 0.9em; 
 }
+.alerta2{
+    color: rgb(198, 2, 2);
+    margin-left: 0px;
+    padding-top: 0px;
+    border-top: 0px;
+    font-size: 18pt;
+}
