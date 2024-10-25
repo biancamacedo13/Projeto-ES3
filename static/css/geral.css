@@ -176,6 +176,13 @@ input#caixa{
     background-color: rgba(217,217,217,1);
     border-radius: 8%;
 }
+.seletores{
+    width: 400px;
+    height: 25pt;
+    background-color: rgba(217,217,217,1);
+    border: 3px solid rgba(217,217,217,1);
+    border-radius: 8%;
+}
 
 input[for="seletor"]{
     width: 15px;

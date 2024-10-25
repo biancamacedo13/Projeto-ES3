@@ -12,53 +12,67 @@
 
     <div id="metade" >
         <h1 id="tipo2">Cadastrar Seguro</h1>
-                       
+        
+        <form name="form_adastrar_seguros" action="/adastrar_seguros.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">CPF do segurado</label>
-                <input type="number" id="caixa" name="cpf_cadastrar_seguros" />
+                <input type="text" id="caixa" name="cpf_cadastrar_seguros" />
+                <span class="alerta" id="span_cpf_cadastrar_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label  id="tipo_formulario">Placa do veículo:</label>
                 <input type="text" id="caixa" name="placa_cadastrar_seguros"/>
+                <span class="alerta" id="span_placa_cadastrar_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label id="tipo_formulario">Seguradora:</label>
                 <input type="text" id="caixa" name="seguradora_cadastrar_seguros"/><!--lista com seguradoras cadastradas-->
+                <span class="alerta" id="span_seguradora_cadastrar_seguros"></span>
             </hgroup>
             
             <hgroup>
                 <label id="tipo_formulario">Data de contratação:</label>
                 <input type="date" id="caixa" name="dt_contratacao_cadastrar_seguros"/>
+                <span class="alerta" id="span_dt_contratacao_cadastrar_seguros"></span>
             </hgroup>
 
             <hgroup>
                 <label id="tipo_formulario">Data de vencimento:</label>
                 <input type="date" id="caixa" name="dt_vencimento_cadastrar_seguros"/>
+                <span class="alerta" id="span_dt_vencimento_cadastrar_seguros"></span>
             </hgroup>
 
             <hgroup>
                 <label id="tipo_formulario">Forma de pagamento:</label><!--lista com formas-->
-                <input type="text" id="caixa" name="fm_paga_cadastrar_seguros"/>
+                <select class="seletores" name="fm_paga_cadastrar_seguros">
+                    <option selected value="credito">Crédito</option>
+                    <option>Débito</option>
+                    <option>Pix</option>
+                    <option>Boleto</option>
+                </select>
+                <span class="alerta" id="span_fm_paga_cadastrar_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label id="tipo_formulario">Apólice:</label>
-                <input type="number" id="caixa" name="apolice_cadastrar_seguros"/>
+                <input type="text" id="caixa" name="apolice_cadastrar_seguros"/>
+                <span class="alerta" id="span_apolice_cadastrar_seguros"></span>
             </hgroup>
+        </form>
             
             <div id="bt_vt">
-                <label id="botao1">Cadastrar</label>
+                <label id="botao1" name="label_cadastrar_seguros">Cadastrar</label>
 
                 <a href="seguros.html">
                     <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
                 </a>
                 
             </div>
-           
-         
-        
     </div>
+
+    <script src="../static/script/cadastrar_seguros.js"></script>
+
 </body>
 </html>

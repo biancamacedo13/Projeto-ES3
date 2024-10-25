@@ -1,19 +1,3 @@
-function verificarGrupoRadio(grupoNome, alertaId) {
-    const radios = document.getElementsByName(grupoNome);
-    let selecionado = false;
-
-    for (let i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            selecionado = true;
-            break;
-        }
-    }
-
-    document.getElementById(alertaId).textContent = '';
-
-    return selecionado;
-}
-
 document.getElementsByName('label_cadastrar_cliente')[0].onclick = function validar() {        
     
     const nome = document.getElementsByName('nome_cadastrar_cliente')[0].value.trim();
@@ -41,16 +25,6 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
     const alertasal = document.getElementById('span_sal_cadastrar_cliente');
 
     
-
-    const principal = verificarGrupoRadio('condutor_principal_cadastrar_cliente', 'span_condutor_principal_cadastrar_cliente_cadastrar_cliente');
-    const alertaprincipal = document.getElementById('span_condutor_principal_cadastrar_cliente_cadastrar_cliente');
-
-    const proprietario = verificarGrupoRadio('proprietario_cadastrar_cliente', 'span_proprietario_cadastrar_cliente');
-    const alertaproprietario = document.getElementById('span_proprietario_cadastrar_cliente');
-
-    const civil = verificarGrupoRadio('seletor_cadastrar_cliente', 'span_seletor_cadastrar_cliente');
-    const alertacivil = document.getElementById('span_seletor_cadastrar_cliente');
-    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     
@@ -69,8 +43,7 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
     if (nome === '') {
         alertanome.textContent = 'campo vazio!';
         valido = false;
-    } 
-    
+    }  
     else if (!/^[a-zA-Z\s]+$/.test(nome)) {
         alertanome.textContent = 'apenas letras!';
         valido = false;
@@ -78,7 +51,10 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
 
     
     if (cpf === '') {
-        alertacpf.textContent = 'campo vazio!';
+        alertacpf.textContent = 'Campo vazio!';
+        valido = false;
+    } else if (!/^\d{11}$/.test(cpf)) {
+        alertacpf.textContent = '11 dígitos!';
         valido = false;
     } 
     
@@ -110,7 +86,6 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
         alertatel.textContent = 'campo vazio!';
         valido = false;
     } 
-    
     else if (isNaN(tel)) {
         alertatel.textContent = 'apenas números!';
         valido = false;
@@ -130,22 +105,6 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
         alertasal.textContent = 'apenas números!';
         valido = false;
     }
-
-    if (!principal) {
-        alertaprincipal.textContent = 'selecione!';
-        valido = false;
-    }
-
-    if (!proprietario) {
-        alertaproprietario.textContent = 'selecione!';
-        valido = false;
-    }
-
-    if (!civil) {
-        alertacivil.textContent = 'selecione!';
-        valido = false;
-    }
-
 
     
     if (valido) {
