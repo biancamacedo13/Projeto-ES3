@@ -140,7 +140,8 @@ label {
 label#tipo_formulario{
     font-family: Libre Caslon Text;
     color: rgba(255, 255, 255, 1);
-    font-size: 21pt; 
+    font-size: 21pt;
+    padding-top: 20px;
 }
 label#opções{
     font-family: Libre Caslon Text;
@@ -214,4 +215,10 @@ textarea{
     background-color: rgba(217,217,217,1);
     border-radius: 8%;
     resize: none;
+}
+
+.alerta {
+    color: rgb(198, 2, 2);
+    margin-left: 10px; 
+    font-size: 0.9em; 
 }

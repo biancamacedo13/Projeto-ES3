@@ -9,81 +9,114 @@
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
-
+    
     <div id="metade" >
+
         <div>
             <h1 id="tipo2">Cadastrar Cliente</h1>
         </div>     
         
+        <form name="form_cadastrar_cliente" action="/cadastrar_cliente.html" method="POST">
             <hgroup>
-                <label name="lNome" id="tipo_formulario">Nome:</label>
+                <label id="tipo_formulario">Nome:</label>
                 <input type="text" name="nome_cadastrar_cliente" id="caixa" placeholder="Nome Completo"/>
+                <span class="alerta" id="span_nome_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label name="lCPF" id="tipo_formulario">CPF:</label>
-                <input type="number" name="cpf_cadastrar_cliente" id="caixa" placeholder="(apenas números)"/>
+                <label id="tipo_formulario">CPF:</label>
+                <input type="text" name="cpf_cadastrar_cliente" id="caixa" placeholder="apenas números"/>
+                <span class="alerta" id="span_cpf_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label name="lemail" id="tipo_formulario">E-mail:</label>
-                <input type="email" name="email_cadastrar_cliente" id="caixa" />
+                <label  id="tipo_formulario" >E-mail:</label>
+                <input type="email" name="email_cadastrar_cliente" id="caixa" placeholder="xxx@gmail.com"/>
+                <span class="alerta" id="span_email_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label for="cNasc" id="tipo_formulario">Data de Nascimento:</label>
+                <label id="tipo_formulario">Data de Nascimento:</label>
                 <input type="date" name="dt_nasc_cadastrar_cliente" id="caixa"/>
-            </hgroup>
-            
-            <hgroup>
-                <label for="cCivil" id="tipo_formulario">Estado Civil:</label>
-                <div id="select">
-                    <p for="tSolteiro">
-                        <input type="radio" name="seletor_cadastrar_cliente" /> <label  id="opções">Solteiro</label>
-                    </p>
-                    <p for="tViuvo">
-                        <input type="radio" name="seletor_cadastrar_cliente" /> <label  id="opções"> Viuvo</label>
-                    </p>
-                    <p for="tCasado">
-                        <input type="radio" name="seletor_cadastrar_cliente" /> <label  id="opções"> Casado</label>
-                    </p>
-                    <p for="tDivorciado">
-                        <input type="radio" name="seletor_cadastrar_cliente" /> <label  id="opções"> Divorciado</label>
-                    </p>
-                </div>
-                 
+                <span class="alerta" id="span_dt_nasc_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label name="lEndereço" id="tipo_formulario">Endereço:</label>
+                <label id="tipo_formulario">Endereço:</label>
                 <input type="text" name="endereco_cadastrar_cliente" id="caixa" />
+                <span class="alerta" id="span_endereco_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label name="lTelefone" id="tipo_formulario">Telefone:</label>
-                <input type="number" name="tel_cadastrar_cliente" id="caixa" />
+                <label id="tipo_formulario">Telefone:</label>
+                <input type="text" name="tel_cadastrar_cliente" id="caixa" />
+                <span class="alerta" id="span_tel_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label name="lProfissão" id="tipo_formulario">Profissão:</label>
+                <label id="tipo_formulario">Profissão:</label>
                 <input type="text" name="prof_cadastrar_cliente" id="caixa" />
+                <span class="alerta" id="span_prof_cadastrar_cliente"></span>
             </hgroup>
     
             <hgroup>
-                <label name="lSalario" id="tipo_formulario">Faixa Salarial:</label>
+                <label id="tipo_formulario">Faixa Salarial:</label>
                 <input type="text" name="sal_cadastrar_cliente" id="caixa" />
+                <span class="alerta" id="span_sal_cadastrar_cliente"></span>
             </hgroup>
+        </form>
+
+        <hgroup>
+            <label id="tipo_formulario">Condutor Principal:</label>
+            <div id="select">
+                
+                <label  id="opções"><input type="radio" name="condutor_principal_cadastrar_cliente" />Sim</label>
+                
+                <label  id="opções"><input type="radio" name="condutor_principal_cadastrar_cliente" />Não</label>
+                
+                <span class="alerta" id="span_condutor_principal_cadastrar_cliente_cadastrar_cliente"></span>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Proprietário:</label>
+            <div id="select">
+                
+                <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" />Sim</label>
+                
+                <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" />Não</label>
+                
+                <span class="alerta" id="span_proprietario_cadastrar_cliente"></span>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Estado Civil:</label>
+            <div id="select">
+                
+                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" />Solteiro</label>
+                
+                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" /> Viuvo</label>
+                
+                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" /> Casado</label>
+                
+                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" /> Divorciado</label>
+
+                <span class="alerta" id="span_seletor_cadastrar_cliente"></span>                
+            </div>
+        </hgroup>
         
             <div id="bt_vt">
-                <label id="botao1">Cadastrar</label>
+                <label id="botao1" name="label_cadastrar_cliente">Cadastrar</label>
                 
                 <a href="clientes.html">
                     <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
                 </a>
                 
-            </div>   
-        
-        
+            </div>    
     </div>
+    <script src="../static/script/cadastrar_cliente.js">
+        
+    </script>
 </body>
 </html>
