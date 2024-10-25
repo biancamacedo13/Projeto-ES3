@@ -73,8 +73,7 @@
                 <label  id="opções"><input type="radio" name="condutor_principal_cadastrar_cliente" value="1" checked/>Sim</label>
                 
                 <label  id="opções"><input type="radio" name="condutor_principal_cadastrar_cliente" value="0"/>Não</label>
-                
-                <span class="alerta" id="span_condutor_principal_cadastrar_cliente_cadastrar_cliente"></span>
+
             </div>
         </hgroup>
 
@@ -82,28 +81,21 @@
             <label id="tipo_formulario">Proprietário:</label>
             <div id="select">
                 
-                <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" value="1" checked/>Sim</label>
+                    <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" value="1" checked/>Sim</label>
                 
-                <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" value="0"/>Não</label>
+                    <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" value="0"/>Não</label> 
                 
-                <span class="alerta" id="span_proprietario_cadastrar_cliente"></span>
             </div>
         </hgroup>
 
         <hgroup>
             <label id="tipo_formulario">Estado Civil:</label>
-            <div id="select">
-                
-                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" value="solteiro"/>Solteiro</label>
-                
-                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" value="viuvo"/> Viuvo</label>
-                
-                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" value="casado" checked/> Casado</label>
-                
-                <label  id="opções"><input type="radio" name="seletor_cadastrar_cliente" value="divorciado"/> Divorciado</label>
-
-                <span class="alerta" id="span_seletor_cadastrar_cliente"></span>                
-            </div>
+                <select class="seletores" name="civil_cadastrar_cliente">
+                <option value="solteiro">Solteiro</option>
+                <option value="viuvo">Viuvo</option>
+                <option value="casado" selected>Casado</option>
+                <option value="divorciado">Divorciado</option>
+            </select>
         </hgroup>
         
             <div id="bt_vt">

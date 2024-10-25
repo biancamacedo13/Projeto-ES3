@@ -48,7 +48,6 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
         alertanome.textContent = 'apenas letras!';
         valido = false;
     }
-
     
     if (cpf === '') {
         alertacpf.textContent = 'Campo vazio!';
@@ -56,7 +55,7 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
     } else if (!/^\d{11}$/.test(cpf)) {
         alertacpf.textContent = '11 dígitos!';
         valido = false;
-    } 
+    }
     
     else if (isNaN(cpf)) {
         alertacpf.textContent = 'apenas números!';
