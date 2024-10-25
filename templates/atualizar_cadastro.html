@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Cadastro</title>
+    <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
+
+</head>
+<body>
+    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+    
+    <div id="conteiner_login">
+
+        <h1 id="tipo2">Atualizar Cadastro</h1>
+
+        <form>
+            <hgroup>
+                <label id="tipo_formulario">Nome:</label>
+                <input type="text" id="caixa" name="nome_atualizar_cadastro"/>
+                <span class="alerta" id="span_nome_atualizar_cadastro"></span>
+            </hgroup>
+
+            <hgroup>
+                <label  id="tipo_formulario">CPF:</label>
+                <input type="number"  id="caixa" name="cpf_atualizar_cadastro"/>
+                <span class="alerta" id="span_cpf_atualizar_cadastro"></span>
+            </hgroup>
+
+            <hgroup>
+                <label id="tipo_formulario">E-mail:</label>
+                <input type="text" id="caixa" name="email_atualizar_cadastro" />
+                <span class="alerta" id="span_email_atualizar_cadastro"></span>
+            </hgroup>
+
+            <hgroup>
+                <label id="tipo_formulario">Senha:</label>
+                <input type="text" id="caixa" name="senha_atualizar_cadastro"/>
+                <span class="alerta" id="span_senha_atualizar_cadastro"></span>
+            </hgroup>
+
+            <hgroup>
+                <label id="tipo_formulario">Confirmar Senha:</label>
+                <input type="text" id="caixa" name="conf_senha_atualizar_cadastro"/>
+                <span class="alerta" id="span_conf_senha_atualizar_cadastro"></span>
+            </hgroup>
+        </form>
+
+        <div id="bt_vt">
+            <label id="botao1" name="label_alterar_cadastro" tabindex="0">Alterar</label>
+            <a href="tela_inicial.html">
+                <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+            </a>
+        </div>
+    </div>
+    <script src="../static/script/atualizar_cadastro.js"></script>
+</body>
+</html>

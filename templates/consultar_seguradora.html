@@ -5,33 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultar Seguradora</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
-
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
 
     <div id="metade">
         <h1 id="tipo2">Consultar Seguradora</h1>
-
-        <hgroup>
-            <label  id="tipo_formulario">Nome:</label>
-            <input type="text" id="caixa" name="nome_consultar_seguradora"/>
-        </hgroup>
+        <span id="geral_consultar_seguradora" class="alerta2"></span>
         
-        <hgroup>
-            <label  id="tipo_formulario">CNPJ:</label>
-            <input type="number"  id="caixa" name="cnpj_consultar_seguradora"/>
-        </hgroup>
+        <form name="form_consultar_seguradora" action="/consultar_seguradora.html" method="POST">
+            <hgroup>
+                <label id="tipo_formulario">Nome:</label>
+                <input type="text" id="caixa" name="nome_consultar_seguradora"/>
+                <span class="alerta" id="span_nome_consultar_seguradora"></span>
+            </hgroup>
+            
+            <hgroup>
+                <label id="tipo_formulario" >CNPJ:</label>
+                <input type="text" id="caixa" name="cnpj_consultar_seguradora" placeholder="apenas números"/>
+                <span class="alerta" id="span_cnpj_consultar_seguradora"></span>
+            </hgroup>
+        </form>
         
         <div id="bt_vt">
-            <label id="botao1">Consultar</label>
-            
+            <label id="botao1" name="label_consultar_seguradora" tabindex="0">Consultar</label>
             <a href="seguradoras.html">
-                <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
-            </a>
-            
+                <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+            </a>    
         </div>
-
     </div>
+
+    <script src="../static/script/consultar_seguradora1.js"></script>
 </body>
 </html>

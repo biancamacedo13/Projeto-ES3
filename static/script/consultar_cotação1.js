@@ -49,7 +49,7 @@ document.getElementsByName('label_consultar_cotacao')[0].onclick = function vali
     }
 
     if (valido) {
-        
+        // Se pelo menos um campo estiver preenchido e válido, continue com a ação
         window.alert('Pelo menos um campo válido foi preenchido.');
     }
 

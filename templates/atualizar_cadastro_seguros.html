@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Seguro</title>
+    <title>Atualizar Seguro</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
     
 
@@ -11,59 +11,59 @@
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
 
     <div id="metade" >
-        <h1 id="tipo2">Cadastrar Seguro</h1>
+        <h1 id="tipo2">Atualizar Seguro</h1>
         
-        <form name="form_cadastrar_seguros" action="/cadastrar_seguros.html" method="POST">
+        <form name="form_atualizar_cadastro_seguros" action="/atualizar_cadastro_seguros.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">CPF do segurado</label>
-                <input type="text" id="caixa" name="cpf_cadastrar_seguros" />
-                <span class="alerta" id="span_cpf_cadastrar_seguros"></span>
+                <input type="text" id="caixa" name="cpf_atualizar_cadastro_seguros" />
+                <span class="alerta" id="span_cpf_atualizar_cadastro_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label  id="tipo_formulario">Placa do veículo:</label>
-                <input type="text" id="caixa" name="placa_cadastrar_seguros"/>
-                <span class="alerta" id="span_placa_cadastrar_seguros"></span>
+                <input type="text" id="caixa" name="placa_atualizar_cadastro_seguros"/>
+                <span class="alerta" id="span_placa_atualizar_cadastro_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label id="tipo_formulario">Seguradora:</label>
-                <input type="text" id="caixa" name="seguradora_cadastrar_seguros"/><!--lista com seguradoras cadastradas-->
-                <span class="alerta" id="span_seguradora_cadastrar_seguros"></span>
+                <input type="text" id="caixa" name="seguradora_atualizar_cadastro_seguros"/><!--lista com seguradoras cadastradas-->
+                <span class="alerta" id="span_seguradora_atualizar_cadastro_seguros"></span>
             </hgroup>
             
             <hgroup>
                 <label id="tipo_formulario">Data de contratação:</label>
-                <input type="date" id="caixa" name="dt_contratacao_cadastrar_seguros"/>
-                <span class="alerta" id="span_dt_contratacao_cadastrar_seguros"></span>
+                <input type="date" id="caixa" name="dt_contratacao_atualizar_cadastro_seguros"/>
+                <span class="alerta" id="span_dt_contratacao_atualizar_cadastro_seguros"></span>
             </hgroup>
 
             <hgroup>
                 <label id="tipo_formulario">Data de vencimento:</label>
-                <input type="date" id="caixa" name="dt_vencimento_cadastrar_seguros"/>
-                <span class="alerta" id="span_dt_vencimento_cadastrar_seguros"></span>
+                <input type="date" id="caixa" name="dt_vencimento_atualizar_cadastro_seguros"/>
+                <span class="alerta" id="span_dt_vencimento_atualizar_cadastro_seguros"></span>
             </hgroup>
 
             <hgroup>
                 <label id="tipo_formulario">Forma de pagamento:</label><!--lista com formas-->
-                <select class="seletores" name="fm_paga_cadastrar_seguros">
+                <select class="seletores" name="fm_paga_atualizar_cadastro_seguros">
                     <option selected value="credito">Crédito</option>
                     <option value="debito">Débito</option>
                     <option value="pix">Pix</option>
                     <option value="boleto">Boleto</option>
                 </select>
-                <span class="alerta" id="span_fm_paga_cadastrar_seguros"></span>
+                <span class="alerta" id="span_fm_paga_atualizar_cadastro_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label id="tipo_formulario">Apólice:</label>
-                <input type="text" id="caixa" name="apolice_cadastrar_seguros"/>
-                <span class="alerta" id="span_apolice_cadastrar_seguros"></span>
+                <input type="text" id="caixa" name="apolice_atualizar_cadastro_seguros"/>
+                <span class="alerta" id="span_apolice_atualizar_cadastro_seguros"></span>
             </hgroup>
         </form>
             
             <div id="bt_vt">
-                <label id="botao1" name="label_cadastrar_seguros" tabindex="0">Cadastrar</label>
+                <label id="botao1" name="label_atualizar_cadastro_seguros">Alterar</label>
 
                 <a href="seguros.html">
                     <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
@@ -72,7 +72,7 @@
             </div>
     </div>
 
-    <script src="../static/script/cadastrar_seguros.js"></script>
+    <script src="../static/script/atualizar_cadastro_seguros.js"></script>
 
 </body>
 </html>

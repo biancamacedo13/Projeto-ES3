@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Cadastro Cliente</title>
+    <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
+
+</head>
+<body>
+    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+    
+    <div id="metade" >
+
+        <div>
+            <h1 id="tipo2">Atualizar Cadastro Cliente</h1>
+        </div>     
+        
+        <form name="form_atualizar_cadastro_cliente" action="/atualizar_cadastro_cliente.html" method="POST">
+            <hgroup>
+                <label id="tipo_formulario">Nome:</label>
+                <input type="text" name="nome_atualizar_cadastro_cliente" id="caixa" placeholder="Nome Completo"/>
+                <span class="alerta" id="span_nome_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label id="tipo_formulario">CPF:</label>
+                <input type="text" name="cpf_atualizar_cadastro_cliente" id="caixa" placeholder="apenas números"/>
+                <span class="alerta" id="span_cpf_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label  id="tipo_formulario" >E-mail:</label>
+                <input type="email" name="email_atualizar_cadastro_cliente" id="caixa" placeholder="xxx@gmail.com"/>
+                <span class="alerta" id="span_email_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label id="tipo_formulario">Data de Nascimento:</label>
+                <input type="date" name="dt_nasc_atualizar_cadastro_cliente" id="caixa"/>
+                <span class="alerta" id="span_dt_nasc_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label id="tipo_formulario">Endereço:</label>
+                <input type="text" name="endereco_atualizar_cadastro_cliente" id="caixa" />
+                <span class="alerta" id="span_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label id="tipo_formulario">Telefone:</label>
+                <input type="text" name="tel_atualizar_cadastro_cliente" id="caixa" />
+                <span class="alerta" id="span_tel_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label id="tipo_formulario">Profissão:</label>
+                <input type="text" name="prof_atualizar_cadastro_cliente" id="caixa" />
+                <span class="alerta" id="span_prof_atualizar_cadastro_cliente"></span>
+            </hgroup>
+    
+            <hgroup>
+                <label id="tipo_formulario">Faixa Salarial:</label>
+                <input type="text" name="sal_atualizar_cadastro_cliente" id="caixa" />
+                <span class="alerta" id="span_sal_atualizar_cadastro_cliente"></span>
+            </hgroup>
+        </form>
+
+        <hgroup>
+            <label id="tipo_formulario">Condutor Principal:</label>
+            <div id="select">
+                
+                <label  id="opções"><input type="radio" name="condutor_principal_atualizar_cadastro_cliente" value="1" checked/>Sim</label>
+                
+                <label  id="opções"><input type="radio" name="condutor_principal_atualizar_cadastro_cliente" value="0"/>Não</label>
+
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Proprietário:</label>
+            <div id="select">
+                
+                    <label  id="opções"><input type="radio" name="proprietario_atualizar_cadastro_cliente" value="1" checked/>Sim</label>
+                
+                    <label  id="opções"><input type="radio" name="proprietario_atualizar_cadastro_cliente" value="0"/>Não</label> 
+                
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Estado Civil:</label>
+                <select class="seletores" name="civil_atualizar_cadastro_cliente">
+                <option value="solteiro">Solteiro</option>
+                <option value="viuvo">Viuvo</option>
+                <option value="casado" selected>Casado</option>
+                <option value="divorciado">Divorciado</option>
+            </select>
+        </hgroup>
+        
+            <div id="bt_vt">
+                <label id="botao1" name="label_atualizar_cadastro_cliente">Alterar</label>
+                
+                <a href="clientes.html">
+                    <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+                </a>
+                
+            </div>    
+    </div>
+
+    <script src="../static/script/atualizar_cadastro_cliente.js"></script>
+    
+</body>
+</html>

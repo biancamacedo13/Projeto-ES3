@@ -12,31 +12,36 @@
 
     <div id="metade">
         <h1 id="tipo2">Consultar Seguro</h1>
+        <span class="alerta2" id="geral_consultar_seguros"></span>
         
-        <hgroup>
-            <label  id="tipo_formulario">CPF:</label>
-            <input type="text"  id="caixa" name="cpf_seguros"/>
-        </hgroup>
+        <form>
+            <hgroup>
+                <label  id="tipo_formulario">CPF:</label>
+                <input type="text"  id="caixa" name="cpf_seguros" placeholder="apenas números"/>
+                <span class="alerta" id="span_cpf_consultar_seguros"></span>
+            </hgroup>
 
-        <hgroup>
-            <label  id="tipo_formulario">Placa:</label>
-            <input type="text" id="caixa" name="placa_seguros"/>
-        </hgroup>
+            <hgroup>
+                <label  id="tipo_formulario">Placa:</label>
+                <input type="text" id="caixa" name="placa_seguros" placeholder="ABC1234"/>
+                <span class="alerta" id="span_placa_consultar_seguros"></span>
+            </hgroup>
 
-        <hgroup>
-            <label id="tipo_formulario">Data de vencimento:</label>
-            <input type="date" id="caixa" name="dt_vencimenento_seguros"/>
-        </hgroup>
+            <hgroup>
+                <label id="tipo_formulario">Data de vencimento:</label>
+                <input type="date" id="caixa" name="dt_vencimenento_consultar_seguros"/>
+                <span class="alerta" id="span_dt_vencimenento_consultar_seguros"></span>
+            </hgroup>
+        </form>
 
         <div id="bt_vt">
-            <label id="botao1">Consultar</label>
+            <label id="botao1" name="label_consultar_seguros1" tabindex="0">Consultar</label>
             
             <a href="seguros.html">
                 <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
-            
         </div>
-
     </div>
+    <script src="../static/script/consultar_seguros1.js"></script>
 </body>
 </html>
