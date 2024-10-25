@@ -9,9 +9,6 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
     const cor = document.getElementsByName('cor_cadastrar_veiculo')[0].value.trim();
     const alertacor = document.getElementById('span_cor_cadastrar_veiculo');
 
-    const combustivel = document.getElementsByName('conb_cadastrar_veiculo')[0].value.trim();
-    const alertaconbustivel = document.getElementById('span_conb_cadastrar_veiculo');
-
     const placa = document.getElementsByName('placa_cadastrar_veiculo')[0].value.trim();
     const alertaplaca = document.getElementById('span_placa_cadastrar_veiculo');
 
@@ -24,7 +21,6 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
     alertamodelo.textContent = '';
     alertaano.textContent = '';
     alertacor.textContent = '';
-    alertaconbustivel.textContent = '';
     alertaplaca.textContent = '';
     alertachassi.textContent = '';
     alertacep.textContent = '';
@@ -43,11 +39,6 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
 
     if (cor === '') {
         alertacor.textContent = 'Campo vazio!';
-        valido = false;
-    }
-
-    if (combustivel === '') {
-        alertaconbustivel.textContent = 'Campo vazio!';
         valido = false;
     }
 

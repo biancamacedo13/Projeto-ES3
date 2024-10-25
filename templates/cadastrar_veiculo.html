@@ -12,7 +12,7 @@
 
     <div id="metade">
         <h1 id="tipo2">Cadastrar Veículo</h1>
-        <form>
+        <form name="form_cadastrar_veiculo" action="/cadastrar_veiculo.html" method="POST">
             <hgroup>
                 <label  id="tipo_formulario">Modelo:</label>
                 <input type="text"  id="caixa" name="modelo_cadastrar_veiculo"/>
@@ -33,8 +33,12 @@
 
             <hgroup>
                 <label id="tipo_formulario">Conbustível:</label>
-                <input type="text" id="caixa" name="conb_cadastrar_veiculo"/>
-                <span class="alerta" id="span_conb_cadastrar_veiculo"></span>
+                <select class="seletores" name="combustivel_cadastrar_veiculo">
+                    <option value="gasolina">Gasolina</option>
+                    <option value="alcool">Álcool</option>
+                    <option value="flex" selected>Flex</option>
+                    <option value="eletrico">Elétrico</option>
+                </select>
             </hgroup>
 
             <hgroup>
@@ -62,7 +66,7 @@
 
             <hgroup>
                 <label id="tipo_formulario">Cep local de pernoite:</label>
-                <input type="number" id="caixa" name="cep_pernoite_cadastrar_veiculo"/>
+                <input type="text" id="caixa" name="cep_pernoite_cadastrar_veiculo" placeholder="apenas números"/>
                 <span class="alerta" id="span_cep_cadastrar_veiculo"></span>
             </hgroup>
 
