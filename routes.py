@@ -1,12 +1,14 @@
 from app import app
-from flask import render_template
+from flask import render_template,request, redirect, url_for
+import sqlite3
+import models
 
 @app.route("/login.html")
 def login():
     return render_template('login.html')
 
 #telas_iniciais
-@app.route("/")
+
 @app.route("/tela_inicial.html")
 def telaInicio():
     return render_template('tela_inicial.html')
@@ -40,9 +42,33 @@ def cadastrarCliente():
 def cadastrarVeiculo():
     return render_template('/cadastrar_veiculo.html')
 
-@app.route('/cadastrar_seguradora.html')
+@app.route("/")
+@app.route('/cadastrar_seguradora.html', methods=['POST', 'GET'])
 def cadastrarSeguradora():
-    return render_template('/cadastrar_seguradora.html')
+    # Criar a tabela apenas uma vez no início da aplicação
+    models.criar_tabela_seguradora()  
+    
+    if request.method == 'POST':
+        nome = request.form.get('nome_cadastrar_seguradora')
+        cnpj = request.form.get('cnpj_cadastrar_seguradora')
+        email = request.form.get('email_cadastrar_seguradora')
+        endereco = request.form.get('endereco_cadastrar_seguradora')
+        tel = request.form.get('tel_cadastrar_seguradora')
+
+        # Estabelecer a conexão com o banco de dados aqui
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:
+            cursor.execute("INSERT INTO Seguradora (nome, cnpj, email, endereco, telefone) VALUES (?, ?, ?, ?, ?)", (nome, cnpj, email, endereco, tel))
+            banco.commit()
+            return render_template('sucesso.html', sucesso="Cadastro Feito com Sucesso!")
+        except sqlite3.IntegrityError:
+            return render_template('cadastrar_seguradora.html',erro ="O CNPJ já existe no banco de dados.")
+        finally:
+            banco.close()  # Sempre feche a conexão, independentemente do resultado
+
+    return render_template('cadastrar_seguradora.html')
 
 @app.route('/cadastrar_seguros.html')
 def cadastrarSeguros():

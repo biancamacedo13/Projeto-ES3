@@ -69,6 +69,6 @@ document.getElementsByName('label_cadastrar_seguradora')[0].onclick = function()
     }
 
     if (valido) {
-        window.alert('Enviado');
+        document.getElementById('form_cadastrar_seguradora').submit();
     }
 };

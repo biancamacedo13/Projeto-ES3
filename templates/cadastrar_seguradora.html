@@ -8,12 +8,16 @@
 
 </head>
 <body>
-    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
-   
+    <div class="logo3">
+        <img src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+    </div>
+    
+    
     <div class="metade" >
         <h1 id="tipo2">Cadastrar Seguradora</h1>
+        <span class="alerta2" id="geral_cadastrar_seguradora">{{erro}}</span>
         
-        <form name="form_cadastrar_seguradora" action="/cadastrar_seguradora.html" method="POST">
+        <form id="form_cadastrar_seguradora" action="/cadastrar_seguradora.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">Nome:</label>
                 <input type="text" name="nome_cadastrar_seguradora" id="caixa" />

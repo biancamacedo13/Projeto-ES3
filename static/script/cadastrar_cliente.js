@@ -103,6 +103,6 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
 
     
     if (valido) {
-        window.alert('Enviado');
+        document.getElementById('form_cadastrar_cliente').submit();
     }
 };

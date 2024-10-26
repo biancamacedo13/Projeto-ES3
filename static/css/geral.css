@@ -114,6 +114,13 @@ img#logo2 {
     position: relative;
     left: 12.5%;               
 }
+.logo3{
+    position: relative;
+    top: -80px;
+    left: 12.5%;
+    
+}
+
 img#usuario{
     position: absolute;
     left: 90%;
@@ -160,15 +167,15 @@ h1{
     text-align: center;
     position: relative;
 }
-h1[nome="cadastro_sucesso"]{
+h1.sucesso{
     font-family: Libre Caslon Text;
     color: rgba(255, 255, 255, 1);
     font-size: 47pt;
     font-weight: 100;
     position: absolute; 
     top: 70%; 
-    left: 50%; 
-    transform: translate(-50%, -50%);
+    left: 25%;
+    text-align: center;
 }
 
 input#caixa{
@@ -238,4 +245,12 @@ textarea{
     padding-top: 0px;
     border-top: 0px;
     font-size: 18pt;
+}
+p.confirmacao{
+    color: rgb(35, 133, 0);
+    margin-left: 10px;
+    padding-top: 10px;
+    border-top: 10px;
+    font-size: pt;
+    text-align: center;
 }
