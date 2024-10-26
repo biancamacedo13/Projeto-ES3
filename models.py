@@ -21,6 +21,68 @@ def criar_tabela_seguradora():
     conexao.commit()
     conexao.close()
 
+def criar_tabela_veiculos():
+
+    conexao = criar_conexao()
+    cursor = conexao.cursor()
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS "Veiculos" (
+            "modelo" TEXT NOT NULL,
+            "ano" INTEGER NOT NULL,
+            "cor" TEXT NOT NULL,
+            "placa" TEXT NOT NULL,
+            "chassi" TEXT NOT NULL,
+            "cpf" INTEGER NOT NULL,
+            PRIMARY KEY("placa"),
+            FOREIGN KEY ("cpf") REFERENCES clientes(cpf)
+        );
+    ''')
+    conexao.commit()
+    conexao.close()
+
+def criar_tabela_cotacoes():
+
+    conexao = criar_conexao()
+    cursor = conexao.cursor()
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS "Cotacoes" (
+            "id_cotacao" INTEGER ,
+            "placa" TEXT NOT NULL CHECK (LENGTH(placa)=7),
+            "cpf" TEXT NOT NULL,
+            "data_inicio" DATE NOT NULL,
+            "data_termino" DATE NOT NULL,
+            "vencimento" DATE NOT NULL,
+            "valor" REAL NOT NULL,            
+            PRIMARY KEY("id_cotacao"),
+            FOREIGN KEY ("cpf") REFERENCES clientes(cpf),
+            FOREIGN KEY ("placa") REFERENCES veiculos(placa)
+        );
+    ''')
+    conexao.commit()
+    conexao.close()
+
+def criar_tabela_seguros():
+
+    conexao = criar_conexao()
+    cursor = conexao.cursor()
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS "Seguros" (
+            "apolice" INTEGER NOT NULL,
+            "id_cotacao" INTEGER NOT NULL,
+            "valor_total" REAL NOT NULL,
+            "data_inicio" DATE NOT NULL,
+            "data_termino" DATE NOT NULL,
+            "vencimento" DATE NOT NULL,  
+            PRIMARY KEY("apolice"),
+            FOREIGN KEY ("id_cotacao") REFERENCES cotacoes(id_cotacao)
+        );
+    ''')
+    conexao.commit()
+    conexao.close()
+
 def criar_tabela_cliente():
 
     conexao = criar_conexao()
