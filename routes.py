@@ -34,15 +34,59 @@ def cotacoes():
     return render_template('cotações.html')
 
 #telas cadastrar
-@app.route('/cadastrar_cliente.html')
-def cadastrarCliente():
-    return render_template('/cadastrar_cliente.html')
+@app.route("/")
+@app.route('/cadastrar_cliente.html', methods=['POST', 'GET'])
+def cadastrar_cliente():
+    # Criar a tabela apenas uma vez no início da aplicação
+    models.criar_tabela_cliente()  
+
+    if request.method == 'POST':
+        nome = request.form.get('nome_cadastrar_cliente')
+        cpf = request.form.get('cpf_cadastrar_cliente')
+        email = request.form.get('email_cadastrar_cliente')
+        data_nascimento = request.form.get('dt_nasc_cadastrar_cliente')
+        endereco = request.form.get('endereco_cadastrar_cliente')
+        telefone = request.form.get('tel_cadastrar_cliente')
+        profissao = request.form.get('prof_cadastrar_cliente')
+        faixa_salarial = request.form.get('sal_cadastrar_cliente')
+        condutor_principal = request.form.get('condutor_principal_cadastrar_cliente')
+        proprietario = request.form.get('proprietario_cadastrar_cliente')
+        estado_civil = request.form.get('civil_cadastrar_cliente')
+
+        # Estabelecer a conexão com o banco de dados aqui
+        banco = models.criar_conexao()  # Ajuste essa função conforme sua implementação
+        cursor = banco.cursor()
+
+        try:
+            cursor.execute('''
+                INSERT INTO clientes (
+                    cpf, nome, email, data_nascimento, endereco,
+                    telefone, profissao, faixa_salarial,
+                    condutor_principal, proprietario, estado_civil
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (cpf, nome, email, data_nascimento, endereco,
+                  telefone, profissao, faixa_salarial,
+                  condutor_principal, proprietario, estado_civil))
+            banco.commit()
+            return render_template('sucesso.html', sucesso="Cliente cadastrado com sucesso!")  # Redireciona para uma página de sucesso
+        except sqlite3.IntegrityError:
+            return render_template('cadastrar_cliente.html', erro="O CPF já existe no banco de dados.")
+        except Exception as e:
+            return render_template('cadastrar_cliente.html', erro=str(e))  # Exibir erro se ocorrer
+        finally:
+            banco.close()  # Sempre feche a conexão, independentemente do resultado
+
+    return render_template('cadastrar_cliente.html', erro=None)
+
+@app.route('/sucesso')
+def sucesso():
+    return "<h1>Cliente cadastrado com sucesso!</h1>"
 
 @app.route('/cadastrar_veiculo.html')
 def cadastrarVeiculo():
     return render_template('/cadastrar_veiculo.html')
 
-@app.route("/")
+
 @app.route('/cadastrar_seguradora.html', methods=['POST', 'GET'])
 def cadastrarSeguradora():
     # Criar a tabela apenas uma vez no início da aplicação

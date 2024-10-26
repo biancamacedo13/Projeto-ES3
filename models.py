@@ -4,7 +4,7 @@ def criar_conexao():
     return sqlite3.connect('projetoES3.db')
 
 def criar_tabela_seguradora():
-    
+
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
@@ -21,22 +21,23 @@ def criar_tabela_seguradora():
     conexao.commit()
     conexao.close()
 
+def criar_tabela_cliente():
 
-   #  CREATE TABLE "Cliente" (
-#    "cpf" TEXT NOT NULL,
-#    "nome" TEXT NOT NULL,
-#    "email" TEXT,
- #   "dt_nascimento" TEXT,
-  #  "estado_civil" TEXT,
-  #  "endereco" TEXT,
-   # "telefone" INTEGER,
-   # "profissao" TEXT,
-    #"faixa_salarial" NUMERIC,
-    #"condutor_principal" INTEGER NOT NULL,
-    #"proprietario" INTEGER NOT NULL,
-    #PRIMARY KEY("cpf"),
-    #CHECK(LENGTH(cpf) = 11),
-    #CHECK(condutor_principal IN (0, 1)),
-    #CHECK(proprietario IN (0, 1))
-#)
-#"""
+    conexao = criar_conexao()
+    cursor = conexao.cursor()
+
+    cursor.execute('''
+        CREATE TABLE clientes (
+            cpf INTEGER PRIMARY KEY CHECK (LENGTH(cpf) = 11) NOT NULL,
+            nome TEXT NOT NULL UNIQUE,
+            email TEXT NOT NULL,
+            data_nascimento TEXT NOT NULL,
+            endereco TEXT NOT NULL,
+            telefone TEXT NOT NULL,
+            profissao TEXT NOT NULL,
+            faixa_salarial NUMERIC NOT NULL,
+            condutor_principal INTEGER CHECK (condutor_principal IN (0, 1)) NOT NULL,
+            proprietario INTEGER CHECK (proprietario IN (0, 1)) NOT NULL,
+            estado_civil TEXT CHECK (estado_civil IN ('solteiro', 'viuvo', 'casado', 'divorciado')) NOT NULL
+    );
+    ''')
