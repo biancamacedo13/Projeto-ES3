@@ -56,6 +56,7 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
         alertacpf.textContent = '11 dígitos!';
         valido = false;
     }
+    
 
     if (email === '') {
         alertaemail.textContent = 'campo vazio!';
