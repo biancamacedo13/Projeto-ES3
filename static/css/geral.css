@@ -12,7 +12,8 @@ body {
     margin: 0; 
 }
 
-#container_tela_inicial,#cont_seguradora,#cont_seguros {
+
+.conteiner_tipo1 {
     display: flex;
     justify-content: space-around; 
     align-items: center; 
@@ -22,7 +23,7 @@ body {
     padding: 20px 0; 
 }
 
-#cont_cli{
+.cont_cli{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -34,7 +35,7 @@ body {
     padding: 20px 0; 
 }
 
-#cont_veiculo{
+.cont_veiculo{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -46,7 +47,7 @@ body {
     padding: 20px 0; 
 }
 
-div#conteiner_login{
+.conteiner_login{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,7 +62,7 @@ div#conteiner_login{
     left: -200px;
 }
 
-div#metade{
+div.metade{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,6 +75,8 @@ div#metade{
     padding: 10px 10px 10px 10px;
     border-radius: 8% 0 0 8%;
 }
+
+
 div#select{
     display: grid;
     grid-template-columns: auto auto;
