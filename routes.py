@@ -424,24 +424,181 @@ def consultarCotacoes2():
     return render_template('/consultar_cotações2.html')
 
 #visualizar
-@app.route('/visualizar_cliente.html')
+@app.route('/visualizar_cliente.html', methods=['POST', 'GET'])
 def visualizarCliente():
+    if request.method == 'POST':       
+        cpf = request.form.get('cpf')
+
+       
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+        
+        try:
+            query = "SELECT * FROM clientes WHERE cpf = ?"
+            cursor.execute(query, (cpf,))
+            cliente = cursor.fetchone()  
+            
+            if cliente:
+                cliente_data = {
+                    'cpf': cliente[0],
+                    'nome': cliente[1],
+                    'email': cliente[2],
+                    'data_nascimento': cliente[3],
+                    'endereco': cliente[4],
+                    'telefone': cliente[5],
+                    'profissao': cliente[6],
+                    'faixa_salarial': cliente[7],
+                    'condutor_principal': 'Sim' if cliente[8] == 1 else 'Não',
+                    'proprietario': 'Sim' if cliente[9] == 1 else 'Não',
+                    'estado_civil': cliente[10]
+                }
+                return render_template('visualizar_cliente.html', cliente=cliente_data)
+            else:
+                return render_template('visualizar_cliente.html', erro="Cliente não encontrado.")
+
+        except sqlite3.Error as e:
+            return render_template('visualizar_cliente.html', erro="Erro ao consultar o banco de dados.")
+
+        finally:
+            banco.close()    
+    
     return render_template('/visualizar_cliente.html')
 
-@app.route('/visualizar_veículo.html')
+@app.route('/visualizar_veículo.html', methods=['POST', 'GET'])
 def visualizarVeiculo():
+     if request.method == 'POST':        
+        veiculo = request.form.get('placa')
+
+        #conexao
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+        
+        try:
+            query = "SELECT * FROM Veiculos WHERE placa = ?"
+            cursor.execute(query, (placa,))
+            veiculo = cursor.fetchone()  
+            
+            if veiculo:
+                veiculo_data = {
+                    'modelo': veiculo[0],
+                    'ano': veiculo[1],
+                    'cor': veiculo[2],
+                    'placa': veiculo[3],
+                    'chassi': veiculo[4],
+                    'cpf': veiculo[5]
+                }
+                return render_template('visualizar_veiculo.html', veiculo=veiculo_data)
+            else:
+                return render_template('visualizar_veiculo.html', erro="Veiculo não encontrado.")
+
+        except sqlite3.Error as e:
+            return render_template('visualizar_veiculo.html', erro="Erro ao consultar o banco de dados.")
+
+        finally:
+            banco.close()
     return render_template('/visualizar_veículo.html')
 
-@app.route('/visualizar_seguradora.html')
+@app.route('/visualizar_seguradora.html', methods=['POST', 'GET'])
 def visualizarSeguradora():
+    if request.method == 'POST':        
+        seguradora = request.form.get('cnpj')
+
+        #conexao
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+        
+        try:
+            query = "SELECT * FROM Seguradora WHERE cnpj = ?"
+            cursor.execute(query, (cnpj,))
+            seguradora = cursor.fetchone()  
+            
+            if seguradora:
+                seguradora_data = {
+                    'nome': seguradora[0],
+                    'cnpj': seguradora[1],
+                    'email': seguradora[2],
+                    'endereco': seguradora[3],
+                    'telefone': seguradora[4]
+                }
+                return render_template('visualizar_seguradora.html', seguradora=seguradora_data)
+            else:
+                return render_template('visualizar_seguradora.html', erro="Seguradora não encontrado.")
+
+        except sqlite3.Error as e:
+            return render_template('visualizar_seguradora.html', erro="Erro ao consultar o banco de dados.")
+
+        finally:
+            banco.close()
     return render_template('/visualizar_seguradora.html')
 
-@app.route('/visualizar_seguros.html')
+@app.route('/visualizar_seguros.html', methods=['POST', 'GET'])
 def visualizarSeguros():
+    if request.method == 'POST':        
+        apolice = request.form.get('apolice')
+
+        #conexao
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+        
+        try:
+            query = "SELECT * FROM Seguros WHERE apolice = ?"
+            cursor.execute(query, (apolice,))
+            seguros = cursor.fetchone()  
+            
+            if seguros:
+                seguros_data = {
+                    'apolice': seguros[0],
+                    'id_cotacao': seguros[1],
+                    'valor_total': seguros[2],
+                    'data_inicio': seguros[3],
+                    'data_termino': seguros[4],
+                    'vencimento': seguros[5]
+                }
+                return render_template('visualizar_seguros.html', seguros=seguros_data)
+            else:
+                return render_template('visualizar_seguros.html', erro="Seguro não encontrado.")
+
+        except sqlite3.Error as e:
+            return render_template('visualizar_seguros.html', erro="Erro ao consultar o banco de dados.")
+
+        finally:
+            banco.close()
     return render_template('/visualizar_seguros.html')
 
-@app.route('/visualizar_cotações.html')
-def visualizarCotacoes():
+@app.route('/visualizar_cotacao.html', methods=['POST', 'GET'])
+def visualizarCotacao():
+    if request.method == 'POST':        
+        id_cotacao = request.form.get('id_cotacao')
+
+        #conexao
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+        
+        try:
+            query = "SELECT * FROM Cotacoes WHERE id_cotacao = ?"
+            cursor.execute(query, (id_cotacao,))
+            cotacao = cursor.fetchone()  
+            
+            if cotacao:
+                cotacao_data = {
+                    'id_cotacao': cotacao[0],
+                    'placa': cotacao[1],
+                    'cpf': cotacao[2],
+                    'data_inicio': cotacao[3],
+                    'data_termino': cotacao[4],
+                    'vencimento': cotacao[5],
+                    'valor': cotacao[6]
+                }
+                return render_template('visualizar_cotacao.html', cotacao=cotacao_data)
+            else:
+                return render_template('visualizar_cotacao.html', erro="Cotação não encontrada.")
+
+        except sqlite3.Error as e:
+            return render_template('visualizar_cotacao.html', erro="Erro ao consultar o banco de dados.")
+
+        finally:
+            banco.close()   
+
     return render_template('/visualizar_cotações.html')
 
 #Sucesso
