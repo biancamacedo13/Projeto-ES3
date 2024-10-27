@@ -1,5 +1,20 @@
 import sqlite3
 
+def validar_cpf(cpf):
+    # Conectar ao banco de dados
+    conn = sqlite3.connect('projetoES3.db')  # Altere para o caminho do seu banco de dados
+    cursor = conn.cursor()
+
+    # Verificar se o CPF existe na tabela de clientes
+    cursor.execute("SELECT COUNT(*) FROM clientes WHERE cpf = ?", (cpf,))
+    count = cursor.fetchone()[0]
+
+    # Fechar a conexão
+    conn.close()
+
+    # Retornar True se o CPF existir, caso contrário False
+    return count > 0
+
 def criar_conexao():
     return sqlite3.connect('projetoES3.db')
 
@@ -22,22 +37,29 @@ def criar_tabela_seguradora():
     conexao.close()
 
 def criar_tabela_veiculos():
-
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS "Veiculos" (
-            "modelo" TEXT NOT NULL,
-            "ano" INTEGER NOT NULL,
-            "cor" TEXT NOT NULL,
-            "placa" TEXT NOT NULL,
-            "chassi" TEXT NOT NULL,
-            "cpf" INTEGER NOT NULL,
-            PRIMARY KEY("placa"),
-            FOREIGN KEY ("cpf") REFERENCES clientes(cpf)
-        );
-    ''')
+    CREATE TABLE IF NOT EXISTS "Veiculos" (
+        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "cpf" INTEGER NOT NULL,  -- Adicionei esta linha
+        "modelo" TEXT NOT NULL,
+        "ano" TEXT NOT NULL,
+        "cor" TEXT NOT NULL,
+        "combustivel" TEXT CHECK(combustivel IN ('gasolina', 'alcool', 'flex', 'eletrico')),
+        "placa" TEXT NOT NULL UNIQUE,  -- Para evitar duplicatas
+        "chassi" TEXT NOT NULL,
+        "pernoite" TEXT CHECK(pernoite IN ('casa', 'rua', 'apt')),
+        "cep_pernoite" INTEGER,
+        "garagem" INTEGER CHECK(garagem IN (0, 1)),
+        "rastreador" INTEGER CHECK(rastreador IN (0, 1)),
+        "remunerada" INTEGER CHECK(remunerada IN (0, 1)),
+        "ir_trabalho_estudo" INTEGER CHECK(ir_trabalho_estudo IN (0, 1)),
+        "estacionamento" INTEGER CHECK(estacionamento IN (0, 1)),
+        FOREIGN KEY ("cpf") REFERENCES clientes(cpf)
+    );
+''')
     conexao.commit()
     conexao.close()
 
