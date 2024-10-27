@@ -88,7 +88,7 @@ def cadastrar_cliente():
     return render_template('cadastrar_cliente.html')
 
 #CADASTRAR VEICULO
-@app.route("/")
+
 @app.route("/cadastrar_veiculo.html", methods=['POST', 'GET'])
 def cadastrar_veiculo():
     
@@ -174,13 +174,53 @@ def cadastrarSeguradora():
 
     return render_template('cadastrar_seguradora.html')
 
-@app.route('/cadastrar_seguros.html')
+
+@app.route('/cadastrar_seguros.html', methods=['POST', 'GET'])
 def cadastrarSeguros():
+
     return render_template('/cadastrar_seguros.html')
 
-@app.route('/cadastrar_cotação.html')
-def cadastrarCotacao():
-    return render_template('/cadastrar_cotação.html')
+@app.route("/")
+@app.route('/cadastrar_cotação.html', methods=['POST', 'GET'])
+def cadastrarCotacao():    
+    
+    models.criar_tabela_cotacoes()  
+
+    if request.method == 'POST':        
+        
+        cpf = int(request.form.get('cpf_cadastrar_cotacao'))
+        placa = request.form.get('placa_cadastrar_cotacao')
+        seguradora = request.form.get('seguradora_cadastrar_cotacao')
+        data_cotacao = request.form.get('dt_cot_cadastrar_cotacao')
+        valor = float(request.form.get('valor_cadastrar_cotacao'))
+
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:
+            cursor.execute('''
+                INSERT INTO Cotacoes (
+                    cpf, placa, seguradora, data_inicio, valor  -- Corrigido: nome da coluna deve ser 'data_inicio'
+                ) VALUES (?, ?, ?, ?, ?)
+            ''', (cpf, placa, seguradora, data_cotacao, valor))
+
+            banco.commit()
+            return render_template('sucesso.html', sucesso="Cotação cadastrada com sucesso!")
+
+        except sqlite3.IntegrityError as e:
+            # Verifica qual campo causou o erro
+            if 'FOREIGN KEY constraint failed' in str(e):
+                if 'clientes' in str(e):
+                    return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.")
+                elif 'veiculos' in str(e):
+                    return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.")
+            else:
+                return render_template('cadastrar_cotação.html', erro="Erro de integridade desconhecido.")
+
+        finally:
+            banco.close()
+
+    return render_template('cadastrar_cotação.html')
 
 #consultar1
 @app.route('/consultar_cliente1.html')

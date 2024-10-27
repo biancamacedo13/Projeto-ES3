@@ -18,7 +18,7 @@ document.getElementsByName("label_atualizar_cadastro_seguros")[0].onclick = func
     const alertaApolice = document.getElementById("span_apolice_atualizar_cadastro_seguros");
 
     const cpfRegex = /^\d{11}$/;
-    const placaRegex = /^[A-Z]{3}\d{4}$/;
+    
 
     // Limpa alertas anteriores
     alertaCPF.textContent = "";
@@ -30,7 +30,7 @@ document.getElementsByName("label_atualizar_cadastro_seguros")[0].onclick = func
 
     let valido = true;
 
-    if (!cpf) {
+    if (cpf === '') {
         alertaCPF.textContent = "Campo vazio!";
         valido = false;
     } else if (!cpfRegex.test(cpf)) {
@@ -38,35 +38,34 @@ document.getElementsByName("label_atualizar_cadastro_seguros")[0].onclick = func
         valido = false;
     }
 
-    if (!placa) {
+    if (placa === '') {
         alertaPlaca.textContent = "Campo vazio!";
-        valido = false;
-    } else if (!placaRegex.test(placa)) {
-        alertaPlaca.textContent = "Placa inválida! Formato esperado: ABC1234.";
         valido = false;
     }
 
-    if (!seguradora) {
+    if (seguradora === '') {
         alertaSeguradora.textContent = "Campo vazio!";
         valido = false;
     }
 
-    if (!dtContratacao) {
+    if (dtContratacao === '') {
         alertaDtContratacao.textContent = "Campo vazio!";
         valido = false;
     }
 
-    if (!dtVencimento) {
+    if (dtVencimento ==='') {
         alertaDtVencimento.textContent = "Campo vazio!";
         valido = false;
     }
 
-    if (!apolice) {
+    if (apolice === '') {
         alertaApolice.textContent = "Campo vazio!";
         valido = false;
     }
 
     if (valido) {
-        alert("Cadastro de seguro atualizado com sucesso!");
+        window.alert()
+        document.getElementById('form_cadastrar_seguros').submit();
+        
     }
 };

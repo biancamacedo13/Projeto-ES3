@@ -1,18 +1,18 @@
 import sqlite3
 
 def validar_cpf(cpf):
-    # Conectar ao banco de dados
-    conn = sqlite3.connect('projetoES3.db')  # Altere para o caminho do seu banco de dados
+    
+    conn = sqlite3.connect('projetoES3.db')  
     cursor = conn.cursor()
 
-    # Verificar se o CPF existe na tabela de clientes
+    
     cursor.execute("SELECT COUNT(*) FROM clientes WHERE cpf = ?", (cpf,))
     count = cursor.fetchone()[0]
 
-    # Fechar a conexão
+    
     conn.close()
 
-    # Retornar True se o CPF existir, caso contrário False
+    
     return count > 0
 
 def criar_conexao():
@@ -42,8 +42,8 @@ def criar_tabela_veiculos():
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS "Veiculos" (
-        "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-        "cpf" INTEGER NOT NULL,  -- Adicionei esta linha
+        "id_veiculos" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "cpf" INTEGER NOT NULL,
         "modelo" TEXT NOT NULL,
         "ano" TEXT NOT NULL,
         "cor" TEXT NOT NULL,
@@ -63,23 +63,21 @@ def criar_tabela_veiculos():
     conexao.commit()
     conexao.close()
 
-def criar_tabela_cotacoes():
 
+def criar_tabela_cotacoes():
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS "Cotacoes" (
-            "id_cotacao" INTEGER ,
-            "placa" TEXT NOT NULL CHECK (LENGTH(placa)=7),
-            "cpf" TEXT NOT NULL,
-            "data_inicio" DATE NOT NULL,
-            "data_termino" DATE NOT NULL,
-            "vencimento" DATE NOT NULL,
-            "valor" REAL NOT NULL,            
-            PRIMARY KEY("id_cotacao"),
+            "id_cotacao" INTEGER PRIMARY KEY AUTOINCREMENT,
+            "placa" TEXT NOT NULL,
+            "cpf" INTEGER NOT NULL,
+            "data_inicio" TEXT NOT NULL,
+            "valor" REAL NOT NULL,
+            "id_veiculo" INTEGER,
             FOREIGN KEY ("cpf") REFERENCES clientes(cpf),
-            FOREIGN KEY ("placa") REFERENCES veiculos(placa)
+            FOREIGN KEY ("id_veiculo") REFERENCES veiculos(id_veiculo)
         );
     ''')
     conexao.commit()
@@ -95,9 +93,9 @@ def criar_tabela_seguros():
             "apolice" INTEGER NOT NULL,
             "id_cotacao" INTEGER NOT NULL,
             "valor_total" REAL NOT NULL,
-            "data_inicio" DATE NOT NULL,
-            "data_termino" DATE NOT NULL,
-            "vencimento" DATE NOT NULL,  
+            "data_inicio" TEXT NOT NULL,
+            "data_termino" TEXT NOT NULL,
+            "vencimento" TEXT NOT NULL,  
             PRIMARY KEY("apolice"),
             FOREIGN KEY ("id_cotacao") REFERENCES cotacoes(id_cotacao)
         );

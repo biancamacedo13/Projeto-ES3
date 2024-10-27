@@ -62,6 +62,6 @@ document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
 
     // Se todas as validações passarem
     if (valido) {
-        window.alert('Enviado');
+        document.getElementById('form_cadastrar_cotacao').submit();
     }
 };

@@ -25,6 +25,8 @@ document.getElementsByName('label_cadastrar_seguros')[0].onclick = function vali
     alertavencimento.textContent = '';
     alertaapolice.textContent = '';
 
+    let valido = true;
+
     //Validações
     if (cpf === '') {
         alertacpf.textContent = 'Campo vazio!';
@@ -61,5 +63,9 @@ document.getElementsByName('label_cadastrar_seguros')[0].onclick = function vali
     else if (isNaN(apolice)) {
         alertaapolice.textContent = 'apenas números!';
         valido = false;
+    }
+
+    if (valido) {
+        document.getElementById('form_cadastrar_cotacao').submit();
     }
 }
