@@ -257,15 +257,16 @@ def cadastrarCotacao():
 def consultarCliente1():
     if request.method == 'POST':
         #get filtros
-        cpf = request.form.get('cpf')
         nome = request.form.get('nome')
+        cpf = request.form.get('cpf')
+        email = request.form.get('email')
 
         
         banco = models.criar_conexao()
         cursor = banco.cursor()
         
         try:
-            query = "SELECT * FROM clientes WHERE cpf = ? OR nome = ?"
+            query = "SELECT * FROM clientes WHERE cpf = ? OR nome = ? OR email = ?"
             cursor.execute(query, (cpf, nome))
             cliente = cursor.fetchone()  # busca primeira linha
            
@@ -295,48 +296,55 @@ def consultarCliente1():
     
     return render_template('/consultar_cliente1.html')
 
-@app.route('/consultar_veículo.html')
+@app.route('/consultar_veículo.html', methods=['POST', 'GET'])
 def consultarVeiculo1():
-    if request.method == 'POST':
-        # get filtros
-        placa = request.form.get('placa')
-     
-        # conexao
+    if request.method == 'POST':        
+        cpf = request.form.get('cpf_consultar_veiculo')
+        placa = request.form.get('placa_consultar_veiculo')
+        chassi = request.form.get('chassi_consultar_veiculo')
+       
         banco = models.criar_conexao()
         cursor = banco.cursor()
         
         try:
-            query = "SELECT * FROM Veiculos WHERE placa = ?"
-            cursor.execute(query, (placa))
-            veiculo = cursor.fetchone()  # busca primeira linha
-
+            query = "SELECT * FROM Veiculos WHERE cpf = ? OR placa = ? OR chassi = ?"
+            cursor.execute(query, (placa,))
+            veiculo = cursor.fetchone()  
             
-            if Veiculos:
+            if veiculo:
                 veiculo_data = {
-                    'modelo': veiculo[0],
-                    'ano': veiculo[1],
-                    'cor': veiculo[2],
-                    'placa': veiculo[3],
-                    'chasi': veiculo[4],
-                    'cpf': veiculo[5]
+                    'cpf': veiculo[0],
+                    'modelo': veiculo[1],
+                    'ano': veiculo[2],
+                    'cor': veiculo[3],
+                    'chassi': veiculo[4],
+                    'combustivel': veiculo[5],
+                    'placa': veiculo[6],
+                    'pernoite': 'Sim' if veiculo[7] == 1 else 'Não',,
+                    'cep_pernoite': veiculo[8],
+                    'garagem': 'Sim' if veiculo[9] == 1 else 'Não',,
+                    'rastreador': 'Sim' if veiculo[10] == 1 else 'Não',
+                    'remunerada': 'Sim' if veiculo[11] == 1 else 'Não',,
+                    'ir_trabalho_estudo': 'Sim' if veiculo[12] == 1 else 'Não',
+                    'estacionamento': 'Sim' if veiculo[13] == 1 else 'Não'
                 }
-                return render_template('consultar_veiculo.html', veiculo=veiculo_data)
+                return render_template('consultar_veiculo1.html', veiculo=veiculo_data)
             else:
-                return render_template('consultar_veiculo.html', erro="Veiculo não encontrado.")
+                return render_template('consultar_veiculo1.html', erro="Veículo não encontrado.")
 
-        except sqlite3.Error as e:
-            return render_template('consultar_veiculo.html', erro="Erro ao consultar o banco de dados.")
+        except Exception as e:
+            return render_template('consultar_veiculo1.html', erro="Erro ao consultar o banco de dados: " + str(e))
 
         finally:
-            banco.close()
+            banco.close()            
     return render_template('/consultar_veículo.html')
 
 @app.route('/consultar_seguradora.html', methods=['POST', 'GET'])
 def consultarSeguradora1():
     if request.method == 'POST':
         # get filtros
-        cnpj = request.form.get('cnpj')
         nome = request.form.get('nome')
+        cnpj = request.form.get('cnpj')
 
         # conexao
         banco = models.criar_conexao()
@@ -353,9 +361,9 @@ def consultarSeguradora1():
                 seguradora_data = {
                     'nome': seguradora[0],
                     'cnpj': seguradora[1],
-                    'email': seguradora[2],
-                    'endereco': seguradora[3],
-                    'telefone': seguradora[4]
+                    'endereco': seguradora[2],
+                    'telefone': seguradora[3],
+                    'email': seguradora[4]
                 }
                 return render_template('consultar_seguradora.html', seguradora=seguradora_data)
             else:
@@ -373,8 +381,9 @@ def consultarSeguradora1():
 def consultarSeguros1():
     if request.method == 'POST':
         # get filtros
-        apolice = request.form.get('apolice')
-        id_cotacao = request.form.get('id_cotacao')
+        cnpj = request.form.get('cnpj')
+        placa = request.form.get('placa')
+        data_vencimento = request.form.get('data_vencimento')
 
         # conexao
         banco = models.criar_conexao()
@@ -382,7 +391,7 @@ def consultarSeguros1():
 
        
         try:
-            query = "SELECT * FROM Seguros WHERE apolice = ? OR id_cotacao = ?"
+            query = "SELECT * FROM Seguros WHERE cnpj = ? OR placa = ? OR data_vencimento = ?"
             cursor.execute(query, (apolice, id_cotacao))
             seguro = cursor.fetchone()  # busca primeiro resultado
 
@@ -391,10 +400,11 @@ def consultarSeguros1():
                 seguro_data = {
                     'apolice': seguro[0],
                     'id_cotacao': seguro[1],
-                    'valor_total': seguro[2],
-                    'data_inicio': seguro[3],
-                    'data_termino': seguro[4],
-                    'vencimento': seguro[5]
+                    'cpf': seguro[3],
+                    'nome': seguro[4],                    
+                    'data_inicio': seguro[5],
+                    'data_vencimento': seguro[6],
+                    'forma_pagamento': seguro[7]
                 }
                 return render_template('consultar_seguros.html', seguro=seguro_data)
             else:
@@ -448,12 +458,91 @@ def consultarCotacoes1():
     return render_template('/consultar_cotação1.html')
 
 #consultar2
-@app.route('/consultar_cliente2.html')
+@app.route('/consultar_cliente2.html', methods=['POST', 'GET'])
 def consultarCliente2():
+    if request.method == 'POST':        
+        cliente1 = request.form.get('cliente_1')
+        cliente2 = request.form.get('cliente_2')
+        cliente3 = request.form.get('cliente_3')
+        
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:            
+            clientes_encontrados = []
+            
+            if cliente1:
+                cursor.execute("SELECT * FROM clientes WHERE cpf = ? OR nome = ? OR email = ?", (cliente1, cliente1))
+                cliente_data = cursor.fetchone()
+                if cliente_data:
+                    cliente_encontrados.append(cliente_data)
+
+            if cliente2:
+                cursor.execute("SELECT * FROM clientes WHERE cpf = ? OR nome = ? OR email = ?", (cliente2, cliente2))
+                cliente_data = cursor.fetchone()
+                if cliente_data:
+                    clientes_encontrados.append(cliente_data)
+
+            if veiculo3:
+                cursor.execute("SELECT * FROM clientes WHERE cpf = ? OR nome = ? OR email = ?", (cliente3, cliente3))
+                cliente_data = cursor.fetchone()
+                if cliente_data:
+                    clientes_encontrados.append(cliente_data)
+           
+            if cliente_encontrados:
+                return render_template('consultar_cliente2.html', clientes=clientes_encontrados)
+            else:
+                return render_template('consultar_cliente2.html', erro="Nenhum cliente encontrado.")
+
+        except Exception as e:
+            return render_template('consultar_cliente2.html', erro="Erro ao consultar o banco de dados: " + str(e))
+
+        finally:
+            banco.close()    
     return render_template('/consultar_cliente2.html')
 
-@app.route('/consultar_veículo2.html')
+@app.route('/consultar_veículo2.html', methods=['POST', 'GET'])
 def consultarVeiculo2():
+    if request.method == 'POST':        
+        veiculo1 = request.form.get('veiculo_1')
+        veiculo2 = request.form.get('veiculo_2')
+        veiculo3 = request.form.get('veiculo_3')
+        
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:            
+            veiculos_encontrados = []
+            
+            if veiculo1:
+                cursor.execute("SELECT * FROM Veiculos WHERE cpf = ? OR placa = ? OR chassi = ?", (veiculo1, veiculo1))
+                veiculo_data = cursor.fetchone()
+                if veiculo_data:
+                    veiculos_encontrados.append(veiculo_data)
+
+            if veiculo2:
+                cursor.execute("SELECT * FROM Veiculos WHERE cpf = ? OR placa = ? OR chassi = ?", (veiculo2, veiculo2))
+                veiculo_data = cursor.fetchone()
+                if veiculo_data:
+                    veiculos_encontrados.append(veiculo_data)
+
+            if veiculo3:
+                cursor.execute("SELECT * FROM Veiculos WHERE cpf = ? OR placa = ? OR chassi = ?", (veiculo3, veiculo3))
+                veiculo_data = cursor.fetchone()
+                if veiculo_data:
+                    veiculos_encontrados.append(veiculo_data)
+           
+            if veiculos_encontrados:
+                return render_template('consultar_veiculo2.html', veiculos=veiculos_encontrados)
+            else:
+                return render_template('consultar_veiculo_2.html', erro="Nenhum veículo encontrado.")
+
+        except Exception as e:
+            return render_template('consultar_veiculo_2.html', erro="Erro ao consultar o banco de dados: " + str(e))
+
+        finally:
+            banco.close()    
+    
     return render_template('/consultar_veículo2.html')
 
 @app.route('/consultar_seguradora2.html')
@@ -509,14 +598,14 @@ def visualizarCliente():
     
     return render_template('/visualizar_cliente.html')
 
-@app.route('/visualizar_veículo.html', methods=['POST', 'GET'])
+@app.route('/visualizar_veiculo.html', methods=['POST', 'GET'])
 def visualizarVeiculo():
-     if request.method == 'POST':        
-        veiculo = request.form.get('placa')
-
-        #conexao
+    if request.method == 'POST':       
+        placa = request.form.get('placa_veiculo')
+        
         banco = models.criar_conexao()
         cursor = banco.cursor()
+
         
         try:
             query = "SELECT * FROM Veiculos WHERE placa = ?"
@@ -525,22 +614,30 @@ def visualizarVeiculo():
             
             if veiculo:
                 veiculo_data = {
-                    'modelo': veiculo[0],
-                    'ano': veiculo[1],
-                    'cor': veiculo[2],
-                    'placa': veiculo[3],
+                    'cpf': veiculo[0],
+                    'modelo': veiculo[1],
+                    'ano': veiculo[2],
+                    'cor': veiculo[3],
                     'chassi': veiculo[4],
-                    'cpf': veiculo[5]
+                    'combustivel': veiculo[5],
+                    'placa': veiculo[6],
+                    'pernoite': 'Sim' if veiculo[7] == 1 else 'Não',,
+                    'cep_pernoite': veiculo[8],
+                    'garagem': 'Sim' if veiculo[9] == 1 else 'Não',,
+                    'rastreador': 'Sim' if veiculo[10] == 1 else 'Não',
+                    'remunerada': 'Sim' if veiculo[11] == 1 else 'Não',,
+                    'ir_trabalho_estudo': 'Sim' if veiculo[12] == 1 else 'Não',
+                    'estacionamento': 'Sim' if veiculo[13] == 1 else 'Não'
                 }
                 return render_template('visualizar_veiculo.html', veiculo=veiculo_data)
             else:
-                return render_template('visualizar_veiculo.html', erro="Veiculo não encontrado.")
+                return render_template('visualizar_veiculo.html', erro="Veículo não encontrado.")
 
-        except sqlite3.Error as e:
-            return render_template('visualizar_veiculo.html', erro="Erro ao consultar o banco de dados.")
+        except Exception as e:
+            return render_template('visualizar_veiculo.html', erro="Erro ao consultar o banco de dados: " + str(e))
 
         finally:
-            banco.close()
+            banco.close()            
     return render_template('/visualizar_veículo.html')
 
 @app.route('/visualizar_seguradora.html', methods=['POST', 'GET'])
@@ -561,9 +658,9 @@ def visualizarSeguradora():
                 seguradora_data = {
                     'nome': seguradora[0],
                     'cnpj': seguradora[1],
-                    'email': seguradora[2],
-                    'endereco': seguradora[3],
-                    'telefone': seguradora[4]
+                    'endereco': seguradora[2],
+                    'telefone': seguradora[3],
+                    'email': seguradora[4]
                 }
                 return render_template('visualizar_seguradora.html', seguradora=seguradora_data)
             else:
@@ -592,12 +689,13 @@ def visualizarSeguros():
             
             if seguros:
                 seguros_data = {
-                    'apolice': seguros[0],
-                    'id_cotacao': seguros[1],
-                    'valor_total': seguros[2],
-                    'data_inicio': seguros[3],
-                    'data_termino': seguros[4],
-                    'vencimento': seguros[5]
+                    'apolice': seguro[0],
+                    'id_cotacao': seguro[1],
+                    'cpf': seguro[3],
+                    'nome': seguro[4],                    
+                    'data_inicio': seguro[5],
+                    'data_vencimento': seguro[6],
+                    'forma_pagamento': seguro[7]
                 }
                 return render_template('visualizar_seguros.html', seguros=seguros_data)
             else:
