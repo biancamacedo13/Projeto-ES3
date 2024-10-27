@@ -49,9 +49,9 @@ def cadastrar_cliente():
         endereco = request.form.get('endereco_cadastrar_cliente')
         telefone = request.form.get('tel_cadastrar_cliente')
         profissao = request.form.get('prof_cadastrar_cliente')
-        faixa_salarial = request.form.get('sal_cadastrar_cliente')
-        condutor_principal = request.form['condutor_principal_cadastrar_cliente']
-        proprietario = request.form.get('proprietario_cadastrar_cliente')
+        faixa_salarial = float(request.form.get('sal_cadastrar_cliente'))
+        condutor_principal = int(request.form.get('condutor_principal_cadastrar_cliente'))
+        proprietario = int(request.form.get('proprietario_cadastrar_cliente'))
         estado_civil = request.form.get('civil_cadastrar_cliente')
 
         print("Nome:", nome)
@@ -65,44 +65,6 @@ def cadastrar_cliente():
         print("Condutor Principal", condutor_principal)
         print("Proprietario", proprietario)
         print("Estado Civil:", estado_civil)
-        
-        if condutor_principal is None:
-            condutor_principal = 1  
-        else:
-            condutor_principal = int(condutor_principal)
-
-        if proprietario is None:
-            proprietario = 1
-        else:
-            proprietario = int(proprietario)
-
-        
-        campos_vazios = []
-
-        # Verificando quais campos estão vazios
-        if not nome:
-            campos_vazios.append('Nome')
-        if not cpf:
-            campos_vazios.append('CPF')
-        if not email:
-            campos_vazios.append('E-mail')
-        if not data_nascimento:
-            campos_vazios.append('Data de Nascimento')
-        if not endereco:
-            campos_vazios.append('Endereço')
-        if not telefone:
-            campos_vazios.append('Telefone')
-        if not profissao:
-            campos_vazios.append('Profissão')
-        if not faixa_salarial:
-            campos_vazios.append('Faixa Salarial')
-        if not estado_civil:
-            campos_vazios.append('Estado Civil')
-
-        # Se houver campos vazios, cria a mensagem de erro
-        if campos_vazios:
-            campos_faltando = ', '.join(campos_vazios)
-            return render_template('cadastrar_cliente.html', erro=f"Por favor, preencha os seguintes campos: {campos_faltando}.")
 
         banco = models.criar_conexao()
         cursor = banco.cursor()
