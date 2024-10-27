@@ -352,7 +352,7 @@ def consultarSeguradora1():
 
        
         try:
-            query = "SELECT * FROM Seguradora WHERE cnpj = ? OR nome = ?"
+            query = "SELECT * FROM Seguradora WHERE nome = ? OR cnpj = ?"
             cursor.execute(query, (cnpj, nome))
             seguradora = cursor.fetchone()  # busca primeira linha
 
@@ -545,16 +545,135 @@ def consultarVeiculo2():
     
     return render_template('/consultar_veículo2.html')
 
-@app.route('/consultar_seguradora2.html')
+@app.route('/consultar_seguradora2.html', methods=['POST', 'GET'])
 def consultarSeguradora2():
+        if request.method == 'POST':        
+        seguradora1 = request.form.get('seguradora_1')
+        seguradora2 = request.form.get('seguradora_2')
+        seguradora3 = request.form.get('seguradora_3')
+        
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:            
+            seguradoras_encontradas = []
+            
+            if seguradora1:
+                cursor.execute("SELECT * FROM Seguradora WHERE nome = ? OR cnpj = ?", (seguradora1, seguradora1))
+                seguradora_data = cursor.fetchone()
+                if seguradora_data:
+                    seguradoras_encontradas.append(seguradora_data)
+
+            if seguradora2:
+                cursor.execute("SELECT * FROM Seguradora WHERE nome = ? OR cnpj = ?", (seguradora2, seguradora2))
+                seguradora_data = cursor.fetchone()
+                if seguradora_data:
+                    seguradoras_encontradas.append(seguradora_data)
+
+            if seguradora3:
+                cursor.execute("SELECT * FROM Seguradora WHERE nome = ? OR cnpj = ?", (seguradora3, seguradora3))
+                seguradora_data = cursor.fetchone()
+                if seguradora_data:
+                    seguradoras_encontradas.append(seguradora_data)
+           
+            if seguradoras_encontradas:
+                return render_template('consultar_seguradora2.html', seguradoras=seguradoras_encontradas)
+            else:
+                return render_template('consultar_seguradora2.html', erro="Nenhuma seguradora encontrada.")
+
+        except Exception as e:
+            return render_template('consultar_seguradora2.html', erro="Erro ao consultar o banco de dados: " + str(e))
+
+        finally:
+            banco.close() 
+            
     return render_template('/consultar_seguradora2.html')
 
-@app.route('/consultar_seguros2.html')
+@app.route('/consultar_seguros2.html', methods=['POST', 'GET'])
 def consultarSeguros2():
+    if request.method == 'POST':        
+        seguro1 = request.form.get('seguro1')
+        seguro2 = request.form.get('seguro2')
+        seguro3 = request.form.get('seguro3')
+        
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:            
+            seguros_encontrados = []
+            
+            if seguro1:
+                cursor.execute("SELECT * FROM Seguros WHERE cnpj = ? OR placa = ? OR data_vencimento = ?", (seguro1, seguro1))
+                seguro_data = cursor.fetchone()
+                if seguro_data:
+                    seguros_encontrados.append(seguro_data)
+
+            if seguro2:
+                cursor.execute("SELECT * FROM Seguros WHERE cnpj = ? OR placa = ? OR data_vencimento = ?", (seguro2, seguro2))
+                seguro_data = cursor.fetchone()
+                if seguro_data:
+                    seguros_encontrados.append(seguro_data)
+
+            if seguro3:
+                cursor.execute("SELECT * FROM Seguros WHERE cnpj = ? OR placa = ? OR data_vencimento = ?", (seguro3, seguro3))
+                seguro_data = cursor.fetchone()
+                if seguro_data:
+                    seguros_encontrados.append(seguro_data)
+           
+            if seguros_encontrados:
+                return render_template('consultar_seguros2.html', seguros=seguros_encontrados)
+            else:
+                return render_template('consultar_seguros2.html', erro="Nenhum seguro encontrado.")
+
+        except Exception as e:
+            return render_template('consultar_seguros2.html', erro="Erro ao consultar o banco de dados: " + str(e))
+
+        finally:
+            banco.close() 
     return render_template('/consultar_seguros2.html')
 
 @app.route('/consultar_cotações2.html')
 def consultarCotacoes2():
+    if request.method == 'POST':        
+        cotacao1 = request.form.get('cotacao1')
+        cotacao2 = request.form.get('cotacao2')
+        cotacao3 = request.form.get('cotacao3')
+        
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:            
+            cotacoes_encontradas = []
+            
+            if cotacao1:
+                cursor.execute("SELECT * FROM Cotacoes WHERE id_cotacao = ? OR cpf = ? OR placa = ?", (cotacao1, cotacao1))
+                cotacao_data = cursor.fetchone()
+                if cotacao_data:
+                    cotacoes_encontradas.append(cotacao_data)
+
+            if cotacao2:
+                cursor.execute("SELECT * FROM Cotacoes WHERE id_cotacao = ? OR cpf = ? OR placa = ?", (cotacao2, cotacao2))
+                cotacao_data = cursor.fetchone()
+                if cotacao_data:
+                    cotacoes_encontradas.append(cotacao_data)
+
+            if cotacao3:
+                cursor.execute("SELECT * FROM Cotacoes WHERE id_cotacao = ? OR cpf = ? OR placa = ?", (cotacao3, cotacao3))
+                cotacao_data = cursor.fetchone()
+                if cotacao_data:
+                    cotacoes_encontradas.append(cotacao_data)
+           
+            if cotacoes_encontradas:
+                return render_template('consultar_cotações2.html', cotacoes=cotacoes_encontradas)
+            else:
+                return render_template('consultar_cotações2.html', erro="Nenhuma cotação encontrado.")
+
+        except Exception as e:
+            return render_template('consultar_cotações2.html', erro="Erro ao consultar o banco de dados: " + str(e))
+
+        finally:
+            banco.close() 
+
     return render_template('/consultar_cotações2.html')
 
 #visualizar
