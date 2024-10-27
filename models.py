@@ -22,12 +22,11 @@ def criar_tabela_seguradora():
     conexao.close()
 
 def criar_tabela_cliente():
-
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
     cursor.execute('''
-        CREATE TABLE clientes (
+        CREATE TABLE IF NOT EXISTS clientes (
             cpf INTEGER PRIMARY KEY CHECK (LENGTH(cpf) = 11) NOT NULL,
             nome TEXT NOT NULL UNIQUE,
             email TEXT NOT NULL,
@@ -36,8 +35,10 @@ def criar_tabela_cliente():
             telefone TEXT NOT NULL,
             profissao TEXT NOT NULL,
             faixa_salarial NUMERIC NOT NULL,
-            condutor_principal INTEGER CHECK (condutor_principal IN (0, 1)) NOT NULL,
-            proprietario INTEGER CHECK (proprietario IN (0, 1)) NOT NULL,
+            condutor_principal INTEGER CHECK (condutor_principal IN (0, 1)),
+            proprietario INTEGER CHECK (proprietario IN (0, 1)) ,
             estado_civil TEXT CHECK (estado_civil IN ('solteiro', 'viuvo', 'casado', 'divorciado')) NOT NULL
-    );
+        );
     ''')
+    conexao.commit()
+    conexao.close()
