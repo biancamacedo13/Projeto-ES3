@@ -180,10 +180,10 @@ def cadastrarSeguros():
      if request.method == 'POST':
         apolice = int(request.form.get('apolice'))
         id_cotacao = int(request.form.get('id_cotacao'))
-        valor_total = float(request.form.get('valor_total'))
+        cpf = int(request.form.get('cpf'))
         data_inicio = request.form.get('data_inicio')
-        data_termino = request.form.get('data_termino')
-        vencimento = request.form.get('vencimento')
+        data_vencimento = request.form.get('data_vencimento')
+        forma_pagamento = request.form.get('forma_pagamento')
 
       banco = models.criar_conexao()
       cursor = banco.cursor()
@@ -191,9 +191,9 @@ def cadastrarSeguros():
       try:
             cursor.execute('''
                 INSERT INTO Seguros (
-                    apolice, id_cotacao, valor_total, data_inicio, data_termino, vencimento
+                    apolice, id_cotacao, cpf, data_inicio, data_vencimento, forma_pagamento
                 ) VALUES (?, ?, ?, ?, ?, ?)
-            ''', (apolice, id_cotacao, valor_total, data_inicio, data_termino, vencimento))
+            ''', (apolice, id_cotacao, cpf, data_inicio, data_vencimento, forma_pagamento))
             
             banco.commit()
             return render_template('sucesso.html', sucesso="Seguro cadastrado com sucesso!")
@@ -328,12 +328,12 @@ def consultarVeiculo1():
                     'ir_trabalho_estudo': 'Sim' if veiculo[12] == 1 else 'Não',
                     'estacionamento': 'Sim' if veiculo[13] == 1 else 'Não'
                 }
-                return render_template('consultar_veiculo1.html', veiculo=veiculo_data)
+                return render_template('consultar_veículo.html', veiculo=veiculo_data)
             else:
-                return render_template('consultar_veiculo1.html', erro="Veículo não encontrado.")
+                return render_template('consultar_veículo.html', erro="Veículo não encontrado.")
 
         except Exception as e:
-            return render_template('consultar_veiculo1.html', erro="Erro ao consultar o banco de dados: " + str(e))
+            return render_template('consultar_veículo.html', erro="Erro ao consultar o banco de dados: " + str(e))
 
         finally:
             banco.close()            
@@ -533,12 +533,12 @@ def consultarVeiculo2():
                     veiculos_encontrados.append(veiculo_data)
            
             if veiculos_encontrados:
-                return render_template('consultar_veiculo2.html', veiculos=veiculos_encontrados)
+                return render_template('consultar_veículo2.html', veiculos=veiculos_encontrados)
             else:
-                return render_template('consultar_veiculo_2.html', erro="Nenhum veículo encontrado.")
+                return render_template('consultar_veículo2.html', erro="Nenhum veículo encontrado.")
 
         except Exception as e:
-            return render_template('consultar_veiculo_2.html', erro="Erro ao consultar o banco de dados: " + str(e))
+            return render_template('consultar_veículo2.html', erro="Erro ao consultar o banco de dados: " + str(e))
 
         finally:
             banco.close()    
@@ -717,7 +717,7 @@ def visualizarCliente():
     
     return render_template('/visualizar_cliente.html')
 
-@app.route('/visualizar_veiculo.html', methods=['POST', 'GET'])
+@app.route('/visualizar_veículo.html', methods=['POST', 'GET'])
 def visualizarVeiculo():
     if request.method == 'POST':       
         placa = request.form.get('placa_veiculo')
@@ -748,12 +748,12 @@ def visualizarVeiculo():
                     'ir_trabalho_estudo': 'Sim' if veiculo[12] == 1 else 'Não',
                     'estacionamento': 'Sim' if veiculo[13] == 1 else 'Não'
                 }
-                return render_template('visualizar_veiculo.html', veiculo=veiculo_data)
+                return render_template('visualizar_veículo.html', veiculo=veiculo_data)
             else:
-                return render_template('visualizar_veiculo.html', erro="Veículo não encontrado.")
+                return render_template('visualizar_veículo.html', erro="Veículo não encontrado.")
 
         except Exception as e:
-            return render_template('visualizar_veiculo.html', erro="Erro ao consultar o banco de dados: " + str(e))
+            return render_template('visualizar_veículo.html', erro="Erro ao consultar o banco de dados: " + str(e))
 
         finally:
             banco.close()            
@@ -851,12 +851,12 @@ def visualizarCotacao():
                     'vencimento': cotacao[5],
                     'valor': cotacao[6]
                 }
-                return render_template('visualizar_cotacao.html', cotacao=cotacao_data)
+                return render_template('visualizar_cotações.html', cotacao=cotacao_data)
             else:
-                return render_template('visualizar_cotacao.html', erro="Cotação não encontrada.")
+                return render_template('visualizar_cotações.html', erro="Cotação não encontrada.")
 
         except sqlite3.Error as e:
-            return render_template('visualizar_cotacao.html', erro="Erro ao consultar o banco de dados.")
+            return render_template('visualizar_cotações.html', erro="Erro ao consultar o banco de dados.")
 
         finally:
             banco.close()   
