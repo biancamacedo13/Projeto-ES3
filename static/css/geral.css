@@ -81,6 +81,8 @@ div.radio{
     display: grid;
     grid-template-columns: auto auto;
     gap: 15px;
+    padding: 10px;
+    
 }
 .radio input[type="radio"]{
     padding-left: 25px;

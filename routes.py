@@ -35,7 +35,6 @@ def cotacoes():
 
 #TELAS CADASTRAR
 #CADASTRAR CLIENTE
-@app.route("/")
 @app.route('/cadastrar_cliente.html', methods=['POST', 'GET'])
 def cadastrar_cliente():
     # Criar a tabela apenas uma vez no início da aplicação
@@ -54,18 +53,6 @@ def cadastrar_cliente():
         proprietario = int(request.form.get('proprietario_cadastrar_cliente'))
         estado_civil = request.form.get('civil_cadastrar_cliente')
 
-        print("Nome:", nome)
-        print("CPF:", cpf)
-        print("Email:", email)
-        print("Data de Nascimento:", data_nascimento)
-        print("Endereço:", endereco)
-        print("Telefone:", telefone)
-        print("Profissão:", profissao)
-        print("Faixa Salarial:", faixa_salarial)
-        print("Condutor Principal", condutor_principal)
-        print("Proprietario", proprietario)
-        print("Estado Civil:", estado_civil)
-
         banco = models.criar_conexao()
         cursor = banco.cursor()
 
@@ -83,22 +70,80 @@ def cadastrar_cliente():
             return render_template('sucesso.html', sucesso="Cliente cadastrado com sucesso!")  
         
         except sqlite3.IntegrityError as e:
-            # Verifica qual campo causou o erro
-            if 'UNIQUE constraint failed: clientes.nome' in str(e):
+            error_message = str(e)
+
+            if 'UNIQUE constraint failed: clientes.nome' in error_message:
                 return render_template('cadastrar_cliente.html', erro="O nome já existe no banco de dados.")
-            elif 'UNIQUE constraint failed: clientes.cpf' in str(e):
+            elif 'UNIQUE constraint failed: clientes.cpf' in error_message:
                 return render_template('cadastrar_cliente.html', erro="O CPF já existe no banco de dados.")
             else:
                 return render_template('cadastrar_cliente.html', erro="Erro de integridade desconhecido.")
+        
+        except Exception as e:
+            return render_template('cadastrar_cliente.html', erro="Ocorreu um erro ao tentar cadastrar o cliente: " + str(e))
             
         finally:
             banco.close()  
 
     return render_template('cadastrar_cliente.html')
 
-@app.route('/cadastrar_veiculo.html')
-def cadastrarVeiculo():
-    return render_template('/cadastrar_veiculo.html')
+#CADASTRAR VEICULO
+@app.route("/")
+@app.route("/cadastrar_veiculo.html", methods=['POST', 'GET'])
+def cadastrar_veiculo():
+    
+    models.criar_tabela_veiculos()
+
+    if request.method == 'POST':
+        cpf_proprietario = request.form.get('cpf_cadastrar_veículo')
+        modelo = request.form.get('modelo_cadastrar_veiculo')
+        ano = request.form.get('ano_cadastrar_veiculo')  
+        cor = request.form.get('cor_cadastrar_veiculo')
+        combustivel = request.form.get('combustivel_cadastrar_veiculo')  
+        placa = request.form.get('placa_cadastrar_veiculo')
+        chassi = request.form.get('chassi_cadastrar_veiculo')
+        pernoite = request.form.get('pernoite_cadastrar_veiculo')  
+        cep_pernoite = int(request.form.get('cep_pernoite_cadastrar_veiculo'))  
+        garagem = int(request.form.get('garagem_cadastrar_veiculo'))  
+        rastreador = int(request.form.get('rastreador_cadastrar_veiculo'))  
+        remunerada = int(request.form.get('remunerada_cadastrar_veiculo'))  
+        ir_trabalho_estudo = int(request.form.get('ir_cadastrar_veiculo'))  
+        estacionamento = int(request.form.get('estacionamento_cadastrar_veiculo'))  
+        
+
+        # Verificar se o CPF é válido e se o cliente existe no banco
+        if not models.validar_cpf(cpf_proprietario):
+            return render_template('cadastrar_veiculo.html', erro="CPF inválido.")
+        
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        # Verificar se o CPF existe na tabela clientes
+        cursor.execute("SELECT cpf FROM clientes WHERE cpf = ?", (cpf_proprietario,))
+        cliente = cursor.fetchone()
+        if not cliente:
+            banco.close()
+            return render_template('cadastrar_veiculo.html', erro="CPF não encontrado no banco de clientes.")
+
+        try:
+            # Inserir os dados do veículo
+            cursor.execute('''
+                INSERT INTO Veiculos (
+                    cpf, modelo, ano, cor, chassi, combustivel, placa, pernoite, cep_pernoite, 
+                    garagem, rastreador, remunerada, ir_trabalho_estudo, estacionamento
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (cpf_proprietario, modelo, ano, cor, chassi, combustivel, placa, pernoite, cep_pernoite, 
+                  garagem, rastreador, remunerada, ir_trabalho_estudo, estacionamento))
+            banco.commit()
+            return render_template('sucesso.html', sucesso="Veículo cadastrado com sucesso!")
+
+        except Exception as e:
+            return render_template('cadastrar_veiculo.html', erro="Erro ao cadastrar veículo: " + str(e))
+
+        finally:
+            banco.close()
+
+    return render_template('cadastrar_veiculo.html')
 
 
 #CADASTRAR SEGURADORA
