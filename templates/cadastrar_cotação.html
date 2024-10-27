@@ -12,7 +12,8 @@
     
     <div class="metade" >
         <h1 id="tipo2">Cadastrar Cotação</h1>
-        <form name="form_cadastrar_cotacao" action="/cadastrar_cotacao.html" method="POST">            
+        <span class="alerta2">{{erro}}</span>
+        <form name="form_cadastrar_cotacao" action="/cadastrar_cotação.html" method="POST">            
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
                 <input type="text" name="cpf_cadastrar_cotacao" id="caixa" placeholder="apenas números"/>
@@ -42,16 +43,17 @@
                 <input type="text" name="valor_cadastrar_cotacao" id="caixa" />
                 <span class="alerta" id="span_valor_cadastrar_cotacao"></span>
             </hgroup>
-        </form>
+        
             
             <div id="bt_vt">
-                <label id="botao1" name="label_cadastrar_cotacao" tabindex="0">Cadastrar</label>
+                <button id="botao1" name="label_cadastrar_cotacao" type="submit">Cadastrar</button>
                 
                 <a href="cotações.html">
                     <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
                 </a>
                 
             </div>
+        </form>
     </div>
 
     <script src="../static/script/cadastrar_cotação.js"></script>

@@ -187,22 +187,37 @@ def cadastrarCotacao():
     models.criar_tabela_cotacoes()  
 
     if request.method == 'POST':        
-        
         cpf = int(request.form.get('cpf_cadastrar_cotacao'))
         placa = request.form.get('placa_cadastrar_cotacao')
-        seguradora = request.form.get('seguradora_cadastrar_cotacao')
+        nome_seguradora = request.form.get('seguradora_cadastrar_cotacao')
         data_cotacao = request.form.get('dt_cot_cadastrar_cotacao')
         valor = float(request.form.get('valor_cadastrar_cotacao'))
 
-        banco = models.criar_conexao()
-        cursor = banco.cursor()
-
+        banco = None  # Inicializa como None
         try:
-            cursor.execute('''
-                INSERT INTO Cotacoes (
-                    cpf, placa, seguradora, data_inicio, valor  -- Corrigido: nome da coluna deve ser 'data_inicio'
-                ) VALUES (?, ?, ?, ?, ?)
-            ''', (cpf, placa, seguradora, data_cotacao, valor))
+            banco = models.criar_conexao()
+            cursor = banco.cursor()
+
+            # Verifica se o CPF do cliente existe no banco
+            cursor.execute("SELECT COUNT(*) FROM clientes WHERE cpf = ?", (cpf,))
+            count_cliente = cursor.fetchone()[0]
+
+            if count_cliente == 0:
+                return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.")
+
+            # Verifica se a seguradora existe no banco pelo nome e obtém o CNPJ
+            cursor.execute("SELECT cnpj FROM Seguradora WHERE nome = ?", (nome_seguradora,))
+            resultado = cursor.fetchone()
+
+            if resultado is None:
+                return render_template('cadastrar_cotação.html', erro="Seguradora não encontrada.")
+            
+            cnpj_seguradora = resultado[0]  # Obtém o CNPJ da seguradora
+
+            # Insere a cotação
+            cursor.execute('''INSERT INTO Cotacoes (
+                cpf, placa, cnpj_seguradora, data_inicio, valor
+            ) VALUES (?, ?, ?, ?, ?)''', (cpf, placa, cnpj_seguradora, data_cotacao, valor))
 
             banco.commit()
             return render_template('sucesso.html', sucesso="Cotação cadastrada com sucesso!")
@@ -217,8 +232,12 @@ def cadastrarCotacao():
             else:
                 return render_template('cadastrar_cotação.html', erro="Erro de integridade desconhecido.")
 
+        except Exception as e:
+            return render_template('cadastrar_cotação.html', erro=str(e))
+
         finally:
-            banco.close()
+            if banco:  # Verifica se a conexão foi criada antes de tentar fechá-la
+                banco.close()
 
     return render_template('cadastrar_cotação.html')
 

@@ -76,8 +76,10 @@ def criar_tabela_cotacoes():
             "data_inicio" TEXT NOT NULL,
             "valor" REAL NOT NULL,
             "id_veiculo" INTEGER,
+            "cnpj_seguradora" TEXT NOT NULL,  -- Adiciona a coluna para a seguradora
             FOREIGN KEY ("cpf") REFERENCES clientes(cpf),
-            FOREIGN KEY ("id_veiculo") REFERENCES veiculos(id_veiculo)
+            FOREIGN KEY ("id_veiculo") REFERENCES veiculos(id_veiculos),
+            FOREIGN KEY ("cnpj_seguradora") REFERENCES Seguradora(cnpj)  -- Chave estrangeira para a seguradora
         );
     ''')
     conexao.commit()
