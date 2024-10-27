@@ -27,9 +27,9 @@ def criar_tabela_seguradora():
         CREATE TABLE IF NOT EXISTS "Seguradora" (
             "nome" TEXT NOT NULL,
             "cnpj" TEXT NOT NULL CHECK (LENGTH(cnpj) = 14),
-            "email" TEXT NOT NULL,
             "endereco" TEXT NOT NULL,
             "telefone" TEXT NOT NULL,
+            "email" TEXT NOT NULL,
             PRIMARY KEY("cnpj")
         );
     ''')
@@ -94,12 +94,15 @@ def criar_tabela_seguros():
         CREATE TABLE IF NOT EXISTS "Seguros" (
             "apolice" INTEGER NOT NULL,
             "id_cotacao" INTEGER NOT NULL,
-            "valor_total" REAL NOT NULL,
+            "cpf" INTEGER NOT NULL,
+            "nome" TEXT NOT NULL,            
             "data_inicio" DATE NOT NULL,
-            "data_termino" DATE NOT NULL,
-            "vencimento" DATE NOT NULL,  
+            "data_vencimento" DATE NOT NULL,
+            "forma_pagamento" TEXT NOT NULL,            
             PRIMARY KEY("apolice"),
-            FOREIGN KEY ("id_cotacao") REFERENCES cotacoes(id_cotacao)
+            FOREIGN KEY ("id_cotacao") REFERENCES cotacoes(id_cotacao),
+            FOREIGN KEY ("cpf") REFERENCES cotacoes(cpf),
+            FOREIGN KEY ("nome") REFERENCES cotacoes(nome),            
         );
     ''')
     conexao.commit()
