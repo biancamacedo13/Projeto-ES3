@@ -17,7 +17,12 @@
         <form id="form_cadastrar_veiculo" action="/cadastrar_veiculo.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">CPF do proprietário:</label>
-                <input type="text" name="cpf_cadastrar_veículo" id="caixa" placeholder="apenas números"/>
+                <select class="seletores" name="cpf_cadastrar_veículo" id="cpf_cadastrar_veículo" required>
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
                 <span class="alerta" id="span_cpf_cadastrar_veículo"></span>
             </hgroup>
             
@@ -29,7 +34,7 @@
 
             <hgroup>
                 <label  id="tipo_formulario">Ano:</label>
-                <input type="date" id="caixa" name="ano_cadastrar_veiculo"/>
+                <input type="number" id="caixa" name="ano_cadastrar_veiculo" min="1930" max="2100" />
                 <span class="alerta" id="span_ano_cadastrar_veiculo"></span>
             </hgroup>
 
@@ -51,7 +56,7 @@
 
             <hgroup>
                 <label id="tipo_formulario">Placa:</label>
-                <input type="text" id="caixa" name="placa_cadastrar_veiculo"/>
+                <input type="text" id="caixa" name="placa_cadastrar_veiculo" placeholder="LLLLNNN"/>
                 <span class="alerta" id="span_placa_cadastrar_veiculo"></span>
             </hgroup>
 

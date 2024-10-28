@@ -11,7 +11,45 @@ function gerarApolice() {
 window.onload = function() {
     gerarApolice();
 }
+//CONFERIR PLACA
+document.getElementById('cpf_cadastrar_seguros').addEventListener('change', function() {
+    const cpfSelecionado = this.value;
+    const placaSelect = document.getElementById('placa_cadastrar_seguros');
+    const spanPlaca = document.getElementById('span_placa_cadastrar_seguros');
+    
+    // Limpa as opções de placa e a mensagem do span ao selecionar um novo CPF
+    placaSelect.innerHTML = '<option value="">Selecione Placa</option>';
+    spanPlaca.textContent = "";  // Limpar mensagem anterior
 
+    if (!cpfSelecionado) return;  // Se nenhum CPF foi selecionado, encerra a execução
+
+    // Fazer a requisição para buscar as placas associadas ao CPF selecionado
+    fetch(`/buscar_placas?cpf=${cpfSelecionado}`)
+        .then(response => response.json())
+        .then(placas => {
+            if (placas.length === 0) {
+                // Adiciona a mensagem "Sem veículos vinculados" no span se não houver placas
+                spanPlaca.textContent = "Sem veículos vinculados";
+            } else {
+                // Adiciona cada placa como uma nova opção no select e limpa o span
+                spanPlaca.textContent = "";  // Limpa mensagem do span se houver placas
+                placas.forEach(placa => {
+                    const option = document.createElement('option');
+                    option.value = placa;
+                    option.textContent = placa;
+                    placaSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar placas:', error);
+            spanPlaca.textContent = "Erro ao buscar veículos.";  // Mensagem de erro caso haja falha na requisição
+        });
+});
+
+
+
+//CADASTRAR
 document.getElementById('buttom_cadastrar_seguros').onclick = function() {  
     const cpf = document.getElementsByName('cpf_cadastrar_seguros')[0].value.trim();
     const alertacpf = document.getElementById('span_cpf_cadastrar_seguros');

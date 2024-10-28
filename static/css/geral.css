@@ -99,6 +99,9 @@ div#tela_cliente2{
     display:grid;
     grid-template-columns: auto auto;
 }
+div.login{
+    border-top: 0px;
+}
 
 /*Botões*/
 div#bt_c,#bt_seguradoras,#bt_seguros,#bt_consultar_cliente,#bt_cadastrar_cliente,#bt_cadastrar_veiculo,#bt_consultar_veiculo,#bt_cadastrar_seguradora,#bt_consultar_seguradora,#bt_cadastrar_seguros,#bt_consultar_seguros {
@@ -185,6 +188,9 @@ h1.sucesso{
     left: 25%;
     text-align: center;
 }
+h1.login{
+    margin-bottom: 0px;
+}
 
 input#caixa{
     width: 400px;
@@ -209,7 +215,17 @@ input[for="seletor"]{
     background-color: rgba(217,217,217,1);
     border: 10px solid #d9d9d9;
 }
-
+label.botao{
+    position: relative;
+    background-color: rgb(26, 26, 55);
+    font-family: Libre Caslon Text;
+    border-radius: 6%;
+    font-size: 23pt;
+    margin-top: 30px;
+    padding: 16px;
+    width: 160px;
+    color: #ffffff;
+}
 .botao1{
     position: relative;
     background-color: rgb(26, 26, 55);

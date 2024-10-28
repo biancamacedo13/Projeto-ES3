@@ -16,13 +16,18 @@
         <form name="form_cadastrar_cotacao" action="/cadastrar_cotação.html" method="POST">            
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
-                <input type="text" name="cpf_cadastrar_cotacao" id="caixa" placeholder="apenas números"/>
+                <select class="seletores" name="cpf_cadastrar_cotacao" id="cpf_cadastrar_cotacao" required>
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs_clientes %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
                 <span class="alerta" id="span_cpf_cadastrar_cotacao"></span>
             </hgroup>
     
             <hgroup>
                 <label  id="tipo_formulario">Seguradora:</label>
-                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotaca" required>
+                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao" required>
                     {% for seguradora in seguradoras %}
                         <option value="{{ seguradora }}">{{ seguradora }}</option>
                     {% endfor %}
@@ -32,13 +37,15 @@
     
             <hgroup>
                 <label name="lemail" id="tipo_formulario">Placa veículo:</label>
-                <input type="text" name="placa_cadastrar_cotacao" id="caixa" />
+                <select class="seletores" name="placa_cadastrar_cotacao" id="placa_cadastrar_cotacao" required>
+                    <option value="">Selecione uma Placa</option>
+                </select>
                 <span class="alerta" id="span_placa_cadastrar_cotacao"></span>
             </hgroup>
 
             <hgroup>
                 <label for="cNasc" id="tipo_formulario">Data da cotação:</label>
-                <input type="date" name="dt_cot_cadastrar_cotacao" id="caixa"/>
+                <input type="date" name="dt_cot_cadastrar_cotacao" id="caixa" required/>
                 <span class="alerta" id="span_dt_cot_cadastrar_cotacao"></span>
             </hgroup>
        

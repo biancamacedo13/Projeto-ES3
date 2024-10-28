@@ -1,3 +1,39 @@
+//Buscar placas por CPF
+document.getElementById('cpf_cadastrar_cotacao').addEventListener('change', function() {
+    const cpf = this.value;
+    const placaSelect = document.getElementById('placa_cadastrar_cotacao');
+    const spanPlaca = document.getElementById('span_placa_cadastrar_cotacao');
+
+    // Limpa as opções anteriores
+    placaSelect.innerHTML = '<option value="">Selecione uma placa</option>';
+    spanPlaca.textContent = ''; // Limpa qualquer mensagem anterior
+
+    // Se o CPF estiver vazio, não faz a requisição
+    if (!cpf) return;
+
+    // Faz a requisição para obter as placas associadas ao CPF selecionado
+    fetch(`/buscar_placas?cpf=${cpf}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                spanPlaca.textContent = "Sem veículos vinculados."; // Mostra mensagem no span se não houver placas
+            } else {
+                // Adiciona cada placa como uma nova opção no select de placas
+                data.forEach(placa => {
+                    const option = document.createElement('option');
+                    option.value = placa;
+                    option.textContent = placa;
+                    placaSelect.appendChild(option);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar placas:', error);
+            spanPlaca.textContent = "Erro ao buscar placas.";
+        });
+});
+
+//Cadastrar
 document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
            
     const cpf = document.getElementsByName('cpf_cadastrar_cotacao')[0].value.trim();

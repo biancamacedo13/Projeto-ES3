@@ -1,17 +1,36 @@
 from app import app
-from flask import render_template,request, redirect, url_for
+from flask import render_template,request, redirect, url_for,flash
 import sqlite3
 import models
+import json
 
 def validar_cpf(cpf):
     return cpf.isdigit() and len(cpf) == 11
 
-@app.route("/login.html")
+
+USERNAME = "adm"
+PASSWORD = "adm4321"
+
+@app.route('/')
+@app.route("/login.html", methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        
+        username = request.form.get('username')
+        password = request.form.get('password')
+        
+        if username == USERNAME and password == PASSWORD:
+            return redirect(url_for('telaInicio'))  # Corrigido aqui
+        elif username == USERNAME and password != PASSWORD:
+            return render_template('login.html', erro="Senha incorreta. Tente novamente")
+        elif username != USERNAME and password == PASSWORD:
+            return render_template('login.html', erro="Usuário incorreto. Tente novamente")
+        else:
+            return render_template('login.html', erro="Login incorreto. Tente novamente")
+    
     return render_template('login.html')
 
-#telas_iniciais
-
+# Telas inicia
 @app.route("/tela_inicial.html")
 def telaInicio():
     return render_template('tela_inicial.html')
@@ -103,10 +122,21 @@ def cadastrar_veiculo():
     
     models.criar_tabela_veiculos()
 
+    
+    banco = models.criar_conexao()
+    cursor = banco.cursor()
+
+        
+    cursor.execute("SELECT cpf FROM clientes")
+    cpfs = cursor.fetchall() 
+    cpfs = [cpf[0] for cpf in cpfs]   
+
+    banco.close()
+
     if request.method == 'POST':
         cpf_proprietario = request.form.get('cpf_cadastrar_veículo')
         modelo = request.form.get('modelo_cadastrar_veiculo')
-        ano = request.form.get('ano_cadastrar_veiculo')  
+        ano = str(request.form.get('ano_cadastrar_veiculo'))   
         cor = request.form.get('cor_cadastrar_veiculo')
         combustivel = request.form.get('combustivel_cadastrar_veiculo')  
         placa = request.form.get('placa_cadastrar_veiculo').strip().upper()
@@ -131,14 +161,14 @@ def cadastrar_veiculo():
         cliente = cursor.fetchone()
         if not cliente:
             banco.close()
-            return render_template('cadastrar_veiculo.html', erro="CPF não encontrado no banco de clientes.")
+            return render_template('cadastrar_veiculo.html', erro="CPF não encontrado no banco de clientes.", cpfs = cpfs)
 
         # Verificar se a placa já está cadastrada
         cursor.execute("SELECT placa FROM Veiculos WHERE placa = ?", (placa,))
         veiculo_existente = cursor.fetchone()
         if veiculo_existente:
             banco.close()
-            return render_template('cadastrar_veiculo.html', erro="Veículo com essa placa já cadastrado.")
+            return render_template('cadastrar_veiculo.html', erro="Veículo com essa placa já cadastrado.", cpfs=cpfs)
 
         try:
             # Inserir os dados do veículo
@@ -153,12 +183,12 @@ def cadastrar_veiculo():
             return render_template('sucesso.html', sucesso="Veículo cadastrado com sucesso!")
 
         except Exception as e:
-            return render_template('cadastrar_veiculo.html', erro="Erro ao cadastrar veículo: " + str(e))
+            return render_template('cadastrar_veiculo.html', erro="Erro ao cadastrar veículo: " + str(e), cpfs = cpfs)
 
         finally:
             banco.close()
 
-    return render_template('cadastrar_veiculo.html')
+    return render_template('cadastrar_veiculo.html', cpfs=cpfs)
 
 
 #CADASTRAR SEGURADORA
@@ -191,21 +221,21 @@ def cadastrarSeguradora():
     return render_template('cadastrar_seguradora.html')
 
 #CADASTRAR SEGUROS
-@app.route('/')
+
 @app.route('/cadastrar_seguros.html', methods=['POST', 'GET'])
 def cadastrarSeguros():
-    # Criar a tabela de seguros apenas uma vez no início da aplicação
+    
     models.criar_tabela_seguros()
 
-    # Estabelecer conexão com o banco de dados
     banco = models.criar_conexao()
     cursor = banco.cursor()
 
-    # Obter todos os CPFs dos clientes
+        
     cursor.execute("SELECT cpf FROM clientes")
-    cpfs_clientes = [str(cpf[0]) for cpf in cursor.fetchall()]
-
-    # Obter todas as placas e associá-las ao CPF
+    cpfs_clientes = cursor.fetchall()     
+    cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
+    
+    
     cursor.execute("SELECT cpf, placa FROM veiculos")
     veiculos_por_cliente = cursor.fetchall()
 
@@ -215,7 +245,6 @@ def cadastrarSeguros():
         if cpf not in placas_por_cliente:
             placas_por_cliente[cpf] = []
         placas_por_cliente[cpf].append(placa)
-
     banco.close()  # Fechar a conexão com o banco
 
     if request.method == 'POST':
@@ -249,7 +278,7 @@ def cadastrarSeguros():
             if not cotacao:
                 return render_template(
                     'cadastrar_seguros.html',
-                    erro="Cotação não encontrada para a placa fornecida.",
+                    erro= "Cotação não encontrada para a placa fornecida. Cadastre uma cotação primeiro",
                     cpfs_clientes=cpfs_clientes,
                     placas_por_cliente=placas_por_cliente
                 )
@@ -280,39 +309,53 @@ def cadastrarSeguros():
         finally:
             banco.close()  # Fechar a conexão com o banco
 
+    placas_por_cliente_json = json.dumps(placas_por_cliente)
     # Renderizar o formulário com as listas de CPFs e placas vinculadas
     return render_template(
         'cadastrar_seguros.html',
         cpfs_clientes=cpfs_clientes,
-        placas_por_cliente=placas_por_cliente
+        placas_por_cliente=placas_por_cliente_json
     )
 
 
 
 #CADASTRAR COTACOES
 
-@app.route('/cadastrar_cotação.html', methods=['POST', 'GET'])
+@app.route('/cadastrar_cotação.html', methods=['POST', 'GET']) 
 def cadastrarCotacao():
-    
+    cpfs_clientes = []  # Inicializa a variável antes do uso
+    seguradoras = []  # Inicializa também seguradoras
+
     if request.method == 'GET':
         models.criar_tabela_cotacoes()
 
         banco = models.criar_conexao()
         cursor = banco.cursor()
-        cursor.execute("SELECT nome FROM Seguradora")
-        seguradoras = cursor.fetchall()
 
-        banco.close()
-        
-        return render_template('cadastrar_cotação.html', seguradoras=[s[0] for s in seguradoras])
-  
+        try:
+            # Obtém os nomes das seguradoras
+            cursor.execute("SELECT nome FROM Seguradora")
+            seguradoras = cursor.fetchall()    
+
+            # Obtém os CPFs dos clientes
+            cursor.execute("SELECT cpf FROM clientes")
+            cpfs_clientes = cursor.fetchall()     
+            cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
+        finally:
+            banco.close()  # Fecha a conexão independentemente de ter ocorrido um erro
+
+        print(seguradoras)
+
+        return render_template('cadastrar_cotação.html', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
 
     if request.method == 'POST':        
         cpf = int(request.form.get('cpf_cadastrar_cotacao'))
-        placa = request.form.get('placa_cadastrar_cotacao').strip().upper()
+        placa = request.form.get('placa_cadastrar_cotacao')
         nome_seguradora = request.form.get('seguradora_cadastrar_cotacao')
         data_cotacao = request.form.get('dt_cot_cadastrar_cotacao')
         valor = float(request.form.get('valor_cadastrar_cotacao'))
+
+        print(f"CPF: {cpf}, Placa: {placa}, Seguradora: {nome_seguradora}, Data Cotação: {data_cotacao}, Valor: {valor}")
 
         banco = None  # Inicializa como None
         try:
@@ -324,14 +367,14 @@ def cadastrarCotacao():
             count_cliente = cursor.fetchone()[0]
 
             if count_cliente == 0:
-                return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.")
+                return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
             # Verifica se a seguradora existe no banco pelo nome e obtém o CNPJ
             cursor.execute("SELECT cnpj FROM Seguradora WHERE nome = ?", (nome_seguradora,))
             resultado = cursor.fetchone()
 
             if resultado is None:
-                return render_template('cadastrar_cotação.html', erro="Seguradora não encontrada.")
+                return render_template('cadastrar_cotação.html', erro='Seguradora não encontrada.', cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
             
             cnpj_seguradora = resultado[0]  # Obtém o CNPJ da seguradora
 
@@ -340,7 +383,7 @@ def cadastrarCotacao():
             count_placa = cursor.fetchone()[0]
 
             if count_placa == 0:
-                return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.")
+                return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
             # Insere a cotação
             cursor.execute('''INSERT INTO Cotacoes (
@@ -354,20 +397,21 @@ def cadastrarCotacao():
             # Verifica qual campo causou o erro
             if 'FOREIGN KEY constraint failed' in str(e):
                 if 'clientes' in str(e):
-                    return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.")
+                    return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
                 elif 'veiculos' in str(e):
-                    return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.")
+                    return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
             else:
-                return render_template('cadastrar_cotação.html', erro="Erro de integridade desconhecido.")
+                return render_template('cadastrar_cotação.html', erro="Erro de integridade desconhecido.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
         except Exception as e:
-            return render_template('cadastrar_cotação.html', erro=str(e))
+            return render_template('cadastrar_cotação.html', erro=str(e), cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
         finally:
             if banco:  # Verifica se a conexão foi criada antes de tentar fechá-la
                 banco.close()
 
-    return render_template('cadastrar_cotação.html')
+    return render_template('cadastrar_cotação.html', cpfs_clientes=cpfs_clientes, seguradoras=seguradoras)  # Adicione as variáveis ao final para o método GET
+
 
 #consultar1
 @app.route('/consultar_cliente1.html')
@@ -436,3 +480,16 @@ def visualizarCotacoes():
 @app.route('/sucesso.html')
 def sucesso():
     return render_template('/sucesso.html')
+
+@app.route('/buscar_placas', methods=['GET'])
+def buscar_placas():
+    cpf = request.args.get('cpf')  # Obter o CPF dos parâmetros da URL
+    banco = models.criar_conexao()
+    cursor = banco.cursor()
+
+    cursor.execute("SELECT placa FROM veiculos WHERE cpf = ?", (cpf,))
+    placas = cursor.fetchall()
+    banco.close()
+
+    # Retornar as placas em formato JSON
+    return json.dumps([placa[0] for placa in placas])

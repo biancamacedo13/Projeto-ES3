@@ -12,19 +12,56 @@
     
     <div class="conteiner_login">
 
-        <h1 id="tipo2">Login</h1>
+        <h1 class="login">Login</h1>
+        <span class="alerta2">{{erro}}</span>
 
-        <hgroup>
-            <label id="tipo_formulario">E-mail/CPF:</label>
-            <input type="text" id="caixa" />
-        </hgroup>
-
-        <hgroup>
-            <label  id="tipo_formulario">Senha:</label>
-            <input type="text"  id="caixa" />
-        </hgroup>
-
-        <label id="botao1">Entrar</label>
+        <form id="form_login" action="/login.html" method="POST">
+            <div class="login">
+                <hgroup>
+                    <label id="tipo_formulario">Usuário:</label>
+                    <input type="text" id="caixa" name ="username"/>
+                    <span class="alerta" id="span_usuario_login"></span>
+                </hgroup>
+    
+                <hgroup>
+                    <label  id="tipo_formulario">Senha:</label>
+                    <input type="text"  id="caixa" name="password"/>
+                    <span class="alerta" id="span_senha_login"></span>
+                </hgroup>
+            </div>
+            
+        </form>
+        <label class="botao" id="label_login">Entrar</label>
     </div>
+    <script>
+        document.getElementById('label_login').onclick = function validarlogin() {
+            
+            const usuario = document.getElementsByName('username')[0].value.trim()
+            const aletrausuario = document.getElementById('span_usuario_login')
+
+            const senha = document.getElementsByName('password')[0].value.trim()
+            const aletrasenha = document.getElementById('span_senha_login')
+
+            aletrausuario.textContent = "";
+            aletrasenha.textContent = "";
+
+            let valido = true;
+
+            if (usuario === '') {
+                aletrausuario.textContent = "Campo vazio!";
+                valido = false;
+            }
+            if (senha === '') {
+                aletrasenha.textContent = "Campo vazio!";
+                valido = false;
+            }
+
+            if (valido){
+                document.getElementById('form_login').submit();
+            }
+            
+            
+        }
+    </script>
 </body>
 </html>

@@ -47,6 +47,15 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
     if (ano === '') {
         alertaano.textContent = 'Campo vazio!';
         valido = false;
+    } else if (!/^\d{4}$/.test(ano)) {
+        alertaano.textContent = 'Formato inválido! Deve ser um ano com 4 dígitos.';
+        valido = false;
+    } else {
+        const anoInt = parseInt(ano, 10);
+        if (anoInt < 1930 || anoInt > 2100) {
+            alertaano.textContent = 'Ano deve estar entre 1900 e 2100!';
+            valido = false;
+        }
     }
 
     if (cor === '') {
