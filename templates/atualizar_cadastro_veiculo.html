@@ -72,24 +72,24 @@
 
             <hgroup>
                 <label  id="tipo_formulario" name="per_gar">Veículo pernoita em garagem:</label>
-                <div id="select" name="per_gar">
+                <div class="radio" >
                     <p>
-                        <input type="radio" name="garagem_atualizar_cadastro_veiculo" for="seletor" value="1"/> <label  id="opções">Sim</label>
+                         <label class="opt" ><input type="radio" name="garagem_atualizar_cadastro_veiculo" for="seletor" value="1"/>Sim</label>
                     </p>
                     <p>
-                        <input type="radio" name="garagem_atualizar_cadastro_veiculo" for="seletor" value="0" checked/> <label  id="opções"> Não</label>
+                         <label class="opt" ><input type="radio" name="garagem_atualizar_cadastro_veiculo" for="seletor" value="0" checked/> Não</label>
                     </p>
                 </div>
             </hgroup>
 
             <hgroup>
                 <label  id="tipo_formulario">Possui rastreador ou semelhante?:</label>
-                <div id="select">
+                <div class="radio">
                     <p>
-                        <input type="radio" name="rastreador_atualizar_cadastro_veiculo" for="seletor" velue="1"/> <label  id="opções">Sim</label>
+                        <label class="opt" ><input type="radio" name="rastreador_atualizar_cadastro_veiculo" velue="1"/> Sim</label>
                     </p>
                     <p>
-                        <input type="radio" name="rastreador_atualizar_cadastro_veiculo" for="seletor" velue="0" checked/> <label  id="opções">Não</label>
+                         <label class="opt" ><input type="radio" name="rastreador_atualizar_cadastro_veiculo"  velue="0" checked/>Não</label>
                     </p>
                 </div>
             </hgroup>
@@ -98,12 +98,12 @@
                 <p>
                     <label  id="tipo_formulario">Veículo é utilizado para atividade </br> remunerada:</label>
                 </p>
-                <div id="select">
+                <div class="radio">
                     <p>
-                        <input type="radio" name="remunerada_atualizar_cadastro_veiculo" for="seletor" value="1"/> <label  id="opções">Sim</label>
+                         <label class="opt" ><input type="radio" name="remunerada_atualizar_cadastro_veiculo" for="seletor" value="1"/>Sim</label>
                     </p>
                     <p>
-                        <input type="radio" name="remunerada_atualizar_cadastro_veiculo" for="seletor" value="0" checked/> <label  id="opções"> Não</label>
+                         <label class="opt" ><input type="radio" name="remunerada_atualizar_cadastro_veiculo" for="seletor" value="0" checked/> Não</label>
                     </p>
                 </div>
             </hgroup>
@@ -113,12 +113,12 @@
                     <label  id="tipo_formulario" name="ir_trab">Veículo é utilizado para ir ao </br>trabalho ou estudo:</label>
                 </p>
                 
-                <div id="select" name="ir_trab">
+                <div class="radio">
                     <p>
-                        <input type="radio" name="ir_atualizar_cadastro_veiculo" for="seletor" value="1" checked/> <label  id="opções">Sim</label>
+                        <label class="opt" ><input type="radio" name="ir_atualizar_cadastro_veiculo" for="seletor" value="1" checked/> Sim</label>
                     </p>
                     <p>
-                        <input type="radio" name="ir_atualizar_cadastro_veiculo" for="seletor" value="0"/> <label  id="opções"> Não</label>
+                         <label class="opt" ><input type="radio" name="ir_atualizar_cadastro_veiculo" for="seletor" value="0"/> Não</label>
                     </p>
                 </div>
             </hgroup>
@@ -128,25 +128,24 @@
                     <label  id="tipo_formulario">Local de trabalho/estudo possui </br>estacionamento:</label>
                 </p>
                 
-                <div id="select">
+                <div class="radio">
                     <p>
-                        <input type="radio" name="estacionamento_atualizar_cadastro_veiculo" for="seletor" value="1"/> <label  id="opções">Sim</label>
+                         <label class="opt"  ><input  type="radio" name="estacionamento_atualizar_cadastro_veiculo"  value="1"/>Sim</label>
                     </p>
                     <p>
-                        <input type="radio" name="estacionamento_atualizar_cadastro_veiculo" for="seletor" value="0" checked/> <label  id="opções"> Não</label>
+                         <label class="opt" ><input  type="radio" name="estacionamento_atualizar_cadastro_veiculo" for="seletor" value="0" checked/> Não</label>
                     </p>
                 </div>
             </hgroup>
-        </form>
 
         <div id="bt_vt">
-            <label id="botao1" name="label_atualizar_cadastro_veiculo">Alterar</label>
+            <label class="botao1" id="label_atualizar_cadastro_veiculo">Alterar</label>
             
             <a href="clientes.html">
                 <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
-            
         </div>
+    </form>
     </div>
     <script src="../static/script/atualizar_cadastro_veiculo.js"></script>
 </body>

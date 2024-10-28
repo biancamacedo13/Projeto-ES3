@@ -95,7 +95,6 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
         alertasal.textContent = 'campo vazio!';
         valido = false;
     } 
-    
     else if (isNaN(sal)) {
         alertasal.textContent = 'apenas números!';
         valido = false;

@@ -64,47 +64,47 @@
                 <input type="text" name="sal_atualizar_cadastro_cliente" id="caixa" />
                 <span class="alerta" id="span_sal_atualizar_cadastro_cliente"></span>
             </hgroup>
-        </form>
 
-        <hgroup>
-            <label id="tipo_formulario">Condutor Principal:</label>
-            <div id="select">
-                
-                <label  id="opções"><input type="radio" name="condutor_principal_atualizar_cadastro_cliente" value="1" checked/>Sim</label>
-                
-                <label  id="opções"><input type="radio" name="condutor_principal_atualizar_cadastro_cliente" value="0"/>Não</label>
+            <hgroup>
+                <label id="tipo_formulario">Condutor Principal:</label>
+                <div class="radio">
+                    
+                    <label  class="opt"><input type="radio" name="condutor_principal_atualizar_cadastro_cliente" value="1" checked/>Sim</label>
+                    
+                    <label  class="opt"><input type="radio" name="condutor_principal_atualizar_cadastro_cliente" value="0"/>Não</label>
 
-            </div>
-        </hgroup>
+                </div>
+            </hgroup>
 
-        <hgroup>
-            <label id="tipo_formulario">Proprietário:</label>
-            <div id="select">
-                
-                    <label  id="opções"><input type="radio" name="proprietario_atualizar_cadastro_cliente" value="1" checked/>Sim</label>
-                
-                    <label  id="opções"><input type="radio" name="proprietario_atualizar_cadastro_cliente" value="0"/>Não</label> 
-                
-            </div>
-        </hgroup>
+            <hgroup>
+                <label id="tipo_formulario">Proprietário:</label>
+                <div class="radio">
+                    
+                        <label  class="opt"><input type="radio" name="proprietario_atualizar_cadastro_cliente" value="1" checked/>Sim</label>
+                    
+                        <label  class="opt"><input type="radio" name="proprietario_atualizar_cadastro_cliente" value="0"/>Não</label> 
+                    
+                </div>
+            </hgroup>
 
-        <hgroup>
-            <label id="tipo_formulario">Estado Civil:</label>
-                <select class="seletores" name="civil_atualizar_cadastro_cliente">
-                <option value="solteiro">Solteiro</option>
-                <option value="viuvo">Viuvo</option>
-                <option value="casado" selected>Casado</option>
-                <option value="divorciado">Divorciado</option>
-            </select>
-        </hgroup>
+            <hgroup>
+                <label id="tipo_formulario">Estado Civil:</label>
+                    <select class="seletores" name="civil_atualizar_cadastro_cliente">
+                    <option value="solteiro">Solteiro</option>
+                    <option value="viuvo">Viuvo</option>
+                    <option value="casado" selected>Casado</option>
+                    <option value="divorciado">Divorciado</option>
+                </select>
+            </hgroup>
         
             <div id="bt_vt">
-                <label id="botao1" name="label_atualizar_cadastro_cliente">Alterar</label>
+                <label class="botao1" id="label_atualizar_cadastro_cliente">Alterar</label>
                 
-                <a href="clientes.html">
+                <a href="cadastrar_cliente.html">
                     <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
                 </a>
-            </div>    
+            </div>
+        </form>    
     </div>
 
     <script src="../static/script/atualizar_cadastro_cliente.js"></script>
