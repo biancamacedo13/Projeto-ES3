@@ -56,6 +56,6 @@ document.getElementsByName('label_consultar_cliente1')[0].onclick = function val
 
     if (valido) {
         
-        window.alert('Pelo menos um campo válido foi preenchido.');
+        document.getElementById('form_consultar_cliente1').submit();
     }
 }
