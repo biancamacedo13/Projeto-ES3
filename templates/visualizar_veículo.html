@@ -6,153 +6,146 @@
     <title>Visualizar Veículo</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
     <link rel="stylesheet" type="text/css" href="..\static\css\visualizar_veiculo.css">
-
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
  
     <div class="metade">
         <h1 id="tipo2">Visualizar Veículo</h1>
+
+        <hgroup>
+            <label id="tipo_formulario">Proprietário:</label>
+            <textarea name="proprietario_visualizar_veiculo" readonly>{{ veiculo[14] }}</textarea>
+        </hgroup>        
                
         <hgroup>
-            <label  id="tipo_formulario">Modelo:</label>
-            <textarea name="modelo_visualizar_veiculo" readonly></textarea>
-              
+            <label id="tipo_formulario">Modelo:</label>
+            <textarea name="modelo_visualizar_veiculo" readonly>{{ veiculo[3] }}</textarea>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Ano:</label>
-            <textarea name="ano_visualizar_veiculo" readonly></textarea> 
+            <label id="tipo_formulario">Ano:</label>
+            <textarea name="ano_visualizar_veiculo" readonly>{{ veiculo[4] }}</textarea> 
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Cor:</label>
-            <textarea name="cor_visualizar_veiculo" readonly></textarea>    
+            <label id="tipo_formulario">Cor:</label>
+            <textarea name="cor_visualizar_veiculo" readonly>{{ veiculo[5] }}</textarea>    
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Combustível:</label>
-            <textarea name="comb_visualizar_veiculo" readonly></textarea>
-              
+            <label id="tipo_formulario">Combustível:</label>
+            <textarea name="comb_visualizar_veiculo" readonly>{{ veiculo[6] }}</textarea>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Placa:</label>
-            <textarea name="placa_visualizar_veiculo" readonly></textarea> 
+            <label id="tipo_formulario">Placa:</label>
+            <textarea name="placa_visualizar_veiculo" readonly>{{ veiculo[1] }}</textarea> 
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Chassí:</label>
-            <textarea name="chassi_visualizar_veiculo" readonly></textarea> 
+            <label id="tipo_formulario">Chassi:</label>
+            <textarea name="chassi_visualizar_veiculo" readonly>{{ veiculo[2] }}</textarea> 
         </hgroup>
-        
-       
-            <hgroup>
-                <label  id="tipo_formulario">Possui rastreador ou semelhante?:</label>
-                <div id="select">
-                    <p>
-                        <input type="radio" name="rastreador_visualizar_veiculo" for="seletor"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="rastreador_visualizar_veiculo" for="seletor"/> <label  id="opções"> Não</label>
-                    </p>
-                </div>
-            </hgroup>
-       
-        
 
-        
-            <hgroup>
-                <p id="teste">
-                    <label  id="tipo_formulario" name="local_pernoite">Local de pernoite?:</label>
+        <hgroup>
+            <label id="tipo_formulario">Possui rastreador ou semelhante?</label>
+            <div class="radio">
+                <p class="visualizar">
+                    {% if veiculo[7] == 1 %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
                 </p>
-                <div id="select" name="local_pernoite">
-                    <p>
-                        <input type="radio" name="pernoite_visualizar_veiculo" for="seletor"/> <label  id="opções">Casa</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="pernoite_visualizar_veiculo" for="seletor"/> <label  id="opções"> Rua</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="pernoite_visualizar_veiculo" for="seletor"/> <label  id="opções"> Apartamento</label>
-                    </p>
-                    
-                </div>
-            </hgroup>
-       
-        
-
-        
-            <hgroup>
-                <label  id="tipo_formulario" name="per_gar">Veículo pernoita em garagem:</label>
-                <div id="select" name="per_gar">
-                    <p>
-                        <input type="radio" name="garagem_visualizar_veiculo" for="seletor"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="garagem_visualizar_veiculo" for="seletor"/> <label  id="opções"> Não</label>
-                    </p>
-                </div>
-            </hgroup>
-       
-        
-
-        <hgroup>
-            <label  id="tipo_formulario">CPF local de pernoite:</label>
-            <textarea name="cpf_pernoite_visualizar_veiculo" readonly></textarea> 
+            </div>
         </hgroup>
 
-        
-            <hgroup>
+        <hgroup>
+            
+            <div class="radio">
+                <label id="tipo_formulario">Local de pernoite:</label>
+                <hgroup>
+                    <label id="tipo_formulario">Local de pernoite:</label>
+                    <textarea name="pernoite_visualizar_veiculo" readonly>
+                        {{ pernoite_options.get(veiculo[8], "Não especificado") }}
+                    </textarea>
+                </hgroup>
+            </div>
+            
+        </hgroup>
+
+        <hgroup>
+            <div class="radio">
+                <label id="tipo_formulario">Veículo pernoita em garagem:</label>
+                <p class="visualizar">
+                    {% if veiculo[9] == 'sim' %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">CPF local de pernoite:</label>
+            <textarea name="cpf_pernoite_visualizar_veiculo" readonly>{{ veiculo[10] }}</textarea> 
+        </hgroup>
+
+        <hgroup>
+            <p>
+                <label id="tipo_formulario">Veículo é utilizado para atividade</br> remunerada:</label>
+            </p>
+            
+            <div class="radio">
+                <p class="visualizar">
+                    {% if veiculo[11] == 'sim' %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
+            
+        </hgroup>
+
+        <hgroup>
+            
+            <div class="radio">
                 <p>
-                    <label  id="tipo_formulario">Veículo é utilizado para atividade </br> remunerada:</label>
+                    <label id="tipo_formulario">Veículo é utilizado para ir ao </br>trabalho ou estudo?</label>
                 </p>
-                <div id="select">
-                    <p>
-                        <input type="radio" name="remunerada_visualizar_veiculo" for="seletor"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="remunerada_visualizar_veiculo" for="seletor"/> <label  id="opções"> Não</label>
-                    </p>
-                </div>
-            </hgroup>
-        
+                <p class="visualizar">
+                    {% if veiculo[12] == 'sim' %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
+        </hgroup>
 
-            <hgroup>
+        <hgroup>
+            
+            
+            <div class="radio">
                 <p>
-                    <label  id="tipo_formulario" name="ir_trab">Veículo é utilizado para ir ao </br>trabalho ou estudo:</label>
+                    <label id="tipo_formulario">Local de trabalho/estudo possui</br> estacionamento?</label>
                 </p>
-                
-                <div id="select" name="ir_trab">
-                    <p>
-                        <input type="radio" name="ir_visualizar_veiculo" for="seletor"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="ir_visualizar_veiculo" for="seletor"/> <label  id="opções"> Não</label>
-                    </p>
-                </div>
-            </hgroup>
-     
-            <hgroup>
-                <p>
-                    <label  id="tipo_formulario">Local de trabalho/estudo possui </br>estacionamento:</label>
+                <p class="visualizar">
+                    {% if veiculo[13] == 'sim' %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
                 </p>
-                
-                <div id="select">
-                    <p>
-                        <input type="radio" name="estacionamento_visualizar_veiculo" for="seletor"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="estacionamento_visualizar_veiculo" for="seletor"/> <label  id="opções"> Não</label>
-                    </p>
-                </div>
-            </hgroup>
-        
-        
+            </div>
+        </hgroup>
 
         <div id="bt_vt">
             <label id="botao1">Atualizar</label>
-            <a href="consultar_veículo.html">
+            <a href="consultar_veiculo.html">
                 <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
         </div>

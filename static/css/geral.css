@@ -290,3 +290,9 @@ p.confirmacao{
     font-size: pt;
     text-align: center;
 }
+p.visualizar{
+    font-family: Libre Caslon Text;
+    color: rgb(0, 0, 0);
+    font-size: 20pt; 
+    align-items: center;
+}

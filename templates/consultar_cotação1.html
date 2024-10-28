@@ -17,7 +17,12 @@
         <form name="form_consultar_cotacao1" action="/consultar_cotacao1.html" method="POST">
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
-                <input type="text"  id="caixa" name="cpf_consultar_cotacao1"/>
+                <select class="seletores" name="cpf_consultar_cotacao1" id="cpf_consultar_cotacao1" required>
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs_clientes %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
                 <span class="alerta" id="span_cpf_consultar_cotacao1"></span>
             </hgroup>
 
@@ -29,7 +34,11 @@
 
             <hgroup>
                 <label  id="tipo_formulario">Seguradora:</label>
-                <input type="text" id="caixa" name="seguradora_consultar_cotacao1"/>
+                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao" required>
+                    {% for seguradora in seguradoras %}
+                        <option value="{{ seguradora }}">{{ seguradora }}</option>
+                    {% endfor %}
+                </select>
                 <span class="alerta" id="span_seguradora_consultar_cotacao1"></span>
             </hgroup>
 

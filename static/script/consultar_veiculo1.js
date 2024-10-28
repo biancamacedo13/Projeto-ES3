@@ -1,5 +1,4 @@
 document.getElementsByName('label_consultar_veiculo')[0].onclick = function validar() {
-
     // Selecionando os elementos do formulário
     const alertageral = document.getElementById('geral_consultar_veiculo');
 
@@ -31,21 +30,18 @@ document.getElementsByName('label_consultar_veiculo')[0].onclick = function vali
     }
 
     // Validação da Placa
-    if (placa !== '') {
-        algumCampoPreenchido = true;
-        if (!/^[A-Z]{3}\d{4}$/.test(placa)) {
-            alertaplaca.textContent = 'Formato de placa inválido! Use o formato ABC1234.';
-            valido = false;
-        }
+    if (placa === '') {
+        valido = false;
+    } else if (!/^[A-Za-z]{4}\d{3}$/.test(placa)) {
+        alertaplaca.textContent = 'Formato inválido! Deve ser 4 letras seguidas de 3 números.';
+        valido = false;
+    } else {
+        algumCampoPreenchido = true; // Se a placa for válida, consideramos um campo preenchido
     }
 
-    // Validação do Chassi
+    // Validação do Chassi (sem restrições, mas consideramos se foi preenchido)
     if (chassi !== '') {
         algumCampoPreenchido = true;
-        if (!/^[A-Z0-9]{17}$/.test(chassi)) {
-            alertachassi.textContent = 'O chassi deve ter 17 caracteres alfanuméricos.';
-            valido = false;
-        }
     }
 
     // Verificação se pelo menos um campo está preenchido
@@ -54,8 +50,8 @@ document.getElementsByName('label_consultar_veiculo')[0].onclick = function vali
         valido = false;
     }
 
-    // Mensagem de sucesso se pelo menos um campo estiver válido
+    // Se tudo estiver válido, submete o formulário
     if (valido) {
-        window.alert('Pelo menos um campo válido foi preenchido.');
+        document.getElementById('form_consultar_veiculo').submit();
     }
 };
