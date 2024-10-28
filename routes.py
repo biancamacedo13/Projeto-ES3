@@ -3,6 +3,9 @@ from flask import render_template,request, redirect, url_for
 import sqlite3
 import models
 
+def validar_cpf(cpf):
+    return cpf.isdigit() and len(cpf) == 11
+
 @app.route("/login.html")
 def login():
     return render_template('login.html')
@@ -35,6 +38,7 @@ def cotacoes():
 
 #TELAS CADASTRAR
 #CADASTRAR CLIENTE
+
 @app.route('/cadastrar_cliente.html', methods=['POST', 'GET'])
 def cadastrar_cliente():
     # Criar a tabela apenas uma vez no início da aplicação
@@ -42,16 +46,23 @@ def cadastrar_cliente():
 
     if request.method == 'POST':
         nome = request.form.get('nome_cadastrar_cliente')
-        cpf = int(request.form.get('cpf_cadastrar_cliente'))
+        cpf = request.form.get('cpf_cadastrar_cliente')
         email = request.form.get('email_cadastrar_cliente')
         data_nascimento = request.form.get('dt_nasc_cadastrar_cliente')
         endereco = request.form.get('endereco_cadastrar_cliente')
-        telefone = request.form.get('tel_cadastrar_cliente')
+        telefone = str(request.form.get('tel_cadastrar_cliente'))
         profissao = request.form.get('prof_cadastrar_cliente')
         faixa_salarial = float(request.form.get('sal_cadastrar_cliente'))
         condutor_principal = int(request.form.get('condutor_principal_cadastrar_cliente'))
         proprietario = int(request.form.get('proprietario_cadastrar_cliente'))
         estado_civil = request.form.get('civil_cadastrar_cliente')
+
+        if not validar_cpf(cpf):
+            erro = "O CPF deve ter exatamente 11 dígitos numéricos."
+            return render_template('cadastrar_cliente.html', erro=erro)
+
+        # Convertendo CPF para inteiro após validação
+        cpf = int(cpf)
 
         banco = models.criar_conexao()
         cursor = banco.cursor()
@@ -76,8 +87,6 @@ def cadastrar_cliente():
                 return render_template('cadastrar_cliente.html', erro="O nome já existe no banco de dados.")
             elif 'UNIQUE constraint failed: clientes.cpf' in error_message:
                 return render_template('cadastrar_cliente.html', erro="O CPF já existe no banco de dados.")
-            else:
-                return render_template('cadastrar_cliente.html', erro="Erro de integridade desconhecido.")
         
         except Exception as e:
             return render_template('cadastrar_cliente.html', erro="Ocorreu um erro ao tentar cadastrar o cliente: " + str(e))
@@ -100,7 +109,7 @@ def cadastrar_veiculo():
         ano = request.form.get('ano_cadastrar_veiculo')  
         cor = request.form.get('cor_cadastrar_veiculo')
         combustivel = request.form.get('combustivel_cadastrar_veiculo')  
-        placa = request.form.get('placa_cadastrar_veiculo')
+        placa = request.form.get('placa_cadastrar_veiculo').strip().upper()
         chassi = request.form.get('chassi_cadastrar_veiculo')
         pernoite = request.form.get('pernoite_cadastrar_veiculo')  
         cep_pernoite = int(request.form.get('cep_pernoite_cadastrar_veiculo'))  
@@ -109,7 +118,6 @@ def cadastrar_veiculo():
         remunerada = int(request.form.get('remunerada_cadastrar_veiculo'))  
         ir_trabalho_estudo = int(request.form.get('ir_cadastrar_veiculo'))  
         estacionamento = int(request.form.get('estacionamento_cadastrar_veiculo'))  
-        
 
         # Verificar se o CPF é válido e se o cliente existe no banco
         if not models.validar_cpf(cpf_proprietario):
@@ -125,9 +133,16 @@ def cadastrar_veiculo():
             banco.close()
             return render_template('cadastrar_veiculo.html', erro="CPF não encontrado no banco de clientes.")
 
+        # Verificar se a placa já está cadastrada
+        cursor.execute("SELECT placa FROM Veiculos WHERE placa = ?", (placa,))
+        veiculo_existente = cursor.fetchone()
+        if veiculo_existente:
+            banco.close()
+            return render_template('cadastrar_veiculo.html', erro="Veículo com essa placa já cadastrado.")
+
         try:
             # Inserir os dados do veículo
-            cursor.execute('''
+            cursor.execute(''' 
                 INSERT INTO Veiculos (
                     cpf, modelo, ano, cor, chassi, combustivel, placa, pernoite, cep_pernoite, 
                     garagem, rastreador, remunerada, ir_trabalho_estudo, estacionamento
@@ -147,6 +162,7 @@ def cadastrar_veiculo():
 
 
 #CADASTRAR SEGURADORA
+
 @app.route('/cadastrar_seguradora.html', methods=['POST', 'GET'])
 def cadastrarSeguradora():
     # Criar a tabela apenas uma vez no início da aplicação
@@ -174,13 +190,59 @@ def cadastrarSeguradora():
 
     return render_template('cadastrar_seguradora.html')
 
-
+#CADASTRAR SEGUROS
+@app.route('/')
 @app.route('/cadastrar_seguros.html', methods=['POST', 'GET'])
 def cadastrarSeguros():
+    # Criar a tabela apenas uma vez no início da aplicação
+    models.criar_tabela_seguros()
 
-    return render_template('/cadastrar_seguros.html')
+    if request.method == 'POST':
+        cpf = request.form.get('cpf_cadastrar_seguros')
+        placa = request.form.get('placa_cadastrar_seguros')
+        data_inicio = request.form.get('dt_contratacao_cadastrar_seguros')
+        data_termino = request.form.get('dt_vencimento_cadastrar_seguros')
+        pagamento = request.form.get('fm_paga_cadastrar_seguros')
+        apolice = request.form.get('apolice_cadastrar_seguros')
 
-@app.route("/")
+        # Estabelecer conexão com o banco de dados
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+
+        try:
+            # Obter o id_cotacao usando a placa do veículo
+            cursor.execute("SELECT id_cotacao FROM Cotacoes WHERE placa = ?", (placa,))
+            cotacao = cursor.fetchone()
+
+            if not cotacao:
+                return render_template('cadastrar_seguros.html', erro="Cotação não encontrada para a placa fornecida.")
+
+            id_cotacao = cotacao[0]
+
+            # Obter o valor total da cotação
+            cursor.execute("SELECT valor FROM Cotacoes WHERE id_cotacao = ?", (id_cotacao,))
+            valor_total = cursor.fetchone()[0]
+
+            # Inserir o seguro usando a apólice, id_cotacao e outros dados
+            cursor.execute("""
+                INSERT INTO Seguros (apolice, id_cotacao, valor_total, data_inicio, data_termino, pagamento) 
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (apolice, id_cotacao, valor_total, data_inicio, data_termino, pagamento))
+
+            banco.commit()
+            return render_template('sucesso.html', sucesso="Seguro cadastrado com sucesso!")
+        
+        except sqlite3.IntegrityError:
+            return render_template('cadastrar_seguros.html', erro="Erro ao cadastrar: verifique os dados e tente novamente.")
+        
+        finally:
+            banco.close()  # Fechar a conexão com o banco
+
+    return render_template('cadastrar_seguros.html')
+
+
+#CADASTRAR COTACOES
+
 @app.route('/cadastrar_cotação.html', methods=['POST', 'GET'])
 def cadastrarCotacao():    
     
@@ -188,7 +250,7 @@ def cadastrarCotacao():
 
     if request.method == 'POST':        
         cpf = int(request.form.get('cpf_cadastrar_cotacao'))
-        placa = request.form.get('placa_cadastrar_cotacao')
+        placa = request.form.get('placa_cadastrar_cotacao').strip().upper()
         nome_seguradora = request.form.get('seguradora_cadastrar_cotacao')
         data_cotacao = request.form.get('dt_cot_cadastrar_cotacao')
         valor = float(request.form.get('valor_cadastrar_cotacao'))
@@ -213,6 +275,13 @@ def cadastrarCotacao():
                 return render_template('cadastrar_cotação.html', erro="Seguradora não encontrada.")
             
             cnpj_seguradora = resultado[0]  # Obtém o CNPJ da seguradora
+
+            # Verifica se a placa existe no banco
+            cursor.execute("SELECT COUNT(*) FROM veiculos WHERE placa = ?", (placa,))
+            count_placa = cursor.fetchone()[0]
+
+            if count_placa == 0:
+                return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.")
 
             # Insere a cotação
             cursor.execute('''INSERT INTO Cotacoes (

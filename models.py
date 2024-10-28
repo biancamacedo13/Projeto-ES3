@@ -1,25 +1,19 @@
 import sqlite3
 
 def validar_cpf(cpf):
-    
     conn = sqlite3.connect('projetoES3.db')  
     cursor = conn.cursor()
 
-    
     cursor.execute("SELECT COUNT(*) FROM clientes WHERE cpf = ?", (cpf,))
     count = cursor.fetchone()[0]
 
-    
     conn.close()
-
-    
     return count > 0
 
 def criar_conexao():
     return sqlite3.connect('projetoES3.db')
 
 def criar_tabela_seguradora():
-
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
@@ -42,13 +36,12 @@ def criar_tabela_veiculos():
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS "Veiculos" (
-        "id_veiculos" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "placa" TEXT PRIMARY KEY,  -- 'placa' é a chave primária
         "cpf" INTEGER NOT NULL,
         "modelo" TEXT NOT NULL,
         "ano" TEXT NOT NULL,
         "cor" TEXT NOT NULL,
         "combustivel" TEXT CHECK(combustivel IN ('gasolina', 'alcool', 'flex', 'eletrico')),
-        "placa" TEXT NOT NULL UNIQUE,  -- Para evitar duplicatas
         "chassi" TEXT NOT NULL,
         "pernoite" TEXT CHECK(pernoite IN ('casa', 'rua', 'apt')),
         "cep_pernoite" INTEGER,
@@ -59,10 +52,9 @@ def criar_tabela_veiculos():
         "estacionamento" INTEGER CHECK(estacionamento IN (0, 1)),
         FOREIGN KEY ("cpf") REFERENCES clientes(cpf)
     );
-''')
+    ''')
     conexao.commit()
     conexao.close()
-
 
 def criar_tabela_cotacoes():
     conexao = criar_conexao()
@@ -71,22 +63,20 @@ def criar_tabela_cotacoes():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS "Cotacoes" (
             "id_cotacao" INTEGER PRIMARY KEY AUTOINCREMENT,
-            "placa" TEXT NOT NULL,
+            "placa" TEXT NOT NULL,  -- Mantendo apenas 'placa' como chave estrangeira
             "cpf" INTEGER NOT NULL,
             "data_inicio" TEXT NOT NULL,
             "valor" REAL NOT NULL,
-            "id_veiculo" INTEGER,
-            "cnpj_seguradora" TEXT NOT NULL,  -- Adiciona a coluna para a seguradora
+            "cnpj_seguradora" TEXT NOT NULL,  
             FOREIGN KEY ("cpf") REFERENCES clientes(cpf),
-            FOREIGN KEY ("id_veiculo") REFERENCES veiculos(id_veiculos),
-            FOREIGN KEY ("cnpj_seguradora") REFERENCES Seguradora(cnpj)  -- Chave estrangeira para a seguradora
+            FOREIGN KEY ("placa") REFERENCES Veiculos(placa),  -- Referência a 'placa'
+            FOREIGN KEY ("cnpj_seguradora") REFERENCES Seguradora(cnpj)
         );
     ''')
     conexao.commit()
     conexao.close()
 
 def criar_tabela_seguros():
-
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
@@ -97,16 +87,15 @@ def criar_tabela_seguros():
             "valor_total" REAL NOT NULL,
             "data_inicio" TEXT NOT NULL,
             "data_termino" TEXT NOT NULL,
-            "vencimento" TEXT NOT NULL,  
+            "pagamento" TEXT NOT NULL,  
             PRIMARY KEY("apolice"),
-            FOREIGN KEY ("id_cotacao") REFERENCES cotacoes(id_cotacao)
+            FOREIGN KEY ("id_cotacao") REFERENCES Cotacoes(id_cotacao)  -- Referência a 'Cotacoes'
         );
     ''')
     conexao.commit()
     conexao.close()
 
 def criar_tabela_cliente():
-
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
@@ -123,5 +112,7 @@ def criar_tabela_cliente():
             condutor_principal INTEGER CHECK (condutor_principal IN (0, 1)) NOT NULL,
             proprietario INTEGER CHECK (proprietario IN (0, 1)) NOT NULL,
             estado_civil TEXT CHECK (estado_civil IN ('solteiro', 'viuvo', 'casado', 'divorciado')) NOT NULL
-    );
+        );
     ''')
+    conexao.commit()
+    conexao.close()

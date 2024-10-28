@@ -4,17 +4,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Seguro</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
-    
-
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
 
-    <div class="metade" >
+    <div class="metade">
         <h1 id="tipo2">Cadastrar Seguro</h1>
         <span class="alerta2">{{erro}}</span>
         
-        <form name="form_cadastrar_seguros" action="/cadastrar_seguros.html" method="POST">
+        <form id="form_cadastrar_seguros" action="/cadastrar_seguros.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">CPF do segurado</label>
                 <input type="text" id="caixa" name="cpf_cadastrar_seguros" />
@@ -22,15 +20,9 @@
             </hgroup>
     
             <hgroup>
-                <label  id="tipo_formulario">Placa do veículo:</label>
+                <label id="tipo_formulario">Placa do veículo:</label>
                 <input type="text" id="caixa" name="placa_cadastrar_seguros"/>
                 <span class="alerta" id="span_placa_cadastrar_seguros"></span>
-            </hgroup>
-    
-            <hgroup>
-                <label id="tipo_formulario">Seguradora:</label>
-                <input type="text" id="caixa" name="seguradora_cadastrar_seguros"/><!--lista com seguradoras cadastradas-->
-                <span class="alerta" id="span_seguradora_cadastrar_seguros"></span>
             </hgroup>
             
             <hgroup>
@@ -46,7 +38,7 @@
             </hgroup>
 
             <hgroup>
-                <label id="tipo_formulario">Forma de pagamento:</label><!--lista com formas-->
+                <label id="tipo_formulario">Forma de pagamento:</label>
                 <select class="seletores" name="fm_paga_cadastrar_seguros">
                     <option selected value="credito">Crédito</option>
                     <option value="debito">Débito</option>
@@ -61,19 +53,20 @@
                 <input type="text" id="caixa" name="apolice_cadastrar_seguros"/>
                 <span class="alerta" id="span_apolice_cadastrar_seguros"></span>
             </hgroup>
-        </form>
+
+            <!-- Div para exibir a apólice gerada -->
+            <div id="apolice_exibida"></div>
             
             <div id="bt_vt">
-                <label id="botao1" name="label_cadastrar_seguros" tabindex="0">Cadastrar</label>
+                <label class="botao1" id="buttom_cadastrar_seguros">Cadastrar</label>
 
                 <a href="seguros.html">
-                    <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+                    <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
                 </a>
-                
             </div>
+        </form>
     </div>
 
     <script src="../static/script/cadastrar_seguros.js"></script>
-
 </body>
 </html>
