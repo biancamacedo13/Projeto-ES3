@@ -3,9 +3,6 @@ document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
     const cpf = document.getElementsByName('cpf_cadastrar_cotacao')[0].value.trim();
     const alertacpf = document.getElementById('span_cpf_cadastrar_cotacao');
 
-    const seguradora = document.getElementsByName('seguradora_cadastrar_cotacao')[0].value.trim();
-    const alertaseguradora = document.getElementById('span_seguradora_cadastrar_cotacao');
-
     const dtcot = document.getElementsByName('dt_cot_cadastrar_cotacao')[0].value.trim();
     const alertadtcot = document.getElementById('span_dt_cot_cadastrar_cotacao');
 
@@ -17,7 +14,6 @@ document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
 
     // Limpa mensagens de erro
     alertacpf.textContent = '';
-    alertaseguradora.textContent = '';
     alertadtcot.textContent = '';
     alertaplaca.textContent = '';
     alertavalor.textContent = '';
@@ -30,12 +26,6 @@ document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
         valido = false;
     } else if (!/^\d{11}$/.test(cpf)) {
         alertacpf.textContent = '11 dígitos!';
-        valido = false;
-    }
-
-
-  if (seguradora === '') {
-        alertaseguradora.textContent = 'Campo vazio!';
         valido = false;
     }
 

@@ -13,6 +13,10 @@ def validar_cpf(cpf):
 def criar_conexao():
     return sqlite3.connect('projetoES3.db')
 
+
+#########
+# SEGURADORA
+#######
 def criar_tabela_seguradora():
     conexao = criar_conexao()
     cursor = conexao.cursor()
@@ -30,6 +34,9 @@ def criar_tabela_seguradora():
     conexao.commit()
     conexao.close()
 
+#####################
+#VEICULOS
+########################
 def criar_tabela_veiculos():
     conexao = criar_conexao()
     cursor = conexao.cursor()
@@ -56,6 +63,10 @@ def criar_tabela_veiculos():
     conexao.commit()
     conexao.close()
 
+#############################
+#COTAÇÔES
+##########################
+
 def criar_tabela_cotacoes():
     conexao = criar_conexao()
     cursor = conexao.cursor()
@@ -76,6 +87,10 @@ def criar_tabela_cotacoes():
     conexao.commit()
     conexao.close()
 
+############################
+#SEGUROS
+########################
+
 def criar_tabela_seguros():
     conexao = criar_conexao()
     cursor = conexao.cursor()
@@ -95,6 +110,10 @@ def criar_tabela_seguros():
     conexao.commit()
     conexao.close()
 
+
+##########################
+#CLIENTES
+############################
 def criar_tabela_cliente():
     conexao = criar_conexao()
     cursor = conexao.cursor()

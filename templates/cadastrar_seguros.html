@@ -15,13 +15,18 @@
         <form id="form_cadastrar_seguros" action="/cadastrar_seguros.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">CPF do segurado</label>
-                <input type="text" id="caixa" name="cpf_cadastrar_seguros" />
+                <select class="seletores" name="cpf_cadastrar_seguros" id="cpf_cadastrar_seguros" required>
+                    <option value="">Selecione um CPF</option>
+                    {% for cpf in cpfs_clientes %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                    {% endfor %}
+                </select>
                 <span class="alerta" id="span_cpf_cadastrar_seguros"></span>
             </hgroup>
     
             <hgroup>
                 <label id="tipo_formulario">Placa do veículo:</label>
-                <input type="text" id="caixa" name="placa_cadastrar_seguros"/>
+                <input type="text" id="caixa" name="placa_cadastrar_seguros" required>
                 <span class="alerta" id="span_placa_cadastrar_seguros"></span>
             </hgroup>
             
@@ -58,7 +63,7 @@
             <div id="apolice_exibida"></div>
             
             <div id="bt_vt">
-                <label class="botao1" id="buttom_cadastrar_seguros">Cadastrar</label>
+                <button type="submit" class="botao1" id="buttom_cadastrar_seguros">Cadastrar</button>
 
                 <a href="seguros.html">
                     <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
@@ -66,7 +71,6 @@
             </div>
         </form>
     </div>
-
     <script src="../static/script/cadastrar_seguros.js"></script>
 </body>
 </html>

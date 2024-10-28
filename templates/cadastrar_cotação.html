@@ -22,7 +22,11 @@
     
             <hgroup>
                 <label  id="tipo_formulario">Seguradora:</label>
-                <input type="text" name="seguradora_cadastrar_cotacao" id="caixa" /><!--Como gera barra de opções-->
+                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotaca" required>
+                    {% for seguradora in seguradoras %}
+                        <option value="{{ seguradora }}">{{ seguradora }}</option>
+                    {% endfor %}
+                </select>
                 <span class="alerta" id="span_seguradora_cadastrar_cotacao"></span>
             </hgroup>
     
@@ -46,7 +50,7 @@
         
             
             <div id="bt_vt">
-                <button id="botao1" name="label_cadastrar_cotacao" type="submit">Cadastrar</button>
+                <button class="botao1" name="label_cadastrar_cotacao" type="submit">Cadastrar</button>
                 
                 <a href="cotações.html">
                     <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>

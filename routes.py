@@ -194,8 +194,29 @@ def cadastrarSeguradora():
 @app.route('/')
 @app.route('/cadastrar_seguros.html', methods=['POST', 'GET'])
 def cadastrarSeguros():
-    # Criar a tabela apenas uma vez no início da aplicação
+    # Criar a tabela de seguros apenas uma vez no início da aplicação
     models.criar_tabela_seguros()
+
+    # Estabelecer conexão com o banco de dados
+    banco = models.criar_conexao()
+    cursor = banco.cursor()
+
+    # Obter todos os CPFs dos clientes
+    cursor.execute("SELECT cpf FROM clientes")
+    cpfs_clientes = [str(cpf[0]) for cpf in cursor.fetchall()]
+
+    # Obter todas as placas e associá-las ao CPF
+    cursor.execute("SELECT cpf, placa FROM veiculos")
+    veiculos_por_cliente = cursor.fetchall()
+
+    # Organizar as placas por CPF em um dicionário
+    placas_por_cliente = {}
+    for cpf, placa in veiculos_por_cliente:
+        if cpf not in placas_por_cliente:
+            placas_por_cliente[cpf] = []
+        placas_por_cliente[cpf].append(placa)
+
+    banco.close()  # Fechar a conexão com o banco
 
     if request.method == 'POST':
         cpf = request.form.get('cpf_cadastrar_seguros')
@@ -205,17 +226,33 @@ def cadastrarSeguros():
         pagamento = request.form.get('fm_paga_cadastrar_seguros')
         apolice = request.form.get('apolice_cadastrar_seguros')
 
-        # Estabelecer conexão com o banco de dados
         banco = models.criar_conexao()
         cursor = banco.cursor()
 
         try:
-            # Obter o id_cotacao usando a placa do veículo
+            # Verificar se a placa está associada ao CPF fornecido
+            cursor.execute("SELECT placa FROM veiculos WHERE cpf = ? AND placa = ?", (cpf, placa))
+            placa_associada = cursor.fetchone()
+
+            if not placa_associada:
+                return render_template(
+                    'cadastrar_seguros.html',
+                    erro="Placa não vinculada ao CPF informado.",
+                    cpfs_clientes=cpfs_clientes,
+                    placas_por_cliente=placas_por_cliente
+                )
+
+            # Obter o id_cotacao para a placa selecionada
             cursor.execute("SELECT id_cotacao FROM Cotacoes WHERE placa = ?", (placa,))
             cotacao = cursor.fetchone()
 
             if not cotacao:
-                return render_template('cadastrar_seguros.html', erro="Cotação não encontrada para a placa fornecida.")
+                return render_template(
+                    'cadastrar_seguros.html',
+                    erro="Cotação não encontrada para a placa fornecida.",
+                    cpfs_clientes=cpfs_clientes,
+                    placas_por_cliente=placas_por_cliente
+                )
 
             id_cotacao = cotacao[0]
 
@@ -223,7 +260,7 @@ def cadastrarSeguros():
             cursor.execute("SELECT valor FROM Cotacoes WHERE id_cotacao = ?", (id_cotacao,))
             valor_total = cursor.fetchone()[0]
 
-            # Inserir o seguro usando a apólice, id_cotacao e outros dados
+            # Inserir o seguro na tabela Seguros
             cursor.execute("""
                 INSERT INTO Seguros (apolice, id_cotacao, valor_total, data_inicio, data_termino, pagamento) 
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -231,22 +268,44 @@ def cadastrarSeguros():
 
             banco.commit()
             return render_template('sucesso.html', sucesso="Seguro cadastrado com sucesso!")
-        
+
         except sqlite3.IntegrityError:
-            return render_template('cadastrar_seguros.html', erro="Erro ao cadastrar: verifique os dados e tente novamente.")
-        
+            return render_template(
+                'cadastrar_seguros.html',
+                erro="Erro ao cadastrar: verifique os dados e tente novamente.",
+                cpfs_clientes=cpfs_clientes,
+                placas_por_cliente=placas_por_cliente
+            )
+
         finally:
             banco.close()  # Fechar a conexão com o banco
 
-    return render_template('cadastrar_seguros.html')
+    # Renderizar o formulário com as listas de CPFs e placas vinculadas
+    return render_template(
+        'cadastrar_seguros.html',
+        cpfs_clientes=cpfs_clientes,
+        placas_por_cliente=placas_por_cliente
+    )
+
 
 
 #CADASTRAR COTACOES
 
 @app.route('/cadastrar_cotação.html', methods=['POST', 'GET'])
-def cadastrarCotacao():    
+def cadastrarCotacao():
     
-    models.criar_tabela_cotacoes()  
+    if request.method == 'GET':
+        models.criar_tabela_cotacoes()
+
+        banco = models.criar_conexao()
+        cursor = banco.cursor()
+        cursor.execute("SELECT nome FROM Seguradora")
+        seguradoras = cursor.fetchall()
+
+        banco.close()
+        
+        return render_template('cadastrar_cotação.html', seguradoras=[s[0] for s in seguradoras])
+  
 
     if request.method == 'POST':        
         cpf = int(request.form.get('cpf_cadastrar_cotacao'))
