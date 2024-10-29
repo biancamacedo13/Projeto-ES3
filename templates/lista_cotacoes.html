@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Cliente</title>
+    <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
+</head>
+<body>
+    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+
+    <div class="metade">
+        <h1 id="tipo2">Consultar Cotação</h1>
+        {% for cotacao in cotacoes %}
+            <label class="lista">{{cotacao[2]}}</label>
+        {% endfor %}
+            <ul id="lista_cotacoes">
+                {% for cotacao in cotacoes %}
+                <li onclick="selecionarCotacao('{{ cotacao[0] }}')">
+                    Cotação ID: {{ cotacao[0] }} - Placa: {{ cotacao[1] }} - Valor: R$ {{ cotacao[4] }} - Data: {{ cotacao[3] }}
+                </li>
+                {% endfor %}
+            </ul>
+
+
+        <div id="bt_vt">
+            <a href="consultar_cotacao1.html">
+                <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+            </a>
+        </div>
+    </div>
+    <script src="../static/script/lista_cotacoes.js"></script>
+</body>
+</html>

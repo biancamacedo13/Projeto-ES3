@@ -57,6 +57,32 @@
             <textarea readonly>{{ cliente[7] }}</textarea>    
         </hgroup>
 
+        <hgroup>
+            <label id="tipo_formulario">Condutor Principal:</label>
+            <div class="radio">
+                <p class="visualizar">
+                    {% if veiculo[8] == 1 %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Proprietário:</label>
+            <div class="radio">
+                <p class="visualizar">
+                    {% if veiculo[9] == 1 %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
+        </hgroup>
+
         <div id="bt_vt">
             <label id="botao1">Atualizar</label>
             <a href="consultar_cliente1.html">

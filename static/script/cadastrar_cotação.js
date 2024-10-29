@@ -60,17 +60,11 @@ document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
     if (cpf === '') {
         alertacpf.textContent = 'Campo vazio!';
         valido = false;
-    } else if (!/^\d{11}$/.test(cpf)) {
-        alertacpf.textContent = '11 dígitos!';
-        valido = false;
-    }
+    } 
 
 
     if (placa === '') {
         alertaplaca.textContent = 'Campo vazio!';
-        valido = false;
-    } else if (!/^[A-Za-z]{4}\d{3}$/.test(placa)) {
-        alertaplaca.textContent = 'Formato inválido! Deve ser 4 letras seguidas de 3 números.';
         valido = false;
     }
 

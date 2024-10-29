@@ -41,16 +41,17 @@ def criar_tabela_veiculos():
     conexao = criar_conexao()
     cursor = conexao.cursor()
 
+    # Criar a tabela
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS "Veiculos" (
-        "placa" TEXT PRIMARY KEY,  -- 'placa' é a chave primária
+        "placa" TEXT PRIMARY KEY,
         "cpf" INTEGER NOT NULL,
         "modelo" TEXT NOT NULL,
         "ano" TEXT NOT NULL,
         "cor" TEXT NOT NULL,
         "combustivel" TEXT CHECK(combustivel IN ('gasolina', 'alcool', 'flex', 'eletrico')),
         "chassi" TEXT NOT NULL,
-        "pernoite" TEXT CHECK(pernoite IN ('casa', 'rua', 'apt')),
+        "pernoite" TEXT CHECK(pernoite IN ('Casa', 'Rua', 'Apartamento')),
         "cep_pernoite" INTEGER,
         "garagem" INTEGER CHECK(garagem IN (0, 1)),
         "rastreador" INTEGER CHECK(rastreador IN (0, 1)),

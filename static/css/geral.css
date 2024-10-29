@@ -296,3 +296,6 @@ p.visualizar{
     font-size: 20pt; 
     align-items: center;
 }
+textarea.seguradora{
+    height: 50px;
+}

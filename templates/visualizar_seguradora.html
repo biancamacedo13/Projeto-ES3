@@ -5,39 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Seguradora</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
-
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
  
     <div class="metade">
         <h1 id="tipo2">Visualizar Seguradora</h1>
+        <span class="alerta2">{{erro}}</span>
                
         <hgroup>
-            <label  id="tipo_formulario">Nome:</label>
-            <textarea name="nome_visualizar_seguradora" readonly></textarea>
-              
+            <label id="tipo_formulario">Nome:</label>
+            <textarea class="seguradora" readonly>{{ seguradora[0] }}</textarea>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">CNPJ:</label>
-            <textarea name="cnpj_visualizar_seguradora" readonly></textarea> 
+            <label id="tipo_formulario">CNPJ:</label>
+            <textarea class="seguradora" readonly>{{ seguradora[1] }}</textarea>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Endereço:</label>
-            <textarea name="endereco_visualizar_seguradora" readonly></textarea>    
+            <label id="tipo_formulario">Endereço:</label>
+            <textarea class="seguradora" readonly>{{ seguradora[3] }}</textarea>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Telefone:</label>
-            <textarea name="tel_visualizar_seguradora" readonly></textarea>
-              
+            <label id="tipo_formulario">Telefone:</label>
+            <textarea class="seguradora" readonly>{{ seguradora[4] }}</textarea>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">E-mail:</label>
-            <textarea name="email_visualizar_seguradora" readonly></textarea> 
+            <label id="tipo_formulario">E-mail:</label>
+            <textarea class="seguradora" readonly>{{ seguradora[2] }}</textarea>
         </hgroup>
 
         <div id="bt_vt">

@@ -3,6 +3,7 @@ from flask import render_template,request, redirect, url_for,flash,jsonify
 import sqlite3
 import models
 import json
+import re
 
 
 USERNAME = "adm"
@@ -191,9 +192,6 @@ def cadastrar_veiculo():
 #CADASTRAR SEGURADORA
 @app.route('/cadastrar_seguradora.html', methods=['POST', 'GET'])
 def cadastrarSeguradora():
-    
-    models.criar_tabela_seguradora()  
-    
     if request.method == 'POST':
         nome = request.form.get('nome_cadastrar_seguradora')
         cnpj = request.form.get('cnpj_cadastrar_seguradora')
@@ -201,19 +199,26 @@ def cadastrarSeguradora():
         endereco = request.form.get('endereco_cadastrar_seguradora')
         tel = request.form.get('tel_cadastrar_seguradora')
 
+        # Validação de campos
+        if not nome or not cnpj or not email or not endereco or not tel:
+            return render_template('cadastrar_seguradora.html', erro="Todos os campos são obrigatórios.")
+
         banco = models.criar_conexao()
         cursor = banco.cursor()
-
+        
         try:
-            cursor.execute("INSERT INTO Seguradora (nome, cnpj, email, endereco, telefone) VALUES (?, ?, ?, ?, ?)", (nome, cnpj, email, endereco, tel))
+            cursor.execute("INSERT INTO Seguradora (nome, cnpj, email, endereco, telefone) VALUES (?, ?, ?, ?, ?)", 
+                           (nome, cnpj, email, endereco, tel))
             banco.commit()
             return render_template('sucesso.html', sucesso="Cadastro Feito com Sucesso!")
         except sqlite3.IntegrityError:
-            return render_template('cadastrar_seguradora.html',erro ="O CNPJ já existe no banco de dados.")
+            return render_template('cadastrar_seguradora.html', erro="O CNPJ já existe no banco de dados.")
         finally:
-            banco.close()
+            if banco:
+                banco.close()
 
     return render_template('cadastrar_seguradora.html')
+
 
 #CADASTRAR SEGUROS
 @app.route('/cadastrar_seguros.html', methods=['POST', 'GET'])
@@ -311,96 +316,95 @@ def cadastrarSeguros():
     )
 
 #CADASTRAR COTACOES
-@app.route('/cadastrar_cotação.html', methods=['POST', 'GET']) 
+@app.route('/cadastrar_cotacao.html', methods=['POST', 'GET'])
 def cadastrarCotacao():
-    cpfs_clientes = []  # Inicializa a variável antes do uso
-    seguradoras = []  
+    cpfs_clientes = []
+    seguradoras = []
 
     if request.method == 'GET':
         models.criar_tabela_cotacoes()
-
         banco = models.criar_conexao()
         cursor = banco.cursor()
 
         try:
-            # Obtém os nomes das seguradoras
             cursor.execute("SELECT nome FROM Seguradora")
-            seguradoras = cursor.fetchall()    
+            seguradoras = cursor.fetchall()
 
-            # Obtém os CPFs dos clientes
             cursor.execute("SELECT cpf FROM clientes")
-            cpfs_clientes = cursor.fetchall()     
-            cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
-        
+            cpfs_clientes = [cpf[0] for cpf in cursor.fetchall()]
+
         finally:
-            banco.close()  # Fecha a conexão independentemente de ter ocorrido um erro
+            banco.close()
 
+        return render_template('cadastrar_cotacao.html', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
 
-        return render_template('cadastrar_cotação.html', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
-
-    if request.method == 'POST':        
-        cpf = int(request.form.get('cpf_cadastrar_cotacao'))
+    if request.method == 'POST':
+        cpf = request.form.get('cpf_cadastrar_cotacao')
         placa = request.form.get('placa_cadastrar_cotacao')
         nome_seguradora = request.form.get('seguradora_cadastrar_cotacao')
         data_cotacao = request.form.get('dt_cot_cadastrar_cotacao')
-        valor = float(request.form.get('valor_cadastrar_cotacao'))
+        valor = request.form.get('valor_cadastrar_cotacao')
 
-        print(f"CPF: {cpf}, Placa: {placa}, Seguradora: {nome_seguradora}, Data Cotação: {data_cotacao}, Valor: {valor}")
+        # Validação do CPF
+        if not cpf:
+            return render_template('cadastrar_cotacao.html', v1='Campo vazio', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
 
-        banco = None  # Inicializa como None
+        # Validação da Placa
+        if not placa:
+            return render_template('cadastrar_cotacao.html', v3='Campo vazio', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
+
+        # Validação da Data de Cotação
+        if not data_cotacao:
+            return render_template('cadastrar_cotacao.html', v4='Campo vazio', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
+
+        # Validação do Valor
+        try:
+            valor = float(valor)
+        except (ValueError, TypeError):
+            return render_template('cadastrar_cotacao.html', v5='Campo vazio ou valor inválido', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
+
         try:
             banco = models.criar_conexao()
             cursor = banco.cursor()
 
-            # Verifica se o CPF do cliente existe no banco
+            # Verifica se o CPF do cliente existe
             cursor.execute("SELECT COUNT(*) FROM clientes WHERE cpf = ?", (cpf,))
-            count_cliente = cursor.fetchone()[0]
+            if cursor.fetchone()[0] == 0:
+                return render_template('cadastrar_cotacao.html', erro="O CPF informado não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
-            if count_cliente == 0:
-                return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
-
-            # Verifica se a seguradora existe no banco pelo nome e obtém o CNPJ
+            # Verifica se a seguradora existe e obtém o CNPJ
             cursor.execute("SELECT cnpj FROM Seguradora WHERE nome = ?", (nome_seguradora,))
             resultado = cursor.fetchone()
-
             if resultado is None:
-                return render_template('cadastrar_cotação.html', erro='Seguradora não encontrada.', cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
-            
-            cnpj_seguradora = resultado[0]  # Obtém o CNPJ da seguradora
+                return render_template('cadastrar_cotacao.html', erro='Seguradora não encontrada.', cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
+
+            cnpj_seguradora = resultado[0]
 
             # Verifica se a placa existe no banco
             cursor.execute("SELECT COUNT(*) FROM veiculos WHERE placa = ?", (placa,))
-            count_placa = cursor.fetchone()[0]
-
-            if count_placa == 0:
-                return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
+            if cursor.fetchone()[0] == 0:
+                return render_template('cadastrar_cotacao.html', erro="A placa informada não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
             # Insere a cotação
-            cursor.execute('''INSERT INTO Cotacoes (
-                cpf, placa, cnpj_seguradora, data_inicio, valor
-            ) VALUES (?, ?, ?, ?, ?)''', (cpf, placa, cnpj_seguradora, data_cotacao, valor))
-
+            cursor.execute('''INSERT INTO Cotacoes (cpf, placa, cnpj_seguradora, data_inicio, valor) VALUES (?, ?, ?, ?, ?)''', (cpf, placa, cnpj_seguradora, data_cotacao, valor))
             banco.commit()
             return render_template('sucesso.html', sucesso="Cotação cadastrada com sucesso!")
 
         except sqlite3.IntegrityError as e:
-            # Verifica qual campo causou o erro
             if 'FOREIGN KEY constraint failed' in str(e):
-                if 'clientes' in str(e):
-                    return render_template('cadastrar_cotação.html', erro="O CPF informado não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
-                elif 'veiculos' in str(e):
-                    return render_template('cadastrar_cotação.html', erro="A placa informada não existe no banco de dados.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
+                erro_msg = "Erro de chave estrangeira: Verifique se o CPF e a placa estão cadastrados."
             else:
-                return render_template('cadastrar_cotação.html', erro="Erro de integridade desconhecido.", cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
+                erro_msg = "Erro de integridade desconhecido."
+            return render_template('cadastrar_cotacao.html', erro=erro_msg, cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
         except Exception as e:
-            return render_template('cadastrar_cotação.html', erro=str(e), cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
+            return render_template('cadastrar_cotacao.html', erro=str(e), cpfs_clientes=cpfs_clientes, seguradoras=[s[0] for s in seguradoras])
 
         finally:
-            if banco:  # Verifica se a conexão foi criada antes de tentar fechá-la
+            if banco:
                 banco.close()
 
-    return render_template('cadastrar_cotação.html', cpfs_clientes=cpfs_clientes, seguradoras=seguradoras)  # Adicione as variáveis ao final para o método GET
+    return render_template('cadastrar_cotacao.html', cpfs_clientes=cpfs_clientes, seguradoras=seguradoras)
 
 ############################
 #CONSULTAS
@@ -464,62 +468,57 @@ def consultarCliente1():
     return render_template('consultar_cliente1.html', cpfs=cpfs)
 
 #CONSULTAR VEICULOS
-@app.route('/')
 @app.route('/consultar_veículo.html', methods=['POST', 'GET'])
-def consultarVeiculo():
+def consultarVeiculo1():
+    banco = None  # Inicializa como None
+
     if request.method == 'POST':
         cpf = request.form.get('cpf_consultar_veiculo')
         placa = request.form.get('placa_consultar_veiculo')
         chassi = request.form.get('chassi_consultar_veiculo')
 
-        banco = None  # Inicializa como None
-
         try:
             banco = models.criar_conexao()
             cursor = banco.cursor()
 
-            # Dicionário de opções para local de pernoite
-            pernoite_options = {
-                "casa": "Casa",
-                "rua": "Rua",
-                "apt": "Apartamento"
-            }
-
-            # Consulta para buscar veículo e nome do proprietário
+            # Primeiro tenta buscar pelo CPF
             if cpf:
                 cursor.execute("""
-                    SELECT veiculos.*, clientes.nome 
-                    FROM Veiculos 
-                    JOIN clientes ON Veiculos.cpf = clientes.cpf 
-                    WHERE Veiculos.cpf = ?
+                    SELECT V.*, C.nome 
+                    FROM Veiculos V 
+                    JOIN clientes C ON V.cpf = C.cpf 
+                    WHERE V.cpf = ?
                 """, (cpf,))
                 veiculo = cursor.fetchone()
+                print(f"Consulta pelo CPF: {veiculo}")  # Print para verificar o resultado da consulta
                 if veiculo:
-                    return render_template("visualizar_veiculo.html", veiculo=veiculo, pernoite_options=pernoite_options)
+                    return render_template('visualizar_veiculo.html', veiculo=veiculo)
 
-            # Se não encontrou pelo CPF, busca pela placa
+            # Se não encontrou pelo CPF, tenta buscar pela placa
             if placa:
                 cursor.execute("""
-                    SELECT veiculos.*, clientes.nome 
-                    FROM Veiculos 
-                    JOIN clientes ON Veiculos.cpf = clientes.cpf 
-                    WHERE Veiculos.placa = ?
+                    SELECT V.*, C.nome 
+                    FROM Veiculos V 
+                    JOIN clientes C ON V.cpf = C.cpf 
+                    WHERE V.placa = ?
                 """, (placa,))
                 veiculo = cursor.fetchone()
+                print(f"Consulta pela Placa: {veiculo}")  # Print para verificar o resultado da consulta
                 if veiculo:
-                    return render_template("visualizar_veiculo.html", veiculo=veiculo, pernoite_options=pernoite_options)
+                    return render_template('visualizar_veiculo.html', veiculo=veiculo)
 
-            # Se não encontrou pelo CPF ou placa, busca pelo chassi
+            # Se não encontrou pela placa, tenta buscar pelo chassi
             if chassi:
                 cursor.execute("""
-                    SELECT veiculos.*, clientes.nome 
-                    FROM Veiculos 
-                    JOIN clientes ON Veiculos.cpf = clientes.cpf 
-                    WHERE Veiculos.chassi = ?
+                    SELECT V.*, C.nome 
+                    FROM Veiculos V 
+                    JOIN clientes C ON V.cpf = C.cpf 
+                    WHERE V.chassi = ?
                 """, (chassi,))
                 veiculo = cursor.fetchone()
+                print(f"Consulta pelo Chassi: {veiculo}")  # Print para verificar o resultado da consulta
                 if veiculo:
-                    return render_template("visualizar_veiculo.html", veiculo=veiculo, pernoite_options=pernoite_options)
+                    return render_template('visualizar_veiculo.html', veiculo=veiculo)
 
             # Se não encontrou nenhum veículo
             return render_template('consultar_veículo.html', erro="Veículo não encontrado.")
@@ -528,82 +527,165 @@ def consultarVeiculo():
             return render_template('consultar_veículo.html', erro=str(e))
 
         finally:
-            if banco:
+            if banco:  # Verifica se a conexão foi criada antes de tentar fechá-la
                 banco.close()
 
     return render_template('consultar_veículo.html')
 
 
+#CONSULTAR SEGURADORAS
 
-
-
-@app.route('/consultar_seguradora.html')
+@app.route('/consultar_seguradora.html', methods=['GET', 'POST'])
 def consultarSeguradora1():
-    return render_template('/consultar_seguradora.html')
+    banco = models.criar_conexao()
+    cursor = banco.cursor()
+
+    cursor.execute("SELECT cnpj FROM Seguradora")
+    cnpjs = cursor.fetchall()
+    cnpjs = [cnpj[0] for cnpj in cnpjs]   
+
+    banco.close()
+
+    if request.method == 'POST':
+        nome = request.form.get('nome_consultar_seguradora')
+        cnpj = request.form.get('cnpj_consultar_seguradora')
+
+        try:
+            banco = models.criar_conexao()
+            cursor = banco.cursor()
+
+            # Primeiro tenta buscar pelo CNPJ
+            if cnpj:
+                cursor.execute("""SELECT * FROM Seguradora WHERE cnpj = ?""", (cnpj,))
+                seguradora = cursor.fetchone()
+                print(f"Consulta pelo CNPJ: {seguradora}")
+                if seguradora:
+                    return render_template('visualizar_seguradora.html', seguradora=seguradora)
+
+            # Se não encontrou pelo CNPJ, tenta buscar pelo nome
+            if nome:
+                cursor.execute("""SELECT * FROM Seguradora WHERE nome = ?""", (nome,))
+                seguradora = cursor.fetchone()
+                print(f"Consulta pelo Nome: {seguradora}")
+                if seguradora:
+                    return render_template('visualizar_seguradora.html', seguradora=seguradora, cnpjs=cnpjs)
+
+            return render_template('consultar_seguradora.html', erro='Seguradora não encontrada!', cnpjs=cnpjs)
+
+        except Exception as e:
+            return render_template('consultar_seguradora.html', erro=str(e))
+
+        finally:
+            if banco:
+                banco.close()
+
+    return render_template('consultar_seguradora.html', cnpjs=cnpjs)
 
 @app.route('/consultar_seguros.html')
 def consultarSeguros1():
     return render_template('/consultar_seguros.html')
 
-@app.route('/consultar_cotação1.html')
+#CONSULTAR COTACOES
+@app.route('/')
+@app.route('/consultar_cotacao1.html', methods=['GET', 'POST'])
 def consultarCotacoes1():
     
     cpfs_clientes = []  # Inicializa a variável antes do uso
     seguradoras = []  
+    placas_por_cliente = {}  # Dicionário para armazenar placas por CPF
 
-    if request.method == 'GET':
+    
+    banco = models.criar_conexao()
+    cursor = banco.cursor()
 
-        banco = models.criar_conexao()
-        cursor = banco.cursor()
+    try:
+        # Obtém os nomes das seguradoras
+        cursor.execute("SELECT nome FROM Seguradora")
+        seguradoras = cursor.fetchall()    
+
+        # Obtém os CPFs dos clientes
+        cursor.execute("SELECT cpf FROM clientes")
+        cpfs_clientes = cursor.fetchall()     
+        cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
+            
+        # Obtém os veículos e associações de CPF
+        cursor.execute("SELECT cpf, placa FROM veiculos")
+        veiculos_por_cliente = cursor.fetchall()
+
+        # Organizar as placas por CPF em um dicionário
+        for cpf, placa in veiculos_por_cliente:
+            if cpf not in placas_por_cliente:
+                placas_por_cliente[cpf] = []
+            placas_por_cliente[cpf].append(placa)
+        
+    finally:
+        banco.close()  # Fecha a conexão independentemente de ter ocorrido um erro
+
+    if request.method == 'POST':
+        
+        cpf2 = request.form.get('cpf_consultar_cotacao1')
+        placa2 = request.form.get('placa_consultar_cotacao1')
+        seguradora = request.form.get('seguradora_cadastrar_cotacao')
+        data = request.form.get('dt_sol_consultar_cotacao1')
 
         try:
-            # Obtém os nomes das seguradoras
-            cursor.execute("SELECT nome FROM Seguradora")
-            seguradoras = cursor.fetchall()    
+            banco = models.criar_conexao()
+            cursor = banco.cursor()
 
-            # Obtém os CPFs dos clientes
-            cursor.execute("SELECT cpf FROM clientes")
-            cpfs_clientes = cursor.fetchall()     
-            cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
-        
+            if cpf:
+                cursor.execute("""
+                    SELECT C.*, V.modelo, CL.nome
+                    FROM Cotacoes C
+                    JOIN Veiculos V ON C.placa = V.placa
+                    JOIN clientes CL ON C.cpf = CL.cpf
+                    WHERE C.cpf = ?
+                """, (cpf,))
+                cotacoes = cursor.fetchall()  # Obtém todas as cotações associadas ao CPF
+                print(f"Consulta pelo CPF: {cotacoes}")  # Exibe a lista de cotações retornadas para verificação
+  # Print para verificar o resultado da consulta
+                if cotacoes:
+                    return render_template('lista_cotacoes.html', cotacoes=cotacoes)
+        except:
+            return render_template(
+            'consultar_cotacao1.html', 
+            seguradoras=[s[0] for s in seguradoras], 
+            cpfs_clientes=cpfs_clientes, 
+            placas_por_cliente=placas_por_cliente,
+            erro = 'Nenhuma cotação encontrada'
+        )
+
         finally:
-            banco.close()  # Fecha a conexão independentemente de ter ocorrido um erro
+            if banco:
+                banco.close()
 
 
-        return render_template('cadastrar_cotação.html', seguradoras=[s[0] for s in seguradoras], cpfs_clientes=cpfs_clientes)
+    return render_template(
+            'consultar_cotacao1.html', 
+            seguradoras=[s[0] for s in seguradoras], 
+            cpfs_clientes=cpfs_clientes, 
+            placas_por_cliente=placas_por_cliente  # Envia o dicionário para o template
+        )
 
-    return render_template('/consultar_cotação1.html')
+############################
+#LISTAS
+#######################
+@app.route('/lista_seguros.html')
+def listaSeguros():
+    return render_template('/lista_seguros.html')
 
-#consultar2
-@app.route('/consultar_cliente2.html')
-def consultarCliente2():
-    return render_template('/consultar_cliente2.html')
-
-@app.route('/consultar_veículo2.html')
-def consultarVeiculo2():
-    return render_template('/consultar_veículo2.html')
-
-@app.route('/consultar_seguradora2.html')
-def consultarSeguradora2():
-    return render_template('/consultar_seguradora2.html')
-
-@app.route('/consultar_seguros2.html')
-def consultarSeguros2():
-    return render_template('/consultar_seguros2.html')
-
-@app.route('/consultar_cotações2.html')
-def consultarCotacoes2():
-    return render_template('/consultar_cotações2.html')
+@app.route('/lista_cotacoes.html')
+def listaCotacoes():
+    return render_template('/lista_cotacoes.html')
 
 #visualizar
 @app.route('/visualizar_cliente.html')
 def visualizarCliente():
     return render_template('/visualizar_cliente.html')
 
-@app.route('/visualizar_veículo.html')
+@app.route('/visualizar_veiculo.html')
 def visualizarVeiculo():
 
-    return render_template('/visualizar_veículo.html')
+    return render_template('/visualizar_veiculo.html')
 
 @app.route('/visualizar_seguradora.html')
 def visualizarSeguradora():

@@ -41,6 +41,6 @@ document.getElementsByName('label_consultar_seguradora')[0].onclick = function v
 
         if (valido) {
             // Se pelo menos um campo estiver preenchido e válido, exibe mensagem de sucesso
-            window.alert('Pelo menos um campo válido foi preenchido.');
+            document.getElementById('form_consultar_seguradora').submit();
         }
-    };
+};

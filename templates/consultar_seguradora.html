@@ -11,9 +11,9 @@
 
     <div class="metade">
         <h1 id="tipo2">Consultar Seguradora</h1>
-        <span id="geral_consultar_seguradora" class="alerta2"></span>
+        <span id="geral_consultar_seguradora" class="alerta2">{{erro}}</span>
         
-        <form name="form_consultar_seguradora" action="/consultar_seguradora.html" method="POST">
+        <form id="form_consultar_seguradora" action="/consultar_seguradora.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">Nome:</label>
                 <input type="text" id="caixa" name="nome_consultar_seguradora"/>
@@ -22,7 +22,12 @@
             
             <hgroup>
                 <label id="tipo_formulario" >CNPJ:</label>
-                <input type="text" id="caixa" name="cnpj_consultar_seguradora" placeholder="apenas números"/>
+                <select class="seletores" name="cnpj_consultar_seguradora" id="cnpj_consultar_seguradora" required>
+                    <option value="">Selecione um CNPJ</option>
+                        {% for cnpj in cnpjs %}
+                        <option value="{{ cnpj }}">{{ cnpj }}</option>
+                        {% endfor %}
+                </select>
                 <span class="alerta" id="span_cnpj_consultar_seguradora"></span>
             </hgroup>
         </form>

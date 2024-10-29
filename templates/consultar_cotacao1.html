@@ -12,12 +12,12 @@
 
     <div class="metade">
         <h1 id="tipo2">Consultar Cotação</h1>
-        <span class="alerta2" id="geral_consultar_cotacao"></span>
+        <span class="alerta2" id="geral_consultar_cotacao">{{erro}}</span>
         
-        <form name="form_consultar_cotacao1" action="/consultar_cotacao1.html" method="POST">
+        <form id="form_consultar_cotacao1" action="/consultar_cotacao1.html" method="POST">
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
-                <select class="seletores" name="cpf_consultar_cotacao1" id="cpf_consultar_cotacao1" required>
+                <select class="seletores" name="cpf_consultar_cotacao1" id="cpf_consultar_cotacao1" >
                     <option value="">Selecione um CPF</option>
                         {% for cpf in cpfs_clientes %}
                         <option value="{{ cpf }}">{{ cpf }}</option>
@@ -27,14 +27,16 @@
             </hgroup>
 
             <hgroup>
-                <label  id="tipo_formulario">Placa:</label>
-                <input type="text" id="caixa" name="placa_consultar_cotacao1"/>
+                <label id="tipo_formulario">Placa:</label>
+                <select class="seletores" name="placa_consultar_cotacao1" id="placa_consultar_cotacao1">
+                    <option value="">Selecione uma placa</option>
+                </select>
                 <span class="alerta" id="span_placa_consultar_cotacao1"></span>
             </hgroup>
 
             <hgroup>
                 <label  id="tipo_formulario">Seguradora:</label>
-                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao" required>
+                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao">
                     {% for seguradora in seguradoras %}
                         <option value="{{ seguradora }}">{{ seguradora }}</option>
                     {% endfor %}
