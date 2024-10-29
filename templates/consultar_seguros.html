@@ -14,17 +14,33 @@
         <h1 id="tipo2">Consultar Seguro</h1>
         <span class="alerta2" id="geral_consultar_seguros"></span>
         
-        <form>
+        <form id="form_consultar_seguros" action="/consultar_seguros.html" method="POST">
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
-                <input type="text"  id="caixa" name="cpf_seguros" placeholder="apenas números"/>
+                <select class="seletores" name="cpf_seguros" id="cpf_seguros" >
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs_clientes %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
                 <span class="alerta" id="span_cpf_consultar_seguros"></span>
             </hgroup>
 
             <hgroup>
                 <label  id="tipo_formulario">Placa:</label>
-                <input type="text" id="caixa" name="placa_seguros" placeholder="ABC1234"/>
+                <input type="text" id="caixa" name="placa_seguros" placeholder="ABCD123"/>
                 <span class="alerta" id="span_placa_consultar_seguros"></span>
+            </hgroup>
+
+            <hgroup>
+                <label  id="tipo_formulario">Seguradora:</label>
+                <select class="seletores"  name="seguradora_seguros">
+                    <option value="">Selecione uma Seguradora</option>
+                    {% for seguradora in seguradoras %}
+                        <option value="{{ seguradora }}">{{ seguradora }}</option>
+                    {% endfor %}
+                </select>
+                
             </hgroup>
 
             <hgroup>

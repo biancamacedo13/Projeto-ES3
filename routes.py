@@ -474,7 +474,7 @@ def consultarVeiculo1():
 
     if request.method == 'POST':
         cpf = request.form.get('cpf_consultar_veiculo')
-        placa = request.form.get('placa_consultar_veiculo')
+        placa = request.form.get('placa_consultar_veiculo').strip().upper()
         chassi = request.form.get('chassi_consultar_veiculo')
 
         try:
@@ -534,7 +534,6 @@ def consultarVeiculo1():
 
 
 #CONSULTAR SEGURADORAS
-
 @app.route('/consultar_seguradora.html', methods=['GET', 'POST'])
 def consultarSeguradora1():
     banco = models.criar_conexao()
@@ -581,18 +580,165 @@ def consultarSeguradora1():
 
     return render_template('consultar_seguradora.html', cnpjs=cnpjs)
 
-@app.route('/consultar_seguros.html')
-def consultarSeguros1():
-    return render_template('/consultar_seguros.html')
+#CONSULTAR SEGUROS
+@app.route('/')
+@app.route('/consultar_seguros.html', methods=['GET', 'POST'])
+def consultar_seguros():
+    cpfs_clientes = []  # Inicializa a variável antes do uso
+    seguradoras = []  
+
+    banco = models.criar_conexao()
+    cursor = banco.cursor()
+
+    try:
+        # Obtém os nomes das seguradoras
+        cursor.execute("SELECT nome FROM Seguradora")
+        seguradoras = cursor.fetchall()
+        seguradoras = [s[0] for s in seguradoras]    
+
+        # Obtém os CPFs dos clientes
+        cursor.execute("SELECT cpf FROM clientes")
+        cpfs_clientes = cursor.fetchall()     
+        cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
+        
+    finally:
+        banco.close()  # Fecha a conexão independentemente de ter ocorrido um erro
+
+    if request.method == 'POST':
+        cpf2 = request.form.get('cpf_seguros')
+        placa2 = request.form.get('placa_seguros').strip().upper()
+        seguradora2 = request.form.get('seguradora_seguros')
+        data_vencimento = request.form.get('dt_vencimento_seguros')
+
+        try:
+            banco = models.criar_conexao()
+            cursor = banco.cursor()
+
+            # Busca por CPF
+            if cpf2:
+                cursor.execute('''
+                    SELECT 
+                        S.apolice,
+                        S.valor_total,
+                        S.data_inicio,
+                        S.data_termino,
+                        S.pagamento,
+                        CL.cpf AS cpf_cliente,  -- Adicionando o CPF do cliente
+                        CL.nome AS nome_cliente,
+                        SG.nome AS nome_seguradora,
+                        V.placa
+                    FROM 
+                        Seguros S
+                    JOIN 
+                        Cotacoes C ON S.id_cotacao = C.id_cotacao
+                    JOIN 
+                        Veiculos V ON C.placa = V.placa
+                    JOIN 
+                        clientes CL ON C.cpf = CL.cpf
+                    JOIN 
+                        Seguradora SG ON C.cnpj_seguradora = SG.cnpj
+                    WHERE 
+                        CL.cpf = ?;
+                ''', (cpf2,))
+
+
+
+                seguros = cursor.fetchall()  # Obtém todas as seguros associadas ao CPF
+                print(f"{seguros}")
+
+                if seguros:
+                    return render_template('lista_seguros.html', seguros=seguros)
+
+            # Busca por placa
+            if placa2:
+                cursor.execute('''
+                    SELECT 
+                        S.apolice,
+                        S.valor_total,
+                        S.data_inicio,
+                        S.data_termino,
+                        S.pagamento,  -- Campo de pagamento
+                        CL.cpf AS cpf_cliente,  -- CPF do cliente
+                        CL.nome AS nome_cliente,
+                        SG.nome AS nome_seguradora,
+                        V.placa
+                    FROM 
+                        Seguros S
+                    JOIN 
+                        Cotacoes C ON S.id_cotacao = C.id_cotacao
+                    JOIN 
+                        Veiculos V ON C.placa = V.placa
+                    JOIN 
+                        clientes CL ON C.cpf = CL.cpf
+                    JOIN 
+                        Seguradora SG ON C.cnpj_seguradora = SG.cnpj
+                    WHERE 
+                        V.placa = ?;  -- Filtro pela placa
+                ''', (placa2,))
+
+                seguros = cursor.fetchall()  # Obtém todas as seguros associadas à placa
+                print(f"{seguros}")
+
+                if seguros:
+                    return render_template('lista_seguros.html', seguros=seguros)
+
+            # Busca por seguradora
+            if seguradora2:
+                cursor.execute("SELECT cnpj FROM Seguradora WHERE nome = ?", (seguradora2,))
+                resultado_cnpj = cursor.fetchone()
+
+                if resultado_cnpj:  # Verifica se a seguradora existe
+                    cnpj_seguradora = resultado_cnpj[0]
+                    cursor.execute("""
+                        SELECT S.*, CL.nome AS nome_cliente
+                        FROM Seguros S
+                        JOIN clientes CL ON S.cpf = CL.cpf
+                        WHERE S.cnpj_seguradora = ?
+                    """, (cnpj_seguradora,))
+                    seguros = cursor.fetchall()  # Obtém todas as seguros associadas ao CNPJ da seguradora
+
+                    if seguros:
+                        return render_template('lista_seguros.html', seguros=seguros)
+
+            # Busca por data de vencimento
+            if data_vencimento:  # Verifica se a data foi fornecida
+                cursor.execute("""
+                    SELECT S.*, CL.nome AS nome_cliente, SG.nome AS nome_seguradora
+                    FROM Seguros S
+                    JOIN clientes CL ON S.cpf = CL.cpf
+                    JOIN Seguradora SG ON S.cnpj_seguradora = SG.cnpj
+                    WHERE S.data_termino >= ?
+                """, (data_vencimento,))
+                
+                seguros = cursor.fetchall()  # Obtém todas as seguros a partir da data fornecida
+
+                if seguros:
+                    return render_template('lista_seguros.html', seguros=seguros)
+
+            # Caso nenhuma das opções retorne resultados
+            return render_template(
+                'consultar_seguros.html', 
+                seguradoras=seguradoras, 
+                cpfs_clientes=cpfs_clientes,
+                erro='Nenhum Seguro encontrado'  # Mensagem de erro
+            )
+
+        finally:
+            banco.close()  # Fecha a conexão independentemente de erro
+
+    return render_template(
+        'consultar_seguros.html', 
+        seguradoras=seguradoras, 
+        cpfs_clientes=cpfs_clientes,
+    )
+
 
 #CONSULTAR COTACOES
-@app.route('/')
 @app.route('/consultar_cotacao1.html', methods=['GET', 'POST'])
 def consultarCotacoes1():
     
     cpfs_clientes = []  # Inicializa a variável antes do uso
     seguradoras = []  
-    placas_por_cliente = {}  # Dicionário para armazenar placas por CPF
 
     
     banco = models.criar_conexao()
@@ -601,22 +747,13 @@ def consultarCotacoes1():
     try:
         # Obtém os nomes das seguradoras
         cursor.execute("SELECT nome FROM Seguradora")
-        seguradoras = cursor.fetchall()    
+        seguradoras = cursor.fetchall()
+        seguradoras=[s[0] for s in seguradoras]    
 
         # Obtém os CPFs dos clientes
         cursor.execute("SELECT cpf FROM clientes")
         cpfs_clientes = cursor.fetchall()     
         cpfs_clientes = [cpf[0] for cpf in cpfs_clientes]  
-            
-        # Obtém os veículos e associações de CPF
-        cursor.execute("SELECT cpf, placa FROM veiculos")
-        veiculos_por_cliente = cursor.fetchall()
-
-        # Organizar as placas por CPF em um dicionário
-        for cpf, placa in veiculos_por_cliente:
-            if cpf not in placas_por_cliente:
-                placas_por_cliente[cpf] = []
-            placas_por_cliente[cpf].append(placa)
         
     finally:
         banco.close()  # Fecha a conexão independentemente de ter ocorrido um erro
@@ -624,46 +761,102 @@ def consultarCotacoes1():
     if request.method == 'POST':
         
         cpf2 = request.form.get('cpf_consultar_cotacao1')
-        placa2 = request.form.get('placa_consultar_cotacao1')
-        seguradora = request.form.get('seguradora_cadastrar_cotacao')
+        placa2 = request.form.get('placa_consultar_cotacao1').strip().upper()
+        seguradora2 = request.form.get('seguradora_cadastrar_cotacao')
         data = request.form.get('dt_sol_consultar_cotacao1')
 
         try:
             banco = models.criar_conexao()
             cursor = banco.cursor()
 
-            if cpf:
+            #busca por cpf
+            if cpf2:
                 cursor.execute("""
-                    SELECT C.*, V.modelo, CL.nome
+                    SELECT C.*, V.modelo, CL.nome, S.nome AS nome_seguradora
                     FROM Cotacoes C
                     JOIN Veiculos V ON C.placa = V.placa
                     JOIN clientes CL ON C.cpf = CL.cpf
+                    JOIN Seguradora S ON C.cnpj_seguradora = S.cnpj
                     WHERE C.cpf = ?
-                """, (cpf,))
+                """, (cpf2,))
                 cotacoes = cursor.fetchall()  # Obtém todas as cotações associadas ao CPF
-                print(f"Consulta pelo CPF: {cotacoes}")  # Exibe a lista de cotações retornadas para verificação
-  # Print para verificar o resultado da consulta
+                print(f"Consulta pelo CPF: {cotacoes}")
+
+
                 if cotacoes:
                     return render_template('lista_cotacoes.html', cotacoes=cotacoes)
-        except:
+            
+            #cpf não encontrado ou não preexido
+            if placa2:
+                cursor.execute("""
+                    SELECT C.*, V.modelo, CL.nome, S.nome AS nome_seguradora
+                    FROM Cotacoes C
+                    JOIN Veiculos V ON C.placa = V.placa
+                    JOIN clientes CL ON C.cpf = CL.cpf
+                    JOIN Seguradora S ON C.cnpj_seguradora = S.cnpj
+                    WHERE C.placa = ?
+                """, (placa2,))
+                cotacoes = cursor.fetchall()  # Obtém todas as cotações associadas à placa
+                print(f"Consulta pela Placa: {cotacoes}")
+
+                if cotacoes:
+                    return render_template('lista_cotacoes.html', cotacoes=cotacoes)
+
+            #busca por seguradora
+            if seguradora2:
+                # Buscar o CNPJ da seguradora pelo nome diretamente
+                cursor.execute("SELECT cnpj FROM Seguradora WHERE nome = ?", (seguradora2,))
+                resultado_cnpj = cursor.fetchone()
+
+                # Assume-se que a seguradora sempre existe, então não precisamos verificar se resultado_cnpj é None
+                cnpj_seguradora = resultado_cnpj[0]
+
+                # Agora, buscar todas as cotações associadas ao CNPJ da seguradora
+                cursor.execute("""
+                    SELECT C.*, V.modelo, CL.nome, S.nome AS nome_seguradora
+                    FROM Cotacoes C
+                    JOIN Veiculos V ON C.placa = V.placa
+                    JOIN clientes CL ON C.cpf = CL.cpf
+                    JOIN Seguradora S ON C.cnpj_seguradora = S.cnpj
+                    WHERE C.cnpj_seguradora = ?
+                """, (cnpj_seguradora,))
+                cotacoes = cursor.fetchall()  # Obtém todas as cotações associadas ao CNPJ da seguradora
+                print(f"Consulta pela Seguradora: {cotacoes}")
+
+                if cotacoes:
+                    return render_template('lista2_cotacoes.html', cotacoes=cotacoes)
+            
+            if data:  # Verifica se a data foi fornecida
+                cursor.execute("""
+                    SELECT C.*, V.modelo, CL.nome, S.nome AS nome_seguradora
+                    FROM Cotacoes C
+                    JOIN Veiculos V ON C.placa = V.placa
+                    JOIN clientes CL ON C.cpf = CL.cpf
+                    JOIN Seguradora S ON C.cnpj_seguradora = S.cnpj
+                    WHERE C.data_inicio >= ?
+                """, (data,))
+                
+                cotacoes = cursor.fetchall()  # Obtém todas as cotações a partir da data fornecida
+                print(f"Consulta pela Data: {cotacoes}")
+
+                if cotacoes:
+                    return render_template('lista3_cotacoes.html', cotacoes=cotacoes)
+
+            # Caso nenhuma das opções retorne resultados
             return render_template(
             'consultar_cotacao1.html', 
             seguradoras=[s[0] for s in seguradoras], 
-            cpfs_clientes=cpfs_clientes, 
-            placas_por_cliente=placas_por_cliente,
-            erro = 'Nenhuma cotação encontrada'
-        )
+            cpfs_clientes=cpfs_clientes,
+            erro = 'Nenhuma Cotação encontrada'  # Envia o dicionário para o template
+            )
 
         finally:
-            if banco:
-                banco.close()
-
+            banco.close()  # Fecha a conexão independentemente de erro
 
     return render_template(
             'consultar_cotacao1.html', 
-            seguradoras=[s[0] for s in seguradoras], 
-            cpfs_clientes=cpfs_clientes, 
-            placas_por_cliente=placas_por_cliente  # Envia o dicionário para o template
+            seguradoras=seguradoras, 
+            cpfs_clientes=cpfs_clientes,
         )
 
 ############################
@@ -676,6 +869,14 @@ def listaSeguros():
 @app.route('/lista_cotacoes.html')
 def listaCotacoes():
     return render_template('/lista_cotacoes.html')
+
+@app.route('/lista2_cotacoes.html')
+def lista2Cotacoes():
+    return render_template('/lista2_cotacoes.html')
+
+@app.route('/lista3_cotacoes.html')
+def lista3Cotacoes():
+    return render_template('/lista3_cotacoes.html')
 
 #visualizar
 @app.route('/visualizar_cliente.html')

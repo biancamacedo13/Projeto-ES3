@@ -299,3 +299,24 @@ p.visualizar{
 textarea.seguradora{
     height: 50px;
 }
+
+.tlista{
+    font-family: Libre Caslon Text;
+    color: rgba(255, 255, 255, 1);
+    font-size: 30pt; 
+    text-align: center;
+    position: relative;
+}
+
+.mlista{
+    font-family: Libre Caslon Text;
+    color: rgb(0, 0, 0);
+    font-size: 18pt; 
+    align-items:self-start;
+}
+
+/* CSS para espaçar os itens da lista */
+ul.mlista li {
+    margin-bottom: 20px; /* Ajuste o valor conforme necessário */
+}
+

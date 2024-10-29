@@ -28,15 +28,14 @@
 
             <hgroup>
                 <label id="tipo_formulario">Placa:</label>
-                <select class="seletores" name="placa_consultar_cotacao1" id="placa_consultar_cotacao1">
-                    <option value="">Selecione uma placa</option>
-                </select>
+                <input id="caixa" name="placa_consultar_cotacao1">
                 <span class="alerta" id="span_placa_consultar_cotacao1"></span>
             </hgroup>
 
             <hgroup>
                 <label  id="tipo_formulario">Seguradora:</label>
                 <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao">
+                    <option value="">Selecione uma Seguradora</option>
                     {% for seguradora in seguradoras %}
                         <option value="{{ seguradora }}">{{ seguradora }}</option>
                     {% endfor %}

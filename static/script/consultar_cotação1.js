@@ -78,7 +78,7 @@ document.getElementsByName('label_consultar_cotacao')[0].onclick = function() {
 
     // Se nenhum campo foi preenchido, mostrar mensagem de erro
     if (!algumCampoPreenchido) {
-        alertageral.textContent = 'Preencha pelo menos um campo.';
+        alertageral.textContent = 'Preencha 1 campo!';
     } else {
         // Se pelo menos um campo estiver preenchido, continuar com a ação
         document.getElementById('form_consultar_cotacao1').submit();

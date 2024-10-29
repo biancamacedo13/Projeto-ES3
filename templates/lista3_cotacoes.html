@@ -3,29 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seguros</title>
+    <title>Cotações</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
 
     <div class="metade">
-        <h1 id="tipo2">Seguros</h1>
-        {% if seguros %}
-    <!-- Exibe o label apenas uma vez para o nome associado ao CPF -->
-            <label class="tlista">{{ seguros[0][6] }}</label>
-            <label class="tlista">{{ seguros[0][5] }}</label> <!-- Assume que o nome está na posição 7 -->
+        <h1 id="tipo2">Cotações a parir da Data:</h1>
+        {% if cotacoes %}
+            <label class="tlista">{{ cotacoes[0][3] }}</label>
         {% endif %}
             <ul class="mlista" id="lista_cotacoes">
-                {% for seguros in seguros %}
-                <li onclick="selecionarCotacao('{{ seguros[0] }}')">
-                    {{ seguros[7] }} | {{ seguros[8] }}| {{ seguros[3] }}| {{ seguros[4] }}| R$:{{ seguros[1] }}
+                {% for cotacao in cotacoes %}
+                <li onclick="selecionarCotacao('{{ cotacao[0] }}')">
+                    {{ cotacao[7] }} | {{ cotacao[1] }}| {{ cotacao[8] }}| R$:{{ cotacao[4] }}
                 </li>
                 {% endfor %}
             </ul>
 
         <div id="bt_vt">
-            <a href="consultar_seguros.html">
+            <a href="consultar_cotacao1.html">
                 <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
         </div>
