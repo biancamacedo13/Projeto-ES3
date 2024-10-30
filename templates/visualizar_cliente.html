@@ -34,7 +34,7 @@
 
         <hgroup>
             <label id="tipo_formulario">Estado civil:</label>
-            <textarea readonly>{{ cliente[8] }}</textarea>    
+            <textarea readonly>{{ cliente[10] }}</textarea>    
         </hgroup>
 
         <hgroup>
@@ -61,7 +61,7 @@
             <label id="tipo_formulario">Condutor Principal:</label>
             <div class="radio">
                 <p class="visualizar">
-                    {% if veiculo[8] == 1 %}
+                    {% if cliente[8] == 1 %}
                         Sim
                     {% else %}
                         Não
@@ -74,7 +74,7 @@
             <label id="tipo_formulario">Proprietário:</label>
             <div class="radio">
                 <p class="visualizar">
-                    {% if veiculo[9] == 1 %}
+                    {% if cliente[9] == 1 %}
                         Sim
                     {% else %}
                         Não

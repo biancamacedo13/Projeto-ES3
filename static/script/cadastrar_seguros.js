@@ -66,7 +66,7 @@ document.getElementById('buttom_cadastrar_seguros').onclick = function() {
     const apolice = document.getElementsByName('apolice_cadastrar_seguros')[0].value.trim();
     const alertaapolice = document.getElementById('span_apolice_cadastrar_seguros');
 
-    // Limpa mensagens de erro anteriores
+    
     alertacpf.textContent = '';
     alertaplaca.textContent = '';
     alertadtcontrata.textContent = '';
@@ -96,20 +96,32 @@ document.getElementById('buttom_cadastrar_seguros').onclick = function() {
     if (dtcontrata === '') {
         alertadtcontrata.textContent = 'Campo vazio!';
         valido = false;
-    }
-
+    } 
+    
     if (dtvencimento === '') {
         alertavencimento.textContent = 'Campo vazio!';
         valido = false;
+    } 
+    
+    if (dtcontrata && dtvencimento) { 
+        const dataContrata = new Date(dtcontrata);
+        const dataVencimento = new Date(dtvencimento);
+    
+        if (dataVencimento <= dataContrata) {
+            alertavencimento.textContent = 'A data de vencimento deve ser maior que a data de contratação!';
+            valido = false;
+        }
     }
+    
 
     if (apolice === '') {
         alertaapolice.textContent = 'Campo vazio!';
         valido = false;
-    } else if (isNaN(apolice)) {
+    } else if (isNaN(apolice) || !Number.isInteger(parseFloat(apolice)) || parseFloat(apolice) <= 0) {
         alertaapolice.textContent = 'A apólice deve conter apenas números!';
         valido = false;
     }
+    
 
     // Se tudo estiver válido, submete o formulário
     if (valido) {

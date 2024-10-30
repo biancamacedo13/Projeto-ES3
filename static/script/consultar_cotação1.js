@@ -35,7 +35,7 @@ document.getElementById('cpf_consultar_cotacao1').addEventListener('change', fun
 });
 
 
-document.getElementsByName('label_consultar_cotacao')[0].onclick = function() { 
+document.getElementsByName('label_consultar_cotacao')[0].onclick = function() {
 
     const alertageral = document.getElementById('geral_consultar_cotacao');
     const cpf = document.getElementsByName('cpf_consultar_cotacao1')[0].value.trim();
@@ -79,8 +79,15 @@ document.getElementsByName('label_consultar_cotacao')[0].onclick = function() {
     // Se nenhum campo foi preenchido, mostrar mensagem de erro
     if (!algumCampoPreenchido) {
         alertageral.textContent = 'Preencha 1 campo!';
-    } else {
-        // Se pelo menos um campo estiver preenchido, continuar com a ação
-        document.getElementById('form_consultar_cotacao1').submit();
+        return; // Interrompe a execução se nenhum campo foi preenchido
     }
+
+    // Validar formato da placa
+    if (placa !== '' && !/^[A-Z]{3}\d{4}$/.test(placa)) {
+        alertaplaca.textContent = 'Formato de placa inválido! Use o formato ABC1234.';
+        return; // Interrompe a execução se a placa estiver no formato incorreto
+    }
+
+    // Se pelo menos um campo estiver preenchido e a placa for válida (se fornecida), continuar com a ação
+    document.getElementById('form_consultar_cotacao1').submit();
 };

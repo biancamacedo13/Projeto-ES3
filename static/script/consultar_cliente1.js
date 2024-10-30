@@ -50,7 +50,7 @@ document.getElementsByName('label_consultar_cliente1')[0].onclick = function val
 
     
     if (!algumCampoPreenchido) {
-        geral.textContent = 'Preencha pelo menos um campo.';
+        geral.textContent = 'Preencha 1 campo!';
         valido = false;
     }
 

@@ -23,7 +23,7 @@ def criar_tabela_seguradora():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS "Seguradora" (
-            "nome" TEXT NOT NULL,
+            "nome" TEXT NOT NULL UNIQUE,
             "cnpj" TEXT NOT NULL CHECK (LENGTH(cnpj) = 14),
             "email" TEXT NOT NULL,
             "endereco" TEXT NOT NULL,

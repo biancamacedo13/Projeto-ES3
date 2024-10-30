@@ -48,7 +48,7 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
         alertaano.textContent = 'Campo vazio!';
         valido = false;
     } else if (!/^\d{4}$/.test(ano)) {
-        alertaano.textContent = 'Formato inválido! Deve ser um ano com 4 dígitos.';
+        alertaano.textContent = 'Ano deve estar entre 1900 e 2100!';
         valido = false;
     } else {
         const anoInt = parseInt(ano, 10);
@@ -67,7 +67,7 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
         alertaplaca.textContent = 'Campo vazio!';
         valido = false;
     } else if (!/^[A-Za-z]{4}\d{3}$/.test(placa)) {
-        alertaplaca.textContent = 'Formato inválido! Deve ser 4 letras seguidas de 3 números.';
+        alertaplaca.textContent = 'Formato inválido! Use 4 letras seguidas de 3 números.';
         valido = false;
     }
 

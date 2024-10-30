@@ -78,11 +78,10 @@ document.getElementsByName('label_cadastrar_cotacao')[0].onclick = function() {
     if (valor === '') {
         alertavalor.textContent = 'Campo vazio!';
         valido = false;
-    } else if (isNaN(parseFloat(valor))) {
-        alertavalor.textContent = 'Apenas números!';
+    } else if (isNaN(parseFloat(valor)) || valor.includes('-')) {
+        alertavalor.textContent = 'Apenas números e valores positivos!';
         valido = false;
     }
-
     // Se todas as validações passarem
     if (valido) {
         document.getElementById('form_cadastrar_cotacao').submit();
