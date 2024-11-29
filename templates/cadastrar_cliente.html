@@ -8,7 +8,7 @@
 
 </head>
 <body>
-    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+    <img class="logo3" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
     
     <div class="metade" >
 
@@ -65,39 +65,37 @@
                 <input type="text" name="sal_cadastrar_cliente" id="caixa" />
                 <span class="alerta" id="span_sal_cadastrar_cliente"></span>
             </hgroup>
+            <hgroup>
+                <label id="tipo_formulario">Condutor Principal:</label>
+                <div class="radio">
+                    <label class="opt">
+                        <input type="radio" name="condutor_principal_cadastrar_cliente" value="1" checked /> Sim
+                    </label>
+                    <label class="opt">
+                        <input type="radio" name="condutor_principal_cadastrar_cliente" value="0" /> Não
+                    </label>
+                </div>
+            </hgroup>
+
+            <hgroup>
+                <label id="tipo_formulario">Proprietário:</label>
+                <div class="radio">
+                        <label  class="opt"><input type="radio" name="proprietario_cadastrar_cliente" value="1" checked/>Sim</label>
+                    
+                        <label  class="opt"><input type="radio" name="proprietario_cadastrar_cliente" value="0"/>Não</label>  
+                </div>
+            </hgroup>
+            <hgroup>
+                <label id="tipo_formulario">Estado Civil:</label>
+                <select class="seletores" name="civil_cadastrar_cliente" id="civil_cadastrar_cliente">
+                    <option value="solteiro">Solteiro</option>
+                    <option value="viuvo">Viúvo</option>
+                    <option value="casado" selected>Casado</option>
+                    <option value="divorciado">Divorciado</option>
+                </select>
+            </hgroup>
         </form>
-
-        <hgroup>
-            <label id="tipo_formulario">Condutor Principal:</label>
-            <div id="select">
-                
-                <label  id="opções"><input type="radio" name="condutor_principal_cadastrar_cliente" value="1" checked/>Sim</label>
-                
-                <label  id="opções"><input type="radio" name="condutor_principal_cadastrar_cliente" value="0"/>Não</label>
-
-            </div>
-        </hgroup>
-
-        <hgroup>
-            <label id="tipo_formulario">Proprietário:</label>
-            <div id="select">
-                
-                    <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" value="1" checked/>Sim</label>
-                
-                    <label  id="opções"><input type="radio" name="proprietario_cadastrar_cliente" value="0"/>Não</label> 
-                
-            </div>
-        </hgroup>
-
-        <hgroup>
-            <label id="tipo_formulario">Estado Civil:</label>
-                <select class="seletores" name="civil_cadastrar_cliente">
-                <option value="solteiro">Solteiro</option>
-                <option value="viuvo">Viuvo</option>
-                <option value="casado" selected>Casado</option>
-                <option value="divorciado">Divorciado</option>
-            </select>
-        </hgroup>
+        
         
             <div id="bt_vt">
                 <label id="botao1" name="label_cadastrar_cliente" tabindex="0">Cadastrar</label>

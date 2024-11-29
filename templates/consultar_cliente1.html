@@ -12,9 +12,9 @@
     
     <div class="metade">
         <h1 id="tipo2">Consultar cliente</h1>
-        <span class="alerta2" id="geral_consultar_cliente1"></span>
+        <span class="alerta2" id="geral_consultar_cliente1">{{erro}}</span>
         
-        <form name="form_consultar_cliente1" action="/consultar_cliente1.html" method="POST">
+        <form id="form_consultar_cliente1" action="/consultar_cliente1.html" method="POST">
             <hgroup>
                 <label id="tipo_formulario">Nome:</label>
                 <input type="text" name="nome_consultar_cliente1" id="caixa" />
@@ -23,7 +23,12 @@
 
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
-                <input type="text"  id="caixa" name="cpf_consultar_cliente1" placeholder="apenas números"/>
+                <select class="seletores" name="cpf_consultar_cliente1" id="cpf_consultar_cliente1" required>
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
                 <span class="alerta" id="span_cpf_consultar_cliente1"></span>
             </hgroup>
 

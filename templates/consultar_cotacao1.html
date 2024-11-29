@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultar Seguro</title>
+    <title>Consultar Cotações</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
 
 </head>
@@ -11,53 +11,55 @@
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
 
     <div class="metade">
-        <h1 id="tipo2">Consultar Seguro</h1>
-        <span class="alerta2" id="geral_consultar_seguros">{{erro}}</span>
+        <h1 id="tipo2">Consultar Cotação</h1>
+        <span class="alerta2" id="geral_consultar_cotacao">{{erro}}</span>
         
-        <form id="form_consultar_seguros" action="/consultar_seguros.html" method="POST">
+        <form id="form_consultar_cotacao1" action="/consultar_cotacao1.html" method="POST">
             <hgroup>
                 <label  id="tipo_formulario">CPF:</label>
-                <select class="seletores" name="cpf_seguros" id="cpf_seguros" >
+                <select class="seletores" name="cpf_consultar_cotacao1" id="cpf_consultar_cotacao1" >
                     <option value="">Selecione um CPF</option>
                         {% for cpf in cpfs_clientes %}
                         <option value="{{ cpf }}">{{ cpf }}</option>
                         {% endfor %}
                 </select>
-                <span class="alerta" id="span_cpf_consultar_seguros"></span>
+                <span class="alerta" id="span_cpf_consultar_cotacao1"></span>
             </hgroup>
 
             <hgroup>
-                <label  id="tipo_formulario">Placa:</label>
-                <input type="text" id="caixa" name="placa_seguros" placeholder="ABCD123"/>
-                <span class="alerta" id="span_placa_consultar_seguros"></span>
+                <label id="tipo_formulario">Placa:</label>
+                <input id="caixa" name="placa_consultar_cotacao1">
+                <span class="alerta" id="span_placa_consultar_cotacao1"></span>
             </hgroup>
 
             <hgroup>
                 <label  id="tipo_formulario">Seguradora:</label>
-                <select class="seletores"  name="seguradora_seguros">
+                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao">
                     <option value="">Selecione uma Seguradora</option>
                     {% for seguradora in seguradoras %}
                         <option value="{{ seguradora }}">{{ seguradora }}</option>
                     {% endfor %}
                 </select>
-                
+                <span class="alerta" id="span_seguradora_consultar_cotacao1"></span>
             </hgroup>
 
             <hgroup>
-                <label id="tipo_formulario">Data de vencimento:</label>
-                <input type="date" id="caixa" name="dt_vencimenento_consultar_seguros"/>
-                <span class="alerta" id="span_dt_vencimenento_consultar_seguros"></span>
+                <label id="tipo_formulario">Data da cotação:</label>
+                <input type="date" id="caixa" name="dt_sol_consultar_cotacao1"/>
+                <span class="alerta" id="span_dt_sol_consultar_cotacao1"></span>
             </hgroup>
         </form>
 
         <div id="bt_vt">
-            <label id="botao1" name="label_consultar_seguros1" tabindex="0">Consultar</label>
+            <label id="botao1" name="label_consultar_cotacao" tabindex="0">Consultar</label>
             
-            <a href="seguros.html">
+            <a href="cotações.html">
                 <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
             </a>
         </div>
     </div>
-    <script src="../static/script/consultar_seguros1.js"></script>
+
+    <script src="../static/script/consultar_cotação1.js"></script>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-document.getElementsByName("label_atualizar_cadastro_cliente")[0].onclick = function validarCadastro() {
+document.getElementById("label_atualizar_cadastro_cliente").onclick = function validarCadastro() {
     
     const geral = document.getElementById("geral_consultar_veiculo");
     
@@ -28,7 +28,6 @@ document.getElementsByName("label_atualizar_cadastro_cliente")[0].onclick = func
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const cpfRegex = /^\d{11}$/;
-    const telRegex = /^\d{10,11}$/;
 
     // Limpa alertas anteriores
     alertanome.textContent = "";
@@ -73,28 +72,32 @@ document.getElementsByName("label_atualizar_cadastro_cliente")[0].onclick = func
         valido = false;
     }
 
-    if (!tel) {
-        alertatel.textContent = "Campo vazio!";
+    if (tel === '') {
+        alertatel.textContent = 'campo vazio!';
         valido = false;
-    } else if (!telRegex.test(tel)) {
-        alertatel.textContent = "Telefone deve ter entre 10 e 11 dígitos.";
+    } 
+    else if (isNaN(tel)) {
+        alertatel.textContent = 'apenas números!';
         valido = false;
     }
+     
 
     if (!prof) {
         alertaprof.textContent = "Campo vazio!";
         valido = false;
     }
 
-    if (!sal) {
-        alertasal.textContent = "Campo vazio!";
+    if (sal === '') {
+        alertasal.textContent = 'campo vazio!';
+        valido = false;
+    } 
+    else if (isNaN(sal)) {
+        alertasal.textContent = 'apenas números!';
         valido = false;
     }
 
     
     if (valido) {
-        geral.textContent = "Cadastro atualizado com sucesso!";
-    } else {
-        geral.textContent = "Por favor, corrija os erros antes de enviar.";
+        document.getElementById('form_atualizar_cadastro_cliente').submit();
     }
 };

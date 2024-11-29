@@ -1,4 +1,4 @@
-document.getElementsByName("label_atualizar_cadastro_seguradora")[0].onclick = function validarCadastroSeguradora() {
+document.getElementById("label_atualizar_cadastro_seguradora").onclick = function validarCadastroSeguradora() {
     const nome = document.getElementsByName("nome_atualizar_cadastro_seguradora")[0].value.trim();
     const alertanome = document.getElementById("span_nome_atualizar_cadastro_seguradora");
 
@@ -16,7 +16,6 @@ document.getElementsByName("label_atualizar_cadastro_seguradora")[0].onclick = f
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const cnpjRegex = /^\d{14}$/;
-    const telRegex = /^\d{10,11}$/;
 
     
     alertanome.textContent = "";
@@ -53,15 +52,16 @@ document.getElementsByName("label_atualizar_cadastro_seguradora")[0].onclick = f
         valido = false;
     }
 
-    if (!tel) {
-        alertatel.textContent = "Campo vazio!";
+    if (tel === '') {
+        alertatel.textContent = 'campo vazio!';
         valido = false;
-    } else if (!telRegex.test(tel)) {
-        alertatel.textContent = "Telefone deve ter entre 10 e 11 dígitos.";
+    } 
+    else if (isNaN(tel)) {
+        alertatel.textContent = 'apenas números!';
         valido = false;
     }
 
     if (valido) {
-        alert("Cadastro atualizado com sucesso!");
+        document.getElementById('form_cadastrar_seguradora').submit();
     }
 };

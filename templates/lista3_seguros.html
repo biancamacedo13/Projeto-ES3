@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotações</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/geral.css">
+</head>
+<body>
+    <img id="logo2" src="../static/imagem/Logo075.png" alt="Logo da marca"/>
+
+    <div class="metade">
+        <h1 id="tipo2">Seguros a partir da Data:</h1>
+        
+        {% if seguros %}
+            <label class="tlista">{{ seguros[0][3] }}</label>  <!-- Campo 3: Data de término -->
+        {% endif %}
+        
+        <ul class="mlista" id="lista_cotacoes">
+            {% for seguro in seguros %}
+                <li onclick="selecionarCotacao('{{ seguro[0] }}')">  <!-- Campo 0: Apólice -->
+                    {{ seguro[5] }} |  <!-- Campo 5: Nome do cliente -->
+                    {{ seguro[8] }} |  <!-- Campo 9: Nome da seguradora -->
+                    {{ seguro[7] }} |  <!-- Campo 7: CNPJ da seguradora -->
+                    {{ seguro[3] }} |  <!-- Campo 3: Data de término -->
+                    {{ seguro[4] }} |  <!-- Campo 4: Pagamento -->
+                    R$: {{ seguro[1] }}  <!-- Campo 1: Valor total -->
+                </li>
+            {% endfor %}
+        </ul>
+
+        <div id="bt_vt">
+            <a href="consultar_seguros.html">
+                <img id="voltar2" src="../static/imagem/circle-arrow-right050.png" alt="Voltar"/>
+            </a>
+        </div>
+    </div>
+    
+    <script src="../static/script/lista_cotacoes.js"></script>
+</body>
+</html>
+

@@ -1,5 +1,8 @@
 document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
 
+    const cpf = document.getElementsByName('cpf_cadastrar_veículo')[0].value.trim();
+    const alertacpf = document.getElementById('span_cpf_cadastrar_veículo');
+
     const modelo = document.getElementsByName('modelo_cadastrar_veiculo')[0].value.trim();
     const alertamodelo = document.getElementById('span_modelo_cadastrar_veiculo');
 
@@ -18,6 +21,7 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
     const cep = document.getElementsByName('cep_pernoite_cadastrar_veiculo')[0].value.trim();
     const alertacep = document.getElementById('span_cep_cadastrar_veiculo');
 
+    alertacpf.textContent ='';
     alertamodelo.textContent = '';
     alertaano.textContent = '';
     alertacor.textContent = '';
@@ -27,6 +31,14 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
 
     let valido = true;
 
+    if (cpf === '') {
+        alertacpf.textContent = 'Campo vazio!';
+        valido = false;
+    } else if (!/^\d{11}$/.test(cpf)) {
+        alertacpf.textContent = '11 dígitos!';
+        valido = false;
+    }
+
     if (modelo === '') {
         alertamodelo.textContent = 'Campo vazio!';
         valido = false;
@@ -35,6 +47,15 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
     if (ano === '') {
         alertaano.textContent = 'Campo vazio!';
         valido = false;
+    } else if (!/^\d{4}$/.test(ano)) {
+        alertaano.textContent = 'Ano deve estar entre 1900 e 2100!';
+        valido = false;
+    } else {
+        const anoInt = parseInt(ano, 10);
+        if (anoInt < 1930 || anoInt > 2100) {
+            alertaano.textContent = 'Ano deve estar entre 1900 e 2100!';
+            valido = false;
+        }
     }
 
     if (cor === '') {
@@ -44,6 +65,9 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
 
     if (placa === '') {
         alertaplaca.textContent = 'Campo vazio!';
+        valido = false;
+    } else if (!/^[A-Za-z]{4}\d{3}$/.test(placa)) {
+        alertaplaca.textContent = 'Formato inválido! Use 4 letras seguidas de 3 números.';
         valido = false;
     }
 
@@ -61,7 +85,7 @@ document.getElementsByName('label_cadastrar_veiculo')[0].onclick = function(){
     }
 
     if (valido) {
-        window.alert('Todos os campos foram preenchidos corretamente!');
+        document.getElementById('form_cadastrar_veiculo').submit();
     }
 
 }

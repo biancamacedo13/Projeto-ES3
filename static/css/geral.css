@@ -77,10 +77,18 @@ div.metade{
 }
 
 
-div#select{
+div.radio{
     display: grid;
     grid-template-columns: auto auto;
     gap: 15px;
+    padding: 10px;
+    
+}
+.radio input[type="radio"]{
+    padding-left: 25px;
+    margin-right: 15px;
+    width:15px;
+    height: 15px; 
 }
 
 div#bt_vt{
@@ -90,6 +98,9 @@ div#bt_vt{
 div#tela_cliente2{
     display:grid;
     grid-template-columns: auto auto;
+}
+div.login{
+    border-top: 0px;
 }
 
 /*Botões*/
@@ -153,7 +164,7 @@ label#tipo_formulario{
     font-size: 21pt;
     padding-top: 20px;
 }
-label#opções{
+label.opt{
     font-family: Libre Caslon Text;
     color: rgba(255, 255, 255, 1);
     font-size: 18pt; 
@@ -177,6 +188,9 @@ h1.sucesso{
     left: 25%;
     text-align: center;
 }
+h1.login{
+    margin-bottom: 0px;
+}
 
 input#caixa{
     width: 400px;
@@ -192,6 +206,7 @@ input#caixa{
     background-color: rgba(217,217,217,1);
     border: 3px solid rgba(217,217,217,1);
     border-radius: 8%;
+    font-size: 14pt;
 }
 
 input[for="seletor"]{
@@ -200,7 +215,28 @@ input[for="seletor"]{
     background-color: rgba(217,217,217,1);
     border: 10px solid #d9d9d9;
 }
-
+label.botao{
+    position: relative;
+    background-color: rgb(26, 26, 55);
+    font-family: Libre Caslon Text;
+    border-radius: 6%;
+    font-size: 23pt;
+    margin-top: 30px;
+    padding: 16px;
+    width: 160px;
+    color: #ffffff;
+}
+.botao1{
+    position: relative;
+    background-color: rgb(26, 26, 55);
+    font-family: Libre Caslon Text;
+    border-radius: 6%;
+    font-size: 23pt;
+    padding: 16px;
+    color: #ffffff;
+    width: 160px;
+    left: 100px;
+}
 label#botao1{
     background-color: rgb(26, 26, 55);
     font-family: Libre Caslon Text;
@@ -254,3 +290,33 @@ p.confirmacao{
     font-size: pt;
     text-align: center;
 }
+p.visualizar{
+    font-family: Libre Caslon Text;
+    color: rgb(0, 0, 0);
+    font-size: 20pt; 
+    align-items: center;
+}
+textarea.seguradora{
+    height: 50px;
+}
+
+.tlista{
+    font-family: Libre Caslon Text;
+    color: rgba(255, 255, 255, 1);
+    font-size: 30pt; 
+    text-align: center;
+    position: relative;
+}
+
+.mlista{
+    font-family: Libre Caslon Text;
+    color: rgb(0, 0, 0);
+    font-size: 18pt; 
+    align-items:self-start;
+}
+
+/* CSS para espaçar os itens da lista */
+ul.mlista li {
+    margin-bottom: 20px; /* Ajuste o valor conforme necessário */
+}
+

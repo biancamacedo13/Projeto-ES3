@@ -5,76 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizar Cliente</title>
     <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
-
 </head>
 <body>
     <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
- 
+
     <div class="metade">
         <h1 id="tipo2">Visualizar Cliente</h1>
-               
+
         <hgroup>
-            <label  id="tipo_formulario">Nome:</label>
-            <textarea name="nome_visualizar_cliente" readonly></textarea>  
+            <label id="tipo_formulario">Nome:</label>
+            <textarea readonly>{{ cliente[1] }}</textarea>  
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">CPF:</label>
-            <textarea name="cpf_visualizar_cliente" readonly></textarea> 
+            <label id="tipo_formulario">CPF:</label>
+            <textarea readonly>{{ cliente[0] }}</textarea> 
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">E-mail:</label>
-            <textarea name="email__visualizar_cliente" readonly></textarea>    
+            <label id="tipo_formulario">E-mail:</label>
+            <textarea readonly>{{ cliente[2] }}</textarea>    
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Data de Nascimento:</label>
-            <textarea name="dt_nasc_visualizar_cliente" readonly></textarea>
-              
+            <label id="tipo_formulario">Data de Nascimento:</label>
+            <textarea readonly>{{ cliente[3] }}</textarea>              
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Estado civil:</label>
-            <div id="select">
-                <p for="tSolteiro">
-                    <input type="radio" name="seletor_visualizar_cliente" /> <label  id="opções">Solteiro</label>
-                </p>
-                <p for="tViuvo">
-                    <input type="radio" name="seletor_visualizar_cliente" /> <label  id="opções"> Viuvo</label>
-                </p>
-                <p for="tCasado">
-                    <input type="radio" name="seletor_visualizar_cliente" /> <label  id="opções"> Casado</label>
-                </p>
-                <p for="tDivorciado">
-                    <input type="radio" name="seletor_visualizar_cliente" /> <label  id="opções"> Divorciado</label>
+            <label id="tipo_formulario">Estado civil:</label>
+            <textarea readonly>{{ cliente[10] }}</textarea>    
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Endereço:</label>
+            <textarea readonly>{{ cliente[4] }}</textarea>    
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Telefone:</label>
+            <textarea readonly>{{ cliente[5] }}</textarea>    
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Profissão:</label>
+            <textarea readonly>{{ cliente[6] }}</textarea>    
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Faixa Salarial:</label>
+            <textarea readonly>{{ cliente[7] }}</textarea>    
+        </hgroup>
+
+        <hgroup>
+            <label id="tipo_formulario">Condutor Principal:</label>
+            <div class="radio">
+                <p class="visualizar">
+                    {% if cliente[8] == 1 %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
                 </p>
             </div>
         </hgroup>
 
         <hgroup>
-            <label  id="tipo_formulario">Endereço:</label>
-            <textarea name="endereco_visualizar_cliente" readonly></textarea>    
-        </hgroup>
-
-        <hgroup>
-            <label  id="tipo_formulario">CEP:</label>
-            <textarea name="cep_visualizar_cliente" readonly></textarea>    
-        </hgroup>
-
-        <hgroup>
-            <label  id="tipo_formulario">Telefone:</label>
-            <textarea name="tel_visualizar_cliente" readonly></textarea>    
-        </hgroup>
-
-        <hgroup>
-            <label  id="tipo_formulario">Profissão:</label>
-            <textarea name="prof_visualizar_cliente" readonly></textarea>    
-        </hgroup>
-
-        <hgroup>
-            <label  id="tipo_formulario">Faixa Salarial:</label>
-            <textarea name="prof_visualizar_cliente" readonly></textarea>    
+            <label id="tipo_formulario">Proprietário:</label>
+            <div class="radio">
+                <p class="visualizar">
+                    {% if cliente[9] == 1 %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </p>
+            </div>
         </hgroup>
 
         <div id="bt_vt">

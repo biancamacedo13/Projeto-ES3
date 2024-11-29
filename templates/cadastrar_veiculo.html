@@ -8,11 +8,24 @@
 
 </head>
 <body>
-    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+    <img class="logo3" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
 
     <div class="metade">
         <h1 id="tipo2">Cadastrar Veículo</h1>
-        <form name="form_cadastrar_veiculo" action="/cadastrar_veiculo.html" method="POST">
+        <span class="alerta2">{{erro}}</span>
+
+        <form id="form_cadastrar_veiculo" action="/cadastrar_veiculo.html" method="POST">
+            <hgroup>
+                <label id="tipo_formulario">CPF do proprietário:</label>
+                <select class="seletores" name="cpf_cadastrar_veículo" id="cpf_cadastrar_veículo" required>
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
+                <span class="alerta" id="span_cpf_cadastrar_veículo"></span>
+            </hgroup>
+            
             <hgroup>
                 <label  id="tipo_formulario">Modelo:</label>
                 <input type="text"  id="caixa" name="modelo_cadastrar_veiculo"/>
@@ -21,7 +34,7 @@
 
             <hgroup>
                 <label  id="tipo_formulario">Ano:</label>
-                <input type="date" id="caixa" name="ano_cadastrar_veiculo"/>
+                <input type="number" id="caixa" name="ano_cadastrar_veiculo" min="1930" max="2100" />
                 <span class="alerta" id="span_ano_cadastrar_veiculo"></span>
             </hgroup>
 
@@ -43,7 +56,7 @@
 
             <hgroup>
                 <label id="tipo_formulario">Placa:</label>
-                <input type="text" id="caixa" name="placa_cadastrar_veiculo"/>
+                <input type="text" id="caixa" name="placa_cadastrar_veiculo" placeholder="LLLLNNN"/>
                 <span class="alerta" id="span_placa_cadastrar_veiculo"></span>
             </hgroup>
 
@@ -57,10 +70,10 @@
                 <p id="teste">
                     <label  id="tipo_formulario" name="local_pernoite">Local de pernoite:</label>
                 </p>
-                <select class="seletores" name="pernoite_cadastrar_veiculo">
-                    <option value="casa">Casa</option>
-                    <option value="rua" selected>Rua</option>
-                    <option value="apt">Apartamento</option>
+                <select class="seletores" name="pernoite_cadastrar_veiculo" id="pernoite_cadastrar_veiculo">
+                    <option value="Casa">Casa</option>
+                    <option value="Rua" selected>Rua</option>
+                    <option value="Apartamento">Apartamento</option>
                 </select>
             </hgroup>
 
@@ -72,54 +85,40 @@
 
             <hgroup>
                 <label  id="tipo_formulario" name="per_gar">Veículo pernoita em garagem:</label>
-                <div id="select" name="per_gar">
-                    <p>
-                        <input type="radio" name="garagem_cadastrar_veiculo" for="seletor" value="1"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="garagem_cadastrar_veiculo" for="seletor" value="0" checked/> <label  id="opções"> Não</label>
-                    </p>
+                <div class="radio">
+                        <label  class="opt"><input type="radio" name="garagem_cadastrar_veiculo" value="1"/>Sim</label>
+
+                        <label class="opt"><input type="radio" name="garagem_cadastrar_veiculo" value="0" checked/>Não</label>
                 </div>
             </hgroup>
-
             <hgroup>
-                <label  id="tipo_formulario">Possui rastreador ou semelhante?:</label>
-                <div id="select">
-                    <p>
-                        <input type="radio" name="rastreador_cadastrar_veiculo" for="seletor" velue="1"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="rastreador_cadastrar_veiculo" for="seletor" velue="0" checked/> <label  id="opções">Não</label>
-                    </p>
+                <label  id="tipo_formulario">Possui rastreador ou semelhante:</label>
+                <div class="radio">
+                         <label  class="opt"><input type="radio" name="rastreador_cadastrar_veiculo" value="1"/>Sim</label>
+
+                         <label  class="opt"><input type="radio" name="rastreador_cadastrar_veiculo"  value="0" checked/>Não</label>
                 </div>
             </hgroup>
-
             <hgroup>
                 <p>
-                    <label  id="tipo_formulario">Veículo é utilizado para atividade </br> remunerada:</label>
+                    <label  id="tipo_formulario">Veículo é utilizado para atividade</br>remunerada:</label>
                 </p>
-                <div id="select">
-                    <p>
-                        <input type="radio" name="remunerada_cadastrar_veiculo" for="seletor" value="1"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="remunerada_cadastrar_veiculo" for="seletor" value="0" checked/> <label  id="opções"> Não</label>
-                    </p>
+                    
+                <div class="radio">
+                        <label  class="opt"><input type="radio" name="remunerada_cadastrar_veiculo"  value="1"/>Sim</label>
+                    
+                        <label  class="opt"><input type="radio" name="remunerada_cadastrar_veiculo"  value="0" checked/> Não</label>
                 </div>
             </hgroup>
-
             <hgroup>
                 <p>
                     <label  id="tipo_formulario" name="ir_trab">Veículo é utilizado para ir ao </br>trabalho ou estudo:</label>
                 </p>
-                
-                <div id="select" name="ir_trab">
-                    <p>
-                        <input type="radio" name="ir_cadastrar_veiculo" for="seletor" value="1" checked/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="ir_cadastrar_veiculo" for="seletor" value="0"/> <label  id="opções"> Não</label>
-                    </p>
+            
+                <div class="radio" name="ir_trab">
+                    <label  class="opt"><input type="radio" name="ir_cadastrar_veiculo" value="1" checked/>Sim</label>
+                    
+                    <label  class="opt"><input type="radio" name="ir_cadastrar_veiculo" value="0"/>Não</label>
                 </div>
             </hgroup>
 
@@ -128,25 +127,20 @@
                     <label  id="tipo_formulario">Local de trabalho/estudo possui </br>estacionamento:</label>
                 </p>
                 
-                <div id="select">
-                    <p>
-                        <input type="radio" name="estacionamento_cadastrar_veiculo" for="seletor" value="1"/> <label  id="opções">Sim</label>
-                    </p>
-                    <p>
-                        <input type="radio" name="estacionamento_cadastrar_veiculo" for="seletor" value="0" checked/> <label  id="opções"> Não</label>
-                    </p>
+                <div class="radio">
+                    <label  class="opt"><input type="radio" name="estacionamento_cadastrar_veiculo" value="1"/>Sim</label>
+                    
+                    <label  class="opt"><input type="radio" name="estacionamento_cadastrar_veiculo"  value="0" checked/>Não</label>
                 </div>
             </hgroup>
         </form>
 
-        <div id="bt_vt">
-            <label id="botao1" name="label_cadastrar_veiculo" tabindex="0">Cadastrar</label>
-            
-            <a href="clientes.html">
-                <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
-            </a>
-            
-        </div>
+            <div id="bt_vt">
+                <label id="botao1" name="label_cadastrar_veiculo" tabindex="0">Cadastrar</label>
+                <a href="clientes.html">
+                    <img id="voltar2" src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+                </a>
+            </div>
     </div>
     <script src="../static/script/cadastrar_veiculo.js"></script>
 </body>

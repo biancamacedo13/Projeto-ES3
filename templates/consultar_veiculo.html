@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Veículo</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/geral.css">
+</head>
+<body>
+    <img id="logo2" src="../static/imagem/Logo075.png" alt="Logo da marca"/>
+
+    <div class="metade">
+        <h1 id="tipo2">Consultar Veículo</h1>
+        <span class="alerta2" id="geral_consultar_veiculo">{{erro}}</span>
+        
+        <form id="form_consultar_veiculo" action="/consultar_veiculo.html" method="POST">
+            <hgroup>
+                <label id="tipo_formulario">CPF:</label>
+                <select class="seletores" name="cpf_consultar_veiculo" id="cpf_consultar_veiculo">
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
+                <span class="alerta" id="span_cpf_consultar_veiculo"></span>
+            </hgroup>
+
+            <hgroup>
+                <label id="tipo_formulario">Placa:</label>
+                <input type="text" id="caixa" name="placa_consultar_veiculo"/>
+                <span class="alerta" id="span_placa_consultar_veiculo">{{p1}}</span>
+            </hgroup>
+
+        
+
+            <div id="bt_vt">
+                <button class="botao1" name="label_consultar_veiculo" type="submit">Consultar</button>
+                <a href="clientes.html">
+                    <img id="voltar2" src="../static/imagem/circle-arrow-right050.png" alt="Voltar"/>
+                </a>
+            </div>
+        </form>
+        
+    </div>
+    <script src="../static/script/consultar_veiculo1.js"></script>
+</body>
+</html>

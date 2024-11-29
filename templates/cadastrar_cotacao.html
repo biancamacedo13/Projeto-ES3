@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Cotação</title>
+    <link rel="stylesheet" type="text/css" href="..\static\css\geral.css">
+
+</head>
+<body>
+    <img id="logo2" src= "..\static\imagem\Logo075.png" alt="Logo da marca"/>
+    
+    <div class="metade" >
+        <h1 id="tipo2">Cadastrar Cotação</h1>
+        <span class="alerta2">{{erro}}</span>
+        <form name="form_cadastrar_cotacao" action="/cadastrar_cotacao.html" method="POST">            
+            <hgroup>
+                <label  id="tipo_formulario">CPF:</label>
+                <select class="seletores" name="cpf_cadastrar_cotacao" id="cpf_cadastrar_cotacao" required>
+                    <option value="">Selecione um CPF</option>
+                        {% for cpf in cpfs_clientes %}
+                        <option value="{{ cpf }}">{{ cpf }}</option>
+                        {% endfor %}
+                </select>
+                <span class="alerta" id="span_cpf_cadastrar_cotacao">{{v1}}</span>
+            </hgroup>
+    
+            <hgroup>
+                <label  id="tipo_formulario">Seguradora:</label>
+                <select class="seletores" id="seguradora" name="seguradora_cadastrar_cotacao" required>
+                    {% for seguradora in seguradoras %}
+                        <option value="{{ seguradora }}">{{ seguradora }}</option>
+                    {% endfor %}
+                </select>
+                <span class="alerta" id="span_seguradora_cadastrar_cotacao">{{v2}}</span>
+            </hgroup>
+    
+            <hgroup>
+                <label name="lemail" id="tipo_formulario">Placa veículo:</label>
+                <select class="seletores" name="placa_cadastrar_cotacao" id="placa_cadastrar_cotacao" required>
+                    <option value="">Selecione uma Placa</option>
+                </select>
+                <span class="alerta" id="span_placa_cadastrar_cotacao">{{v3}}</span>
+            </hgroup>
+
+            <hgroup>
+                <label for="cNasc" id="tipo_formulario">Data da cotação:</label>
+                <input type="date" name="dt_cot_cadastrar_cotacao" id="caixa" required/>
+                <span class="alerta" id="span_dt_cot_cadastrar_cotacao">`{{v4}}</span>
+            </hgroup>
+       
+            <hgroup>
+                <label id="tipo_formulario">Valor:</label>
+                <input type="text" name="valor_cadastrar_cotacao" id="caixa" />
+                <span class="alerta" id="span_valor_cadastrar_cotacao">{{v5}}</span>
+            </hgroup>
+        
+            
+            <div id="bt_vt">
+                <button class="botao1" name="label_cadastrar_cotacao" type="submit">Cadastrar</button>
+                
+                <a href="cotações.html">
+                    <img id="voltar2"  src= "..\static\imagem\circle-arrow-right050.png" alt="Voltar"/>
+                </a>
+                
+            </div>
+        </form>
+    </div>
+
+    <script src="../static/script/cadastrar_cotação.js"></script>
+
+</body>
+</html>

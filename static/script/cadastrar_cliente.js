@@ -81,8 +81,8 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
         alertatel.textContent = 'campo vazio!';
         valido = false;
     } 
-    else if (isNaN(tel)) {
-        alertatel.textContent = 'apenas números!';
+    else if (!Number.isInteger(parseFloat(tel))) { // Verifica se é um número inteiro
+        alertatel.textContent = 'apenas dígitos!';
         valido = false;
     }
 
@@ -92,14 +92,12 @@ document.getElementsByName('label_cadastrar_cliente')[0].onclick = function vali
     }
 
     if (sal === '') {
-        alertasal.textContent = 'campo vazio!';
+        alertasal.textContent = 'Campo vazio!';
         valido = false;
-    } 
-    
-    else if (isNaN(sal)) {
-        alertasal.textContent = 'apenas números!';
+    } else if (isNaN(parseFloat(sal)) || sal.includes('-')) {
+        alertasal.textContent = 'Apenas números e valores positivos!';
         valido = false;
-    }
+    }    
 
     
     if (valido) {

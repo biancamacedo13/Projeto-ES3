@@ -1,4 +1,4 @@
-document.getElementsByName("label_atualizar_cadastro_veiculo")[0].onclick = function validarCadastroVeiculo() {
+document.getElementById("label_atualizar_cadastro_veiculo").onclick = function validarCadastroVeiculo() {
     const modelo = document.getElementsByName("modelo_atualizar_cadastro_veiculo")[0].value.trim();
     const alertamodelo = document.getElementById("span_modelo_atualizar_cadastro_veiculo");
 
@@ -17,7 +17,6 @@ document.getElementsByName("label_atualizar_cadastro_veiculo")[0].onclick = func
     const cepPernoite = document.getElementsByName("cep_pernoite_atualizar_cadastro_veiculo")[0].value.trim();
     const alertacepPernoite = document.getElementById("span_cep_atualizar_cadastro_veiculo");
 
-    const placaRegex = /^[A-Z]{3}\d{4}$/;
     const cepRegex = /^\d{8}$/;
 
     // Limpa alertas anteriores
@@ -45,11 +44,11 @@ document.getElementsByName("label_atualizar_cadastro_veiculo")[0].onclick = func
         valido = false;
     }
 
-    if (!placa) {
-        alertaplaca.textContent = "Campo vazio!";
+    if (placa === '') {
+        alertaplaca.textContent = 'Campo vazio!';
         valido = false;
-    } else if (!placaRegex.test(placa)) {
-        alertaplaca.textContent = "Placa inválida! Formato esperado: ABC1234";
+    } else if (!/^[A-Za-z]{4}\d{3}$/.test(placa)) {
+        alertaplaca.textContent = 'Formato inválido! Deve ser 4 letras seguidas de 3 números.';
         valido = false;
     }
 
@@ -67,6 +66,6 @@ document.getElementsByName("label_atualizar_cadastro_veiculo")[0].onclick = func
     }
 
     if (valido) {
-        alert("Cadastro de veículo atualizado com sucesso!");
+        document.getElementById('form_atualizar_cadastro_veiculo').submit();
     }
 };
